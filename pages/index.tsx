@@ -1,6 +1,6 @@
-import { Typography } from "@mui/material";
-import type { NextPage } from "next";
-import LoginLogout from "../components/LoginLogout";
+import { Typography } from '@mui/material'
+import type { NextPage } from 'next'
+import LoginLogout from '../components/LoginLogout'
 
 const Home: NextPage = () => {
   return (
@@ -8,7 +8,7 @@ const Home: NextPage = () => {
       Index page
       <LoginLogout />
     </Typography>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home
