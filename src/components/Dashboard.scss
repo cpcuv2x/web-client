@@ -1,0 +1,21 @@
+.dashboard {
+  height: 100%;
+  overflow: scroll;
+
+  .dashboard--dashboard-item {
+    background: #eee;
+  }
+
+  // Temporary added
+  .dashboard--btn-save {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+  }
+
+  .dashboard--btn-test-add-item {
+    position: fixed;
+    bottom: 20px;
+    right: 60px;
+  }
+}
