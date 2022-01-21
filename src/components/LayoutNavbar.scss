@@ -1,0 +1,20 @@
+.navbar {
+  padding: 1.6rem;
+  background: #eee;
+  .navbar--link-group {
+    float: left;
+  }
+  .navbar--link {
+    &:not(:first-child) {
+      margin-left: 3.2rem;
+    }
+  }
+}
+
+.clearfix {
+  &::after {
+    content: '';
+    clear: both;
+    display: table;
+  }
+}
