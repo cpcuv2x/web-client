@@ -1,10 +1,10 @@
-.navbar {
+.layout-navbar {
   padding: 1.6rem;
   background: #eee;
-  .navbar--link-group {
+  .layout-navbar--link-group {
     float: left;
   }
-  .navbar--link {
+  .layout-navbar--link {
     &:not(:first-child) {
       margin-left: 3.2rem;
     }
