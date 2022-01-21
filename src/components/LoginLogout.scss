@@ -1,0 +1,16 @@
+.login-logout {
+  float: right;
+}
+
+.form-login {
+  .form-login--input-username,
+  .form-login--input-password {
+    margin-right: 0.8rem;
+  }
+}
+
+.logout {
+  .logout--username {
+    margin-right: 0.8rem;
+  }
+}
