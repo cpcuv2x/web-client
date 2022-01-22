@@ -100,7 +100,7 @@ const useDashboard = (dashboardId: string) => {
     )
   }
 
-  const saveLayout = async () => {
+  const handleSaveLayout = async () => {
     if (dashboardId && layout) {
       await axios.patch(`/api/dashboards/${dashboardId}/update-items`, {
         associations: layout.map((piece) => ({
@@ -142,7 +142,7 @@ const useDashboard = (dashboardId: string) => {
   return {
     layout,
     handleLayoutChange,
-    saveLayout,
+    handleSaveLayout,
     handleAddItem,
     handleDeleteItem,
     loading: !layout,

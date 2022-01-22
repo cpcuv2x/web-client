@@ -17,7 +17,7 @@ const Dashboard = (props: Props) => {
   const {
     layout,
     handleLayoutChange,
-    saveLayout,
+    handleSaveLayout,
     handleAddItem,
     handleDeleteItem,
     loading: dashboardLoading,
@@ -56,7 +56,7 @@ const Dashboard = (props: Props) => {
         </ReactGridLayout>
 
         {/* Temporary added */}
-        <button className="dashboard--btn-save" onClick={saveLayout}>
+        <button className="dashboard--btn-save" onClick={handleSaveLayout}>
           Save
         </button>
         <button
