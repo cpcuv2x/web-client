@@ -50,6 +50,8 @@ const Dashboard = (props: Props) => {
           {layout?.map((piece) => (
             <div className="dashboard--dashboard-item" key={piece.i}>
               <button onClick={() => handleDeleteItem(piece.i)}>X</button>
+              {piece.i}
+              <br />
               {piece.dashboardItem.metadata}
             </div>
           ))}

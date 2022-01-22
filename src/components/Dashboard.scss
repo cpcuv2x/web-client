@@ -4,6 +4,9 @@
 
   .dashboard--dashboard-item {
     background: #eee;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
 
   // Temporary added
