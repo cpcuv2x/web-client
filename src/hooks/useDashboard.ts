@@ -83,9 +83,9 @@ const useDashboard = (dashboardId: string) => {
       )
       setLayout(generatedLayout)
     }
-  }, [data?.items])
+  }, [data?._id, data?.items])
 
-  const handleLayoutChange = (modifiedLayout: ReactGridLayout.Layout[]) => {
+  const updateLayout = (modifiedLayout: ReactGridLayout.Layout[]) => {
     setLayout(
       modifiedLayout.map<CustomizedLayout>((piece) => ({
         ...piece,
@@ -94,7 +94,7 @@ const useDashboard = (dashboardId: string) => {
     )
   }
 
-  const handleSaveLayout = async () => {
+  const saveLayout = async () => {
     if (dashboardId && layout) {
       await axios.patch(`/api/dashboards/${dashboardId}/update-items`, {
         associations: layout.map((piece) => ({
@@ -110,7 +110,7 @@ const useDashboard = (dashboardId: string) => {
     }
   }
 
-  const handleAddItem = (dashboardItem: DashboardItem) => {
+  const addItem = (dashboardItem: DashboardItem) => {
     const randomAssociationId = uuidv4()
     associationIdToDashboardItemMapper.current.set(
       randomAssociationId,
@@ -125,7 +125,7 @@ const useDashboard = (dashboardId: string) => {
     )
   }
 
-  const handleDeleteItem = (associationId: string) => {
+  const deleteItem = (associationId: string) => {
     associationIdToDashboardItemMapper.current.delete(associationId)
     setLayout(
       (currentLayout) =>
@@ -136,10 +136,10 @@ const useDashboard = (dashboardId: string) => {
 
   return {
     layout,
-    handleLayoutChange,
-    handleSaveLayout,
-    handleAddItem,
-    handleDeleteItem,
+    updateLayout,
+    saveLayout,
+    addItem,
+    deleteItem,
     loading: !layout,
     error: error?.response?.data,
   }

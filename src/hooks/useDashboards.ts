@@ -28,36 +28,30 @@ const useDashboards = () => {
     AxiosError<WebServiceError>
   >('/api/dashboards', fetcher)
 
-  const handleCreateDashboard = async (payload: { name: string }) => {
+  const createDashboard = async (payload: { name: string }) => {
     await axios.post('/api/dashboards', {
       name: payload.name,
     })
     await mutate()
-    console.debug('Create dashboard completed.')
   }
 
-  const handleUpdateDashboard = async (
-    id: string,
-    payload: { name: string }
-  ) => {
+  const updateDashboard = async (id: string, payload: { name: string }) => {
     await axios.patch(`/api/dashboards/${id}`, { name: payload.name })
     await mutate()
-    console.debug('Update dashboard completed.')
   }
 
-  const handleDeleteDashboard = async (id: string) => {
+  const deleteDashboard = async (id: string) => {
     await axios.delete(`/api/dashboards/${id}`)
     await mutate()
-    console.debug('Delete dashboard completed.')
   }
 
   return {
     dashboards: data,
     loading: !data && !error,
     error: error?.response?.data,
-    handleCreateDashboard,
-    handleUpdateDashboard,
-    handleDeleteDashboard,
+    createDashboard,
+    updateDashboard,
+    deleteDashboard,
   }
 }
 
