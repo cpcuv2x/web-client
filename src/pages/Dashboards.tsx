@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import DashboardsList from './DashboardsList'
-import Dashboard from './Dashboard'
+import DashboardsList from '../components/DashboardsList'
+import Dashboard from '../components/Dashboard'
 import './Dashboards.scss'
 
 const Dashboards = () => {
