@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import ReactGridLayout from 'react-grid-layout'
 import useSWR from 'swr'
 import { v4 as uuidv4 } from 'uuid'
+import useDeepEffect from './useDeepEffect'
 
 // FIXME: Use common fetcher
 const fetcher = async (path: string) => {
@@ -61,7 +62,7 @@ const useDashboard = (dashboardId: string) => {
     setLayout(undefined)
   }, [dashboardId])
 
-  useEffect(() => {
+  useDeepEffect(() => {
     if (data) {
       associationIdToDashboardItemMapper.current = new Map()
       data.items.forEach((association: any) =>
