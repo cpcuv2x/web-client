@@ -56,20 +56,13 @@ const useDashboard = (dashboardId: string) => {
   )
 
   const associationIdToDashboardItemMapper = useRef(new Map())
-  const dataHasBeenMutatedToNullOnce = useRef(false)
 
   useEffect(() => {
     setLayout(undefined)
-    const mutateToEmpty = async () => {
-      dataHasBeenMutatedToNullOnce.current = false
-      await mutate(null)
-      dataHasBeenMutatedToNullOnce.current = true
-    }
-    mutateToEmpty()
   }, [dashboardId])
 
   useEffect(() => {
-    if (data && dataHasBeenMutatedToNullOnce.current) {
+    if (data) {
       associationIdToDashboardItemMapper.current = new Map()
       data.items.forEach((association: any) =>
         associationIdToDashboardItemMapper.current.set(
@@ -89,7 +82,7 @@ const useDashboard = (dashboardId: string) => {
       )
       setLayout(generatedLayout)
     }
-  }, [data])
+  }, [data?.items])
 
   const handleLayoutChange = (modifiedLayout: ReactGridLayout.Layout[]) => {
     setLayout(
@@ -111,6 +104,7 @@ const useDashboard = (dashboardId: string) => {
           h: piece.h,
         })),
       })
+      await mutate()
       console.debug('Saving completed.')
     }
   }
