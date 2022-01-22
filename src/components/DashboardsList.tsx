@@ -11,29 +11,29 @@ const DashboardsList = (props: Props) => {
     dashboards,
     loading,
     error,
-    handleCreateDashboard,
-    handleUpdateDashboard,
-    handleDeleteDashboard,
+    createDashboard,
+    updateDashboard,
+    deleteDashboard,
   } = useDashboards()
 
-  const handlePromptCreateDashboard = () => {
+  const promptCreateDashboard = () => {
     const name = prompt('New dashboard name', 'untitied-1')
     if (name != null) {
-      handleCreateDashboard({ name })
+      createDashboard({ name })
     }
   }
 
-  const handlePromptRenameDashboard = async (id: string) => {
+  const promptRenameDashboard = async (id: string) => {
     const name = prompt('New dashboard name', 'untitied-1')
     if (name != null) {
-      await handleUpdateDashboard(id, { name })
+      await updateDashboard(id, { name })
     }
   }
 
-  const handleConfirmDeleteDashboard = (id: string) => {
+  const confirmDeleteDashboard = (id: string) => {
     const sure = confirm('Delete, sure?')
     if (sure) {
-      handleDeleteDashboard(id)
+      deleteDashboard(id)
     }
   }
 
@@ -57,7 +57,7 @@ const DashboardsList = (props: Props) => {
               <button
                 onClick={(e) => {
                   e.stopPropagation()
-                  handlePromptRenameDashboard(dashboard._id)
+                  promptRenameDashboard(dashboard._id)
                 }}
               >
                 Edit
@@ -65,7 +65,7 @@ const DashboardsList = (props: Props) => {
               <button
                 onClick={(e) => {
                   e.stopPropagation()
-                  handleConfirmDeleteDashboard(dashboard._id)
+                  confirmDeleteDashboard(dashboard._id)
                 }}
               >
                 X
@@ -75,9 +75,7 @@ const DashboardsList = (props: Props) => {
           </div>
         ))}
         <span className="dashboards-list--bottom">
-          <button onClick={handlePromptCreateDashboard}>
-            Create new dashboard
-          </button>
+          <button onClick={promptCreateDashboard}>Create new dashboard</button>
         </span>
       </React.Fragment>
     )

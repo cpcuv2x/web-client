@@ -16,10 +16,10 @@ const MOCK_DASHBOARD_ITEM_TO_BE_ADDED = {
 const Dashboard = (props: Props) => {
   const {
     layout,
-    handleLayoutChange,
-    handleSaveLayout,
-    handleAddItem,
-    handleDeleteItem,
+    updateLayout,
+    saveLayout,
+    addItem,
+    deleteItem,
     loading: dashboardLoading,
     error: dashboardError,
   } = useDashboard(props.dashboardId)
@@ -42,14 +42,14 @@ const Dashboard = (props: Props) => {
         <ReactGridLayout
           className="layout"
           layout={layout}
-          onLayoutChange={handleLayoutChange}
+          onLayoutChange={updateLayout}
           cols={12}
           rowHeight={30}
           width={1200}
         >
           {layout?.map((piece) => (
             <div className="dashboard--dashboard-item" key={piece.i}>
-              <button onClick={() => handleDeleteItem(piece.i)}>X</button>
+              <button onClick={() => deleteItem(piece.i)}>X</button>
               {piece.i}
               <br />
               {piece.dashboardItem.metadata}
@@ -58,12 +58,12 @@ const Dashboard = (props: Props) => {
         </ReactGridLayout>
 
         {/* Temporary added */}
-        <button className="dashboard--btn-save" onClick={handleSaveLayout}>
+        <button className="dashboard--btn-save" onClick={saveLayout}>
           Save
         </button>
         <button
           className="dashboard--btn-test-add-item"
-          onClick={() => handleAddItem(MOCK_DASHBOARD_ITEM_TO_BE_ADDED)}
+          onClick={() => addItem(MOCK_DASHBOARD_ITEM_TO_BE_ADDED)}
         >
           Test Add Item
         </button>
