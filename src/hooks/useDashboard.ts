@@ -83,7 +83,7 @@ const useDashboard = (dashboardId: string) => {
       )
       setLayout(generatedLayout)
     }
-  }, [data?.items])
+  }, [data?._id, data?.items])
 
   const handleLayoutChange = (modifiedLayout: ReactGridLayout.Layout[]) => {
     setLayout(
