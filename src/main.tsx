@@ -5,6 +5,12 @@ import App from './App'
 
 import './index.scss'
 
+if (process.env.NODE_ENV === 'production') {
+  console.log = () => {}
+  console.error = () => {}
+  console.debug = () => {}
+}
+
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>

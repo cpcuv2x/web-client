@@ -1,24 +1,5 @@
-$navbar-height: calc(3.2rem + 19px);
+$navbar-height: calc(3.2rem + 2.8rem);
+
 .dashboards {
   height: calc(100vh - $navbar-height);
-  .dashboards--dashboard-list {
-    float: left;
-    width: 28rem;
-    height: 100%;
-    overflow: scroll;
-    background: #bbb;
-    padding: 1.6rem;
-    .dashboard-list--dashboard-list-item {
-      &:not(:first-child) {
-        margin-top: 1.6rem;
-      }
-      background: white;
-      height: 4rem;
-    }
-  }
-  .dashboards--main {
-    height: 100%;
-    overflow: scroll;
-    position: relative;
-  }
 }

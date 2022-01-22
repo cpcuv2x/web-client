@@ -1,0 +1,15 @@
+.dashboards-list {
+  float: left;
+  width: 28rem;
+  height: 100%;
+  overflow: scroll;
+  background: #bbb;
+  padding: 1.6rem;
+  .dashboards-list--dashboards-list-item {
+    &:not(:first-child) {
+      margin-top: 1.6rem;
+    }
+    background: white;
+    height: 4rem;
+  }
+}

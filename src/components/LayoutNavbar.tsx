@@ -6,18 +6,18 @@ interface Props {}
 
 const LayoutNavbar = (props: Props) => {
   return (
-    <div className="navbar clearfix">
-      <div className="navbar--link-group">
-        <Link className="navbar--link" to={'/map'}>
+    <div className="layout-navbar clearfix">
+      <div className="layout-navbar--link-group">
+        <Link className="layout-navbar--link" to={'/map'}>
           Map
         </Link>
-        <Link className="navbar--link" to={'/cars'}>
+        <Link className="layout-navbar--link" to={'/cars'}>
           Cars
         </Link>
-        <Link className="navbar--link" to={'/drivers'}>
+        <Link className="layout-navbar--link" to={'/drivers'}>
           Drivers
         </Link>
-        <Link className="navbar--link" to={'/dashboards'}>
+        <Link className="layout-navbar--link" to={'/dashboards'}>
           Dashboards
         </Link>
       </div>
