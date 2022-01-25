@@ -1,0 +1,13 @@
+.dashboard-list {
+  @extend .position-relative, .float-start, .h-100;
+  width: 17.5rem;
+
+  .dashboard-list--items {
+    @extend .h-100, .overflow-scroll, .p-3;
+  }
+
+  .dashboard-list--bottom {
+    @extend .position-absolute, .text-center, .w-100;
+    bottom: 1rem;
+  }
+}
