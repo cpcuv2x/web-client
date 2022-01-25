@@ -1,14 +1,16 @@
 import { useState } from 'react'
-import DashboardsList from '../components/DashboardsList'
+import DashboardList from '../components/DashboardList'
 import Dashboard from '../components/Dashboard'
-import './Dashboards.scss'
 
 const Dashboards = () => {
   const [selectedDashboardId, setSelectedDashboardId] = useState('')
 
   return (
     <div className="dashboards">
-      <DashboardsList setSelectedDashboardId={setSelectedDashboardId} />
+      <DashboardList
+        selectedDashboardId={selectedDashboardId}
+        setSelectedDashboardId={setSelectedDashboardId}
+      />
       <Dashboard dashboardId={selectedDashboardId} />
     </div>
   )
