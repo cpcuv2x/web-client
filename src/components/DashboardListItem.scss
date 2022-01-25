@@ -1,0 +1,23 @@
+.dashboard-list-item {
+  @extend .position-relative;
+  cursor: pointer;
+  height: 10rem;
+  &:not(:first-child) {
+    @extend .mt-3;
+  }
+  &:last-child {
+    @extend .mb-5;
+  }
+  &--selected {
+    @extend .dashboard-list-item, .border, .border-primary;
+  }
+  .dashboard-list-item__btn-group {
+    @extend .opacity-25, .position-absolute, .top-0, .end-0;
+    &:hover {
+      @extend .opacity-100;
+    }
+    .btn-group__btn-edit {
+      @extend .me-1;
+    }
+  }
+}
