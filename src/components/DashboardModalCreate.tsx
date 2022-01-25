@@ -57,7 +57,7 @@ const DashboardModalCreate = (
               )}
             />
           </Form.Group>
-          <Form.Group className="mb-3">
+          <Form.Group>
             <Controller
               control={control}
               name="default"
