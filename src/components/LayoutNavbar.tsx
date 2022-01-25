@@ -1,8 +1,10 @@
 import { useLocation } from 'react-router-dom'
 import Container from 'react-bootstrap/Container'
+import Image from 'react-bootstrap/Image'
 import Nav from 'react-bootstrap/Nav'
 import Navbar from 'react-bootstrap/Navbar'
 import LogoutButton from './LogoutButton'
+import busLogo from '../images/bus_logo.jpg'
 
 interface Props {}
 
@@ -16,9 +18,11 @@ const LayoutNavbar = (props: Props) => {
   ]
 
   return (
-    <Navbar bg="light" expand="sm">
+    <Navbar expand="sm" bg="dark" variant="dark">
       <Container className="m-0 px-4" fluid>
-        <Navbar.Brand href="/dashboards">5G-V2X</Navbar.Brand>
+        <Navbar.Brand href="/dashboards">
+          <Image src={busLogo} alt="logo" roundedCircle width={52} />
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
