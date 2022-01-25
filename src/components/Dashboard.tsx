@@ -1,7 +1,8 @@
 import React from 'react'
 import ReactGridLayout from 'react-grid-layout'
 import useDashboard from '../hooks/useDashboard'
-import './Dashboard.scss'
+import DashboardCard from './DashboardCard'
+import Button from 'react-bootstrap/Button'
 
 interface Props {
   dashboardId: string
@@ -47,26 +48,23 @@ const Dashboard = (props: Props) => {
           rowHeight={30}
           width={1200}
         >
-          {layout?.map((piece) => (
-            <div className="dashboard--dashboard-item" key={piece.i}>
-              <button onClick={() => deleteItem(piece.i)}>X</button>
-              {piece.i}
-              <br />
-              {piece.dashboardItem.metadata}
+          {layout?.map((card) => (
+            <div key={card.i}>
+              <DashboardCard card={card} deleteItem={deleteItem} />
             </div>
           ))}
         </ReactGridLayout>
 
         {/* Temporary added */}
-        <button className="dashboard--btn-save" onClick={saveLayout}>
+        <Button className="dashboard__btn-save" onClick={saveLayout}>
           Save
-        </button>
-        <button
-          className="dashboard--btn-test-add-item"
+        </Button>
+        <Button
+          className="dashboard__btn-test-add-item"
           onClick={() => addItem(MOCK_DASHBOARD_ITEM_TO_BE_ADDED)}
         >
           Test Add Item
-        </button>
+        </Button>
       </React.Fragment>
     )
   }

@@ -1,24 +1,16 @@
 .dashboard {
-  height: 100%;
-  overflow: scroll;
-
-  .dashboard--dashboard-item {
-    background: #eee;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-  }
+  @extend .h-100, .overflow-scroll;
 
   // Temporary added
-  .dashboard--btn-save {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
+  .dashboard__btn-save {
+    @extend .position-fixed;
+    bottom: 1rem;
+    right: 1rem;
   }
 
-  .dashboard--btn-test-add-item {
-    position: fixed;
-    bottom: 20px;
-    right: 80px;
+  .dashboard__btn-test-add-item {
+    @extend .position-fixed;
+    bottom: 1rem;
+    right: 5rem;
   }
 }
