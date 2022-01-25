@@ -16,6 +16,7 @@ specifiers:
   react-dom: ^17.0.2
   react-grid-layout: ^1.3.1
   react-hook-form: ^7.24.1
+  react-icons: ^4.3.1
   react-json-view: ^1.21.3
   react-router-dom: ^6.2.1
   sass: ^1.49.0
@@ -33,6 +34,7 @@ dependencies:
   react-dom: 17.0.2_react@17.0.2
   react-grid-layout: 1.3.1_react-dom@17.0.2+react@17.0.2
   react-hook-form: 7.24.1_react@17.0.2
+  react-icons: 4.3.1_react@17.0.2
   react-router-dom: 6.2.1_react-dom@17.0.2+react@17.0.2
   sass: 1.49.0
   swr: 1.1.2_react@17.0.2
@@ -1094,6 +1096,14 @@ packages:
     engines: {node: '>=12.22.0'}
     peerDependencies:
       react: ^16.8.0 || ^17
+    dependencies:
+      react: 17.0.2
+    dev: false
+
+  /react-icons/4.3.1_react@17.0.2:
+    resolution: {integrity: sha512-cB10MXLTs3gVuXimblAdI71jrJx8njrJZmNMEMC+sQu5B/BIOmlsAjskdqpn81y8UBVEGuHODd7/ci5DvoSzTQ==}
+    peerDependencies:
+      react: '*'
     dependencies:
       react: 17.0.2
     dev: false
