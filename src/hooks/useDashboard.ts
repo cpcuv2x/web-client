@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid'
 
 import { DashboardItem } from '../interfaces/DashboardItem'
 import { DashboardWithItems } from '../interfaces/DashboardWithItems'
-import { LayoutWithDashboardItem } from '../interfaces/LayoutWithDashboard'
+import { LayoutWithDashboardItem } from '../interfaces/LayoutWithDashboardItem'
 import { WebServiceError } from '../interfaces/WebServiceError'
 
 import axiosFetcher from '../utils/axiosFetcher'

@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button'
 import { FaTrash } from 'react-icons/fa'
 import ReactJson from 'react-json-view'
 
-import { LayoutWithDashboardItem } from '../interfaces/LayoutWithDashboard'
+import { LayoutWithDashboardItem } from '../interfaces/LayoutWithDashboardItem'
 
 interface Props {
   card: LayoutWithDashboardItem
