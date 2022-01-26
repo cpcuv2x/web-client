@@ -1,4 +1,4 @@
-import { Routes, Route, Outlet } from 'react-router-dom'
+import { Routes, Route, Outlet, Navigate } from 'react-router-dom'
 import { SWRConfig } from 'swr'
 import Dashboards from './pages/Dashboards'
 import Layout from './components/Layout'
@@ -13,6 +13,7 @@ function App() {
     <SWRConfig value={{ fetcher: axiosFetcher }}>
       <Routes>
         <Route path="*" element={<NotFound />} />
+        <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/login" element={<Login />} />
         <Route
           element={
