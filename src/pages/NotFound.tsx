@@ -5,7 +5,7 @@ import notFound from '../images/not_found.jpg'
 
 const NotFound = () => {
   return (
-    <Container className="text-center">
+    <Container className="text-center vh-100 d-flex flex-column justify-content-center align-items-center">
       <Image src={notFound} fluid />
       <h1>Oops the page you were looking for doesn't exist!</h1>
       <Link to="/dashboards" className="fs-5">
