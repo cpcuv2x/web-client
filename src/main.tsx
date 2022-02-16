@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom'
 import App from './App'
 
 import './index.css'
-import 'antd/dist/antd.css'
+import 'antd/dist/antd.dark.css'
 
 if (process.env.NODE_ENV === 'production') {
   console.log = () => {}
