@@ -1,6 +1,7 @@
 lockfileVersion: 5.3
 
 specifiers:
+  '@types/node': ^17.0.18
   '@types/react': ^17.0.33
   '@types/react-dom': ^17.0.10
   '@vitejs/plugin-react': ^1.0.7
@@ -24,6 +25,7 @@ dependencies:
   swr: 1.2.1_react@17.0.2
 
 devDependencies:
+  '@types/node': 17.0.18
   '@types/react': 17.0.39
   '@types/react-dom': 17.0.11
   '@vitejs/plugin-react': 1.2.0
@@ -373,6 +375,10 @@ packages:
     dependencies:
       estree-walker: 2.0.2
       picomatch: 2.3.1
+    dev: true
+
+  /@types/node/17.0.18:
+    resolution: {integrity: sha512-eKj4f/BsN/qcculZiRSujogjvp5O/k4lOW5m35NopjZM/QwLOR075a8pJW5hD+Rtdm2DaCVPENS6KtSQnUD6BA==}
     dev: true
 
   /@types/prop-types/15.7.4:
