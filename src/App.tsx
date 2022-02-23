@@ -1,6 +1,11 @@
-import { Routes, Route, BrowserRouter } from 'react-router-dom'
+import { Routes, Route, BrowserRouter, Navigate } from 'react-router-dom'
 import AppLayout from './components/AppLayout'
-import DashboardsPage from './pages/Dashboards'
+import DashboardCarPage from './pages/dashboard/Car'
+import DashboardDriverPage from './pages/dashboard/Driver'
+import DashboardOverviewPage from './pages/dashboard/Overview'
+import EntityCameraPage from './pages/entity/Camera'
+import EntityCarPage from './pages/entity/Car'
+import EntityDriverPage from './pages/entity/Driver'
 import LoginPage from './pages/Login'
 import NotFoundPage from './pages/NotFound'
 
@@ -11,7 +16,16 @@ function App() {
         <Route index element={<LoginPage />} />
         <Route path="*" element={<NotFoundPage />} />
         <Route path="/" element={<AppLayout />}>
-          <Route path="dashboards" element={<DashboardsPage />} />
+          <Route path="dashboard">
+            <Route path="overview" element={<DashboardOverviewPage />} />
+            <Route path="car" element={<DashboardCarPage />} />
+            <Route path="driver" element={<DashboardDriverPage />} />
+          </Route>
+          <Route path="entity">
+            <Route path="camera" element={<EntityCameraPage />} />
+            <Route path="car" element={<EntityCarPage />} />
+            <Route path="driver" element={<EntityDriverPage />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>
