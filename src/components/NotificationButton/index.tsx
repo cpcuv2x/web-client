@@ -1,6 +1,6 @@
 import { BellOutlined } from '@ant-design/icons'
 import { Avatar, Badge, Card, Dropdown } from 'antd'
-import styles from './NotificationButton.module.less'
+import styles from './styles.module.less'
 
 const NotificationButton = () => {
   // TODO: render real notifications
