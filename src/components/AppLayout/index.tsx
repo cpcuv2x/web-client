@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link, Outlet, useLocation } from 'react-router-dom'
-import { Layout, Menu } from 'antd'
+import { Layout, Menu, Space } from 'antd'
 import {
   AreaChartOutlined,
   CarOutlined,
@@ -11,6 +11,7 @@ import {
 } from '@ant-design/icons'
 import AppHeader from '../AppHeader'
 import AppBreadcrumb from '../AppBreadcrumb'
+import styles from './styles.module.less'
 
 const { Sider, Content } = Layout
 const { SubMenu } = Menu
@@ -66,11 +67,13 @@ const AppLayout = () => {
             </SubMenu>
           </Menu>
         </Sider>
-        <Layout>
-          <AppBreadcrumb />
-          <Content>
-            <Outlet />
-          </Content>
+        <Layout className={styles['app-layout']}>
+          <Space direction="vertical" size="middle">
+            <AppBreadcrumb />
+            <Content>
+              <Outlet />
+            </Content>
+          </Space>
         </Layout>
       </Layout>
     </Layout>
