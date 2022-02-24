@@ -12,8 +12,8 @@ const AppHeader = () => (
     <Row align="middle" justify="space-between">
       <Col>
         <Space size="middle">
-          <Image src={appLogo} preview={false} width={32} />
-          <Title level={2} className={styles['app-title']}>
+          <Image src={appLogo} preview={false} width={28} />
+          <Title level={3} className={styles['app-title']}>
             5G-V2X
           </Title>
         </Space>
