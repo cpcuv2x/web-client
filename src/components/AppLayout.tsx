@@ -12,7 +12,7 @@ import {
 import AppHeader from './AppHeader'
 import AppBreadcrumb from './AppBreadcrumb'
 
-const { Header, Footer, Sider, Content } = Layout
+const { Sider, Content } = Layout
 const { SubMenu } = Menu
 
 const AppLayout = () => {
@@ -26,12 +26,10 @@ const AppLayout = () => {
   const pathSnippets = location.pathname.split('/').filter((i) => i)
   const defaultOpenKeys = [pathSnippets[0]]
   const defaultSelectedKeys = [pathSnippets.join('-')]
-
+  // TODO: refactor sider
   return (
     <Layout style={{ minHeight: '100vh' }}>
-      <Header>
-        <AppHeader />
-      </Header>
+      <AppHeader />
       <Layout>
         <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
           <Menu
