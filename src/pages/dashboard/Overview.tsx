@@ -1,4 +1,3 @@
-import { Card } from 'antd'
 import { Helmet } from 'react-helmet'
 
 const DashboardOverviewPage = () => {
