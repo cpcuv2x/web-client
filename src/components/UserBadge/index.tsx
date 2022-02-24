@@ -1,6 +1,6 @@
 import { Dropdown, Avatar, Menu, Space, Typography } from 'antd'
 import { UserOutlined, LogoutOutlined } from '@ant-design/icons'
-import styles from './UserBadge.module.less'
+import styles from './styles.module.less'
 
 const UserBadge = () => {
   // TODO: use actually user and logout

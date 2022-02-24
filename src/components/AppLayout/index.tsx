@@ -9,8 +9,8 @@ import {
   PieChartOutlined,
   UserOutlined,
 } from '@ant-design/icons'
-import AppHeader from './AppHeader'
-import AppBreadcrumb from './AppBreadcrumb'
+import AppHeader from '../AppHeader'
+import AppBreadcrumb from '../AppBreadcrumb'
 
 const { Sider, Content } = Layout
 const { SubMenu } = Menu

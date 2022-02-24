@@ -1,8 +1,8 @@
 import { Col, Image, Layout, Row, Space, Typography } from 'antd'
-import appLogo from '../assets/app_logo.png'
-import styles from './AppHeader.module.less'
-import NotificationButton from './NotificationButton'
-import UserBadge from './UserBadge'
+import appLogo from '../../assets/app_logo.png'
+import styles from './styles.module.less'
+import NotificationButton from '../NotificationButton'
+import UserBadge from '../UserBadge'
 
 const { Title } = Typography
 const { Header } = Layout
