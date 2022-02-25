@@ -14,7 +14,7 @@ const UserBadge = () => {
 
   const menu = (
     <Menu>
-      <Menu.Item danger>
+      <Menu.Item danger key="logout">
         <Space onClick={logout}>
           <LogoutOutlined /> <Typography.Text>Logout</Typography.Text>
         </Space>
