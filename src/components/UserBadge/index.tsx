@@ -1,21 +1,24 @@
 import { Dropdown, Avatar, Menu, Space, Typography } from 'antd'
+import axios from 'axios'
 import { UserOutlined, LogoutOutlined } from '@ant-design/icons'
+import { useNavigate } from 'react-router-dom'
 import styles from './styles.module.less'
+import useUser from '../../hooks/useUser'
 
 const UserBadge = () => {
-  // TODO: use actually user and logout
-  const user = {
-    username: 'John Doe',
-  }
+  const navigate = useNavigate()
+  const { user, mutate } = useUser()
 
-  const logout = () => {
-    console.log('logout!')
+  const onLogout = async () => {
+    await axios.post('/api/auth/logout')
+    mutate(null)
+    navigate('/')
   }
 
   const menu = (
     <Menu>
       <Menu.Item danger key="logout">
-        <Space onClick={logout}>
+        <Space onClick={onLogout}>
           <LogoutOutlined /> <Typography.Text>Logout</Typography.Text>
         </Space>
       </Menu.Item>
@@ -25,7 +28,7 @@ const UserBadge = () => {
     <Dropdown overlay={menu} placement="bottomRight">
       <Space className={styles.container}>
         <Avatar icon={<UserOutlined />} />
-        <Typography.Text strong>{user.username}</Typography.Text>
+        {user && <Typography.Text strong>{user?.username}</Typography.Text>}
       </Space>
     </Dropdown>
   )
