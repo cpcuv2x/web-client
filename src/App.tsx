@@ -1,6 +1,7 @@
 import { Routes, Route, BrowserRouter } from 'react-router-dom'
 import { SWRConfig } from 'swr'
 import AppLayout from './components/AppLayout'
+import RequireAuth from './components/RequireAuth'
 import DashboardCarPage from './pages/dashboard/Car'
 import DashboardDriverPage from './pages/dashboard/Driver'
 import DashboardOverviewPage from './pages/dashboard/Overview'
@@ -18,7 +19,14 @@ function App() {
         <Routes>
           <Route index element={<LoginPage />} />
           <Route path="*" element={<NotFoundPage />} />
-          <Route path="/" element={<AppLayout />}>
+          <Route
+            path="/"
+            element={
+              <RequireAuth>
+                <AppLayout />
+              </RequireAuth>
+            }
+          >
             <Route path="dashboard">
               <Route path="overview" element={<DashboardOverviewPage />} />
               <Route path="car" element={<DashboardCarPage />} />
