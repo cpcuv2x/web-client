@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from "axios"
 
 const axiosFetcher = async (path: string) => {
   const response = await axios.get(path)

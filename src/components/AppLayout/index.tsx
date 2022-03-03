@@ -1,6 +1,6 @@
-import { useState } from 'react'
-import { Link, Outlet, useLocation } from 'react-router-dom'
-import { Layout, Menu, Space } from 'antd'
+import { useState } from "react"
+import { Link, Outlet, useLocation } from "react-router-dom"
+import { Layout, Menu, Space } from "antd"
 import {
   AreaChartOutlined,
   CarOutlined,
@@ -8,10 +8,10 @@ import {
   ControlOutlined,
   PieChartOutlined,
   UserOutlined,
-} from '@ant-design/icons'
-import AppHeader from '../AppHeader'
-import AppBreadcrumb from '../AppBreadcrumb'
-import styles from './styles.module.less'
+} from "@ant-design/icons"
+import AppHeader from "../AppHeader"
+import AppBreadcrumb from "../AppBreadcrumb"
+import styles from "./styles.module.less"
 
 const { Sider, Content } = Layout
 const { SubMenu } = Menu
@@ -24,12 +24,12 @@ const AppLayout = () => {
   }
 
   const location = useLocation()
-  const pathSnippets = location.pathname.split('/').filter((i) => i)
+  const pathSnippets = location.pathname.split("/").filter((i) => i)
   const defaultOpenKeys = [pathSnippets[0]]
-  const defaultSelectedKeys = [pathSnippets.join('-')]
+  const defaultSelectedKeys = [pathSnippets.join("-")]
   // TODO: refactor sider
   return (
-    <Layout style={{ minHeight: '100vh' }}>
+    <Layout style={{ minHeight: "100vh" }}>
       <AppHeader />
       <Layout>
         <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
@@ -67,7 +67,7 @@ const AppLayout = () => {
             </SubMenu>
           </Menu>
         </Sider>
-        <Layout className={styles['app-layout']}>
+        <Layout className={styles["app-layout"]}>
           <Space direction="vertical" size="middle">
             <AppBreadcrumb />
             <Content>

@@ -1,6 +1,6 @@
-import { BellOutlined } from '@ant-design/icons'
-import { Avatar, Badge, Card, Dropdown } from 'antd'
-import styles from './styles.module.less'
+import { BellOutlined } from "@ant-design/icons"
+import { Avatar, Badge, Card, Dropdown } from "antd"
+import styles from "./styles.module.less"
 
 const NotificationButton = () => {
   // TODO: render real notifications
@@ -9,7 +9,7 @@ const NotificationButton = () => {
       overlay={
         <Card style={{ width: 300, height: 100 }} title="Notification"></Card>
       }
-      trigger={['click']}
+      trigger={["click"]}
       placement="bottomRight"
     >
       <div className={styles.container}>
