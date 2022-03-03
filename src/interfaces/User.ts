@@ -1,4 +1,4 @@
 export interface User {
   username: string
-  role: 'ADMIN' | 'DRIVER'
+  role: "ADMIN" | "DRIVER"
 }

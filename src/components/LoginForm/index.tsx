@@ -1,11 +1,11 @@
-import { LockOutlined, UserOutlined } from '@ant-design/icons'
-import { Form, Input, Button, Typography, Image, Space, message } from 'antd'
-import axios, { AxiosError } from 'axios'
+import { LockOutlined, UserOutlined } from "@ant-design/icons"
+import { Form, Input, Button, Typography, Image, Space, message } from "antd"
+import axios, { AxiosError } from "axios"
 
-import appLogo from '../../assets/app_logo.png'
-import useUser from '../../hooks/useUser'
-import { LoginFormDto } from '../../interfaces/LoginFormDto'
-import { User } from '../../interfaces/User'
+import appLogo from "../../assets/app_logo.png"
+import useUser from "../../hooks/useUser"
+import { LoginFormDto } from "../../interfaces/LoginFormDto"
+import { User } from "../../interfaces/User"
 
 const { Title } = Typography
 
@@ -15,16 +15,16 @@ const LoginForm = () => {
 
   const onFinish = async ({ username, password }: LoginFormDto) => {
     try {
-      await axios.post<User>('/api/auth/login', {
+      await axios.post<User>("/api/auth/login", {
         username,
         password,
-        role: 'ADMIN',
+        role: "ADMIN",
       })
       mutate()
     } catch (error) {
       let msg
       if (axios.isAxiosError(error)) {
-        msg = (error as AxiosError).response?.data || 'Some thing went wrong'
+        msg = (error as AxiosError).response?.data || "Some thing went wrong"
       } else {
         msg = (error as Error).message
       }

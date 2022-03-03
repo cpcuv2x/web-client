@@ -1,16 +1,16 @@
-import { Routes, Route, BrowserRouter } from 'react-router-dom'
-import { SWRConfig } from 'swr'
-import AppLayout from './components/AppLayout'
-import RequireAuth from './components/RequireAuth'
-import DashboardCarPage from './pages/dashboard/Car'
-import DashboardDriverPage from './pages/dashboard/Driver'
-import DashboardOverviewPage from './pages/dashboard/Overview'
-import EntityCameraPage from './pages/entity/Camera'
-import EntityCarPage from './pages/entity/Car'
-import EntityDriverPage from './pages/entity/Driver'
-import LoginPage from './pages/Login'
-import NotFoundPage from './pages/NotFound'
-import axiosFetcher from './utils/axiosFetcher'
+import { Routes, Route, BrowserRouter } from "react-router-dom"
+import { SWRConfig } from "swr"
+import AppLayout from "./components/AppLayout"
+import RequireAuth from "./components/RequireAuth"
+import DashboardCarPage from "./pages/dashboard/Car"
+import DashboardDriverPage from "./pages/dashboard/Driver"
+import DashboardOverviewPage from "./pages/dashboard/Overview"
+import EntityCameraPage from "./pages/entity/Camera"
+import EntityCarPage from "./pages/entity/Car"
+import EntityDriverPage from "./pages/entity/Driver"
+import LoginPage from "./pages/Login"
+import NotFoundPage from "./pages/NotFound"
+import axiosFetcher from "./utils/axiosFetcher"
 
 function App() {
   return (

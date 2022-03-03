@@ -1,5 +1,5 @@
-import { Navigate, useLocation } from 'react-router-dom'
-import useUser from '../../hooks/useUser'
+import { Navigate, useLocation } from "react-router-dom"
+import useUser from "../../hooks/useUser"
 
 const RequireAuth = ({ children }: { children: JSX.Element }) => {
   const { user, loading } = useUser()
