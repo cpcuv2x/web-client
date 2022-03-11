@@ -1,6 +1,6 @@
 import React from "react"
-import { Card, Col, Row, Space, Tooltip, Typography } from "antd"
-import { InfoCircleOutlined, QuestionCircleOutlined } from "@ant-design/icons"
+import { Card, Tooltip } from "antd"
+import { InfoCircleOutlined } from "@ant-design/icons"
 import styles from "./styles.module.less"
 
 interface Props {
