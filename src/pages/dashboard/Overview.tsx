@@ -1,6 +1,8 @@
+import { LoadScript } from "@react-google-maps/api"
 import { Typography, Row, Col } from "antd"
 import { Helmet } from "react-helmet"
 import BigNumber from "../../components/widgets/BigNumber"
+import CarsLocationMap from "../../components/widgets/CarsLocationMap"
 
 const DashboardOverviewPage = () => {
   return (
@@ -38,6 +40,10 @@ const DashboardOverviewPage = () => {
             helpText={"Total number of accidents occurred in this week."}
             value={"1"}
           />
+        </Col>
+
+        <Col span={24}>
+          <CarsLocationMap />
         </Col>
       </Row>
     </div>
