@@ -1,4 +1,3 @@
-import { LoadScript } from "@react-google-maps/api"
 import { Typography, Row, Col } from "antd"
 import { Helmet } from "react-helmet"
 import BigNumber from "../../components/widgets/BigNumber"
