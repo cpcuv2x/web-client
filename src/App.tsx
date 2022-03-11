@@ -4,7 +4,7 @@ import AppLayout from "./components/AppLayout"
 import RequireAuth from "./components/RequireAuth"
 import DashboardCarOverviewPage from "./pages/dashboard/Car/Overview"
 import DashboardCarPage from "./pages/dashboard/Car/Dashboard"
-import DashboardDriverPage from "./pages/dashboard/Driver"
+import DashboardDriverPage from "./pages/dashboard/Driver/Dashboard"
 import DashboardOverviewPage from "./pages/dashboard/Overview"
 import EntityCameraPage from "./pages/entity/Camera"
 import EntityCarPage from "./pages/entity/Car"
@@ -12,6 +12,7 @@ import EntityDriverPage from "./pages/entity/Driver"
 import LoginPage from "./pages/Login"
 import NotFoundPage from "./pages/NotFound"
 import axiosFetcher from "./utils/axiosFetcher"
+import DashboardDriverOverviewPage from "./pages/dashboard/Driver/Overview"
 
 function App() {
   return (
@@ -34,7 +35,10 @@ function App() {
                 <Route index element={<DashboardCarOverviewPage />} />
                 <Route path=":carId" element={<DashboardCarPage />} />
               </Route>
-              <Route path="driver" element={<DashboardDriverPage />} />
+              <Route path="driver">
+                <Route index element={<DashboardDriverOverviewPage />} />
+                <Route path=":driverId" element={<DashboardDriverPage />} />
+              </Route>
             </Route>
             <Route path="entity">
               <Route path="camera" element={<EntityCameraPage />} />
