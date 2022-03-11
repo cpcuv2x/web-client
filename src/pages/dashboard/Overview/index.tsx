@@ -2,9 +2,9 @@ import { AreaChartOutlined, PieChartOutlined } from "@ant-design/icons"
 import { Typography, Row, Col, Breadcrumb } from "antd"
 import React from "react"
 import { Helmet } from "react-helmet"
-import BigNumber from "../../components/widgets/BigNumber"
-import CarsLocationMap from "../../components/widgets/CarsLocationMap"
-import { routes } from "../../routes/constant"
+import BigNumber from "../../../components/widgets/BigNumber"
+import CarsLocationMap from "../../../components/widgets/CarsLocationMap"
+import { routes } from "../../../routes/constant"
 
 const PageBreadcrumb: React.FC = () => (
   <Breadcrumb>
