@@ -17,7 +17,7 @@ const WidgetCard: React.FC<Props> = ({ content, title, helpText }) => {
       title={<span className={styles["card-title"]}>{title}</span>}
       extra={
         <Tooltip title={helpText}>
-          <InfoCircleOutlined className={styles["info-icon"]} />
+          <InfoCircleOutlined style={{ color: "rgba(255, 255, 255, 0.45)" }} />
         </Tooltip>
       }
     >
