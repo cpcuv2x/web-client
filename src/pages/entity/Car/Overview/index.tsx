@@ -50,8 +50,7 @@ const EntityCarOverviewPage: React.FC = () => {
         </Row>
       </Typography.Title>
 
-      <Typography.Title>Cars Management</Typography.Title>
-      <div>Overview</div>
+      <CarsFilter />
     </>
   )
 }
