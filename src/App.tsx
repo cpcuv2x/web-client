@@ -13,6 +13,7 @@ import NotFoundPage from "./pages/NotFound"
 import axiosFetcher from "./utils/axiosFetcher"
 import DashboardDriverOverviewPage from "./pages/dashboard/Driver/Overview"
 import EntityCarEditPage from "./pages/entity/Car/Edit"
+import EntityCarOverviewPage from "./pages/entity/Car/Overview"
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
             <Route path="entity">
               <Route path="camera" element={<EntityCameraPage />} />
               <Route path="car">
+                <Route index element={<EntityCarOverviewPage />} />
                 <Route path="edit/:carId" element={<EntityCarEditPage />} />
               </Route>
               <Route path="driver" element={<EntityDriverPage />} />
