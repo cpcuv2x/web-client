@@ -1,6 +1,7 @@
 import React from "react"
 import Chart from "react-apexcharts"
 import { ApexOptions } from "apexcharts"
+import WidgetCard from "../WidgetCard"
 
 interface Props {
   carId: string
@@ -30,7 +31,17 @@ const PassengersChart: React.FC<Props> = ({ carId }) => {
       },
     },
   }
-  return <Chart series={series} options={options} width="100%" height={200} />
+  return (
+    <WidgetCard
+      title={"Passenger(s)"}
+      helpText={
+        "The graph between total number of passengers in this car and time."
+      }
+      content={
+        <Chart series={series} options={options} width="100%" height={200} />
+      }
+    />
+  )
 }
 
 export default PassengersChart
