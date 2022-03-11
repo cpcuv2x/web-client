@@ -10,7 +10,7 @@ const DashboardOverviewPage = () => {
       </Helmet>
       <Typography.Title>Overview</Typography.Title>
 
-      <Row gutter={[8, 8]}>
+      <Row gutter={[16, 16]}>
         <Col xs={24} sm={12} md={6}>
           <BigNumber
             title={"Active Car(s)"}
