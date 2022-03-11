@@ -1,14 +1,33 @@
-import { Typography, Row, Col } from "antd"
+import { AreaChartOutlined, PieChartOutlined } from "@ant-design/icons"
+import { Typography, Row, Col, Breadcrumb } from "antd"
+import React from "react"
 import { Helmet } from "react-helmet"
 import BigNumber from "../../components/widgets/BigNumber"
 import CarsLocationMap from "../../components/widgets/CarsLocationMap"
+import { routes } from "../../routes/constant"
 
-const DashboardOverviewPage = () => {
+const PageBreadcrumb: React.FC = () => (
+  <Breadcrumb>
+    <Breadcrumb.Item href={routes.DASHBOARD_OVERVIEW}>
+      <AreaChartOutlined />
+      <span>Dashboard</span>
+    </Breadcrumb.Item>
+    <Breadcrumb.Item href={routes.DASHBOARD_OVERVIEW}>
+      <PieChartOutlined />
+      <span>Overview</span>
+    </Breadcrumb.Item>
+  </Breadcrumb>
+)
+
+const DashboardOverviewPage: React.FC = () => {
   return (
-    <div>
+    <>
       <Helmet>
         <title>Overview - Dashboard | 5G-V2X</title>
       </Helmet>
+
+      <PageBreadcrumb />
+
       <Typography.Title>Overview</Typography.Title>
 
       <Row gutter={[16, 16]}>
@@ -45,7 +64,7 @@ const DashboardOverviewPage = () => {
           <CarsLocationMap />
         </Col>
       </Row>
-    </div>
+    </>
   )
 }
 

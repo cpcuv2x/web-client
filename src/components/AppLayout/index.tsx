@@ -68,12 +68,9 @@ const AppLayout = () => {
           </Menu>
         </Sider>
         <Layout className={styles["app-layout"]}>
-          <Space direction="vertical" size="middle">
-            <AppBreadcrumb />
-            <Content>
-              <Outlet />
-            </Content>
-          </Space>
+          <Content>
+            <Outlet />
+          </Content>
         </Layout>
       </Layout>
     </Layout>
