@@ -10,7 +10,6 @@ import {
   UserOutlined,
 } from "@ant-design/icons"
 import AppHeader from "../AppHeader"
-import AppBreadcrumb from "../AppBreadcrumb"
 import styles from "./styles.module.less"
 
 const { Sider, Content } = Layout
@@ -68,12 +67,9 @@ const AppLayout = () => {
           </Menu>
         </Sider>
         <Layout className={styles["app-layout"]}>
-          <Space direction="vertical" size="middle">
-            <AppBreadcrumb />
-            <Content>
-              <Outlet />
-            </Content>
-          </Space>
+          <Content>
+            <Outlet />
+          </Content>
         </Layout>
       </Layout>
     </Layout>
