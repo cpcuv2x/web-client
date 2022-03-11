@@ -1,7 +1,6 @@
 import React from "react"
-import { Card, Tooltip } from "antd"
-import { InfoCircleOutlined } from "@ant-design/icons"
 import styles from "./styles.module.less"
+import WidgetCard from "../WidgetCard"
 
 interface Props {
   value: React.ReactNode
@@ -11,18 +10,11 @@ interface Props {
 
 const BigNumber: React.FC<Props> = ({ value, title, helpText }) => {
   return (
-    <Card
-      className={styles["card"]}
-      bodyStyle={{ paddingTop: 12, paddingBottom: 12 }}
-      title={<span className={styles["card-title"]}>{title}</span>}
-      extra={
-        <Tooltip title={helpText}>
-          <InfoCircleOutlined className={styles["info-icon"]} />
-        </Tooltip>
-      }
-    >
-      <span className={styles["value"]}>{value}</span>
-    </Card>
+    <WidgetCard
+      title={title}
+      helpText={helpText}
+      content={<span className={styles["value"]}>{value}</span>}
+    />
   )
 }
 
