@@ -1,23 +1,26 @@
-import { Typography, Row, Col, DatePicker } from "antd"
+import React from "react"
+import { useParams } from "react-router-dom"
+import { Typography, Row, Col } from "antd"
 import { Helmet } from "react-helmet"
-import AccidentsLogByCar from "../../components/widgets/AccidentsLogByCar"
-import BigNumber from "../../components/widgets/BigNumber"
-import CameraStreams from "../../components/widgets/CameraStreams"
-import PassengersChart from "../../components/widgets/PassengersChart"
-import WidgetCard from "../../components/widgets/WidgetCard"
+import AccidentsLogByCar from "../../../../components/widgets/AccidentsLogByCar"
+import BigNumber from "../../../../components/widgets/BigNumber"
+import CameraStreams from "../../../../components/widgets/CameraStreams"
+import PassengersChart from "../../../../components/widgets/PassengersChart"
+import WidgetCard from "../../../../components/widgets/WidgetCard"
 
-const DashboardCarPage = () => {
+const DashboardCarPage: React.FC = () => {
+  const { carId } = useParams()
   return (
-    <div>
+    <>
       <Helmet>
-        <title>Car - Dashboard | 5G-V2X</title>
+        <title>Car({carId}) - Dashboard | 5G-V2X</title>
       </Helmet>
-      <Typography.Title>Car (AA-0000)</Typography.Title>
+      <Typography.Title>Car {carId}</Typography.Title>
 
       <Row gutter={[16, 16]}>
         <Col span={6}>
           <WidgetCard
-            title={"AA-0000"}
+            title={carId}
             helpText={"Car information."}
             content={
               <Row gutter={8}>
@@ -39,16 +42,16 @@ const DashboardCarPage = () => {
           />
         </Col>
         <Col span={24}>
-          <PassengersChart carId="AA-0000" />
+          <PassengersChart carId={carId} />
         </Col>
         <Col span={24}>
-          <CameraStreams carId="AA-0000" />
+          <CameraStreams carId={carId} />
         </Col>
         <Col span={24}>
-          <AccidentsLogByCar carId="AA-0000" />
+          <AccidentsLogByCar carId={carId} />
         </Col>
       </Row>
-    </div>
+    </>
   )
 }
 
