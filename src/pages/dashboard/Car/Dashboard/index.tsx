@@ -1,12 +1,30 @@
 import React from "react"
 import { useParams } from "react-router-dom"
-import { Typography, Row, Col } from "antd"
+import { Typography, Row, Col, Breadcrumb } from "antd"
 import { Helmet } from "react-helmet"
 import AccidentsLogByCar from "../../../../components/widgets/AccidentsLogByCar"
 import BigNumber from "../../../../components/widgets/BigNumber"
 import CameraStreams from "../../../../components/widgets/CameraStreams"
 import PassengersChart from "../../../../components/widgets/PassengersChart"
 import WidgetCard from "../../../../components/widgets/WidgetCard"
+import { routes } from "../../../../routes/constant"
+import { AreaChartOutlined, CarOutlined } from "@ant-design/icons"
+
+const PageBreadcrumb: React.FC<{ carId: string | undefined }> = ({ carId }) => (
+  <Breadcrumb>
+    <Breadcrumb.Item href={routes.DASHBOARD_OVERVIEW}>
+      <AreaChartOutlined />
+      <span>Dashboard</span>
+    </Breadcrumb.Item>
+    <Breadcrumb.Item href={routes.DASHBOARD_CAR}>
+      <CarOutlined />
+      <span>Car</span>
+    </Breadcrumb.Item>
+    <Breadcrumb.Item>
+      <span>{carId}</span>
+    </Breadcrumb.Item>
+  </Breadcrumb>
+)
 
 const DashboardCarPage: React.FC = () => {
   const { carId } = useParams()
@@ -15,7 +33,10 @@ const DashboardCarPage: React.FC = () => {
       <Helmet>
         <title>Car({carId}) - Dashboard | 5G-V2X</title>
       </Helmet>
-      <Typography.Title>Car {carId}</Typography.Title>
+
+      <PageBreadcrumb carId={carId} />
+
+      <Typography.Title>Car: {carId}</Typography.Title>
 
       <Row gutter={[16, 16]}>
         <Col span={6}>
