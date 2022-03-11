@@ -10,7 +10,7 @@ import WidgetCard from "../../../../components/widgets/WidgetCard"
 import { routes } from "../../../../routes/constant"
 import { AreaChartOutlined, CarOutlined } from "@ant-design/icons"
 
-const PageBreadcrumb: React.FC<{ carId: string | undefined }> = ({ carId }) => (
+const PageBreadcrumb: React.FC<{ carId: string }> = ({ carId }) => (
   <Breadcrumb>
     <Breadcrumb.Item href={routes.DASHBOARD_OVERVIEW}>
       <AreaChartOutlined />
@@ -28,6 +28,9 @@ const PageBreadcrumb: React.FC<{ carId: string | undefined }> = ({ carId }) => (
 
 const DashboardCarPage: React.FC = () => {
   const { carId } = useParams()
+
+  if (!carId) return <div>Loading...</div>
+
   return (
     <>
       <Helmet>
