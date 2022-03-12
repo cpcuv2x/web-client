@@ -13,6 +13,7 @@ const CarsTable: React.FC = () => {
   const { cars, count, loading, mutate } = useCars(filtersObject, 100, 0)
 
   const [visibleImgPreview, setVisibleImgPreview] = useState(false)
+  const [previewImgFilename, setPreviewImgFilename] = useState("")
 
   return (
     <Table
@@ -35,19 +36,24 @@ const CarsTable: React.FC = () => {
         dataIndex="imageFilename"
         key="imageFilename"
         render={(imageFilename) => {
+          if (!imageFilename) return "None"
           return (
             <>
               <Button
                 type="link"
                 icon={<ZoomInOutlined />}
-                onClick={() => setVisibleImgPreview(true)}
+                onClick={() => {
+                  setPreviewImgFilename(imageFilename)
+                  setVisibleImgPreview(true)
+                }}
               >
                 view
               </Button>
               {visibleImgPreview && (
                 <Image
                   preview={{
-                    visible: visibleImgPreview,
+                    visible:
+                      imageFilename === previewImgFilename && visibleImgPreview,
                     src: `/api/cars/images/${imageFilename}`,
                     onVisibleChange: (value) => {
                       setVisibleImgPreview(value)
