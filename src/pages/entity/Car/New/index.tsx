@@ -6,6 +6,7 @@ import {
 import { Breadcrumb, Typography } from "antd"
 import React from "react"
 import { Helmet } from "react-helmet"
+import CreateCarForm from "../../../../components/CreateCarForm"
 import { routes } from "../../../../routes/constant"
 
 const PageBreadcrumb: React.FC = () => (
@@ -35,7 +36,8 @@ const EntityCarNewPage: React.FC = () => {
       <PageBreadcrumb />
 
       <Typography.Title>Register a new car</Typography.Title>
-      <div>Creating a new car</div>
+
+      <CreateCarForm />
     </>
   )
 }
