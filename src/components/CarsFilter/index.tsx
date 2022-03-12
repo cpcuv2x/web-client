@@ -16,49 +16,21 @@ import {
   Tag,
 } from "antd"
 import React from "react"
-import { useSearchParams } from "react-router-dom"
+import useCarFilters from "../../hooks/useCarFilters"
 
 const { Option } = Select
 
 const CarsFilter: React.FC = () => {
-  const [searchParams, setSearchParams] = useSearchParams()
+  const {
+    clearFilter,
+    clearAllFilters,
+    filters,
+    filtersObject,
+    searchParams,
+    setSearchParams,
+  } = useCarFilters()
+
   const [form] = Form.useForm()
-
-  const filters = [
-    { label: "License Plate", key: "licensePlate" },
-    { label: "Model", key: "model" },
-    { label: "Image file name", key: "imageFilename" },
-    { label: "Status", key: "status" },
-    { label: "Minimum Passengers", key: "minPassengers" },
-    { label: "Maximum Passengers", key: "maxPassengers" },
-  ]
-
-  const filtersObject: Record<string, string> = filters.reduce(
-    (previous, { key }) => {
-      const filterValue = searchParams.get(key)
-      if (filterValue)
-        return {
-          [key]: filterValue,
-          ...previous,
-        }
-      else return previous
-    },
-    {}
-  )
-
-  const clearFilter = (key: string) => {
-    const params = searchParams
-    params.delete(key)
-    setSearchParams(params)
-  }
-
-  const clearAllFilters = () => {
-    const params = searchParams
-    Object.keys(filtersObject).forEach((key) => {
-      params.delete(key)
-    })
-    setSearchParams(params)
-  }
 
   const onSearch = (values: any) => {
     const params = searchParams
@@ -76,7 +48,7 @@ const CarsFilter: React.FC = () => {
   return (
     <Space direction="vertical" style={{ width: "100%" }}>
       <Card>
-        <Form layout="vertical" form={form} onFinish={onSearch}>
+        <Form labelCol={{ span: 8 }} form={form} onFinish={onSearch}>
           <Row gutter={8}>
             {filters.map(({ key, label }) => {
               let input
@@ -131,7 +103,7 @@ const CarsFilter: React.FC = () => {
         </Form>
       </Card>
       <Space size="small">
-        {Object.keys(filtersObject).map((key) => (
+        {Object.entries(filtersObject).map(([key, value]) => (
           <Tag
             key={key}
             color="blue"
@@ -140,7 +112,7 @@ const CarsFilter: React.FC = () => {
             onClose={() => clearFilter(key)}
             style={{ padding: 4 }}
           >
-            {key} = {filtersObject[key]}
+            {key} = {value}
           </Tag>
         ))}
       </Space>
