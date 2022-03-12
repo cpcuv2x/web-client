@@ -1,18 +1,15 @@
-import {
-  DeleteOutlined,
-  EditOutlined,
-  ReloadOutlined,
-  ZoomInOutlined,
-} from "@ant-design/icons"
+import { EditOutlined, ReloadOutlined, ZoomInOutlined } from "@ant-design/icons"
 import { Button, Image, Space, Table, Tag, Tooltip } from "antd"
 import React, { useState } from "react"
 import useCarFilters from "../../hooks/useCarFilters"
 import useCars from "../../hooks/useCars"
+import DeleteCarButton from "../DeleteCarButton"
 
 const { Column } = Table
 
 const CarsTable: React.FC = () => {
   const { filtersObject } = useCarFilters()
+  // FIXME: change offset and limit
   const { cars, count, loading, mutate } = useCars(filtersObject, 100, 0)
 
   const [visibleImgPreview, setVisibleImgPreview] = useState(false)
@@ -87,13 +84,14 @@ const CarsTable: React.FC = () => {
       <Column
         title="Action"
         key="action"
-        render={() => (
+        dataIndex="id"
+        render={(id) => (
           <Space>
             <Tooltip title="Edit">
               <Button icon={<EditOutlined />} />
             </Tooltip>
             <Tooltip title="Delete">
-              <Button icon={<DeleteOutlined />} />
+              <DeleteCarButton carId={id} onFinished={() => mutate()} />
             </Tooltip>
           </Space>
         )}
