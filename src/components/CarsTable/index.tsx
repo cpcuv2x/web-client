@@ -1,9 +1,10 @@
-import { EditOutlined, ReloadOutlined, ZoomInOutlined } from "@ant-design/icons"
+import { ReloadOutlined, ZoomInOutlined } from "@ant-design/icons"
 import { Button, Image, Space, Table, Tag, Tooltip } from "antd"
 import React, { useState } from "react"
 import useCarFilters from "../../hooks/useCarFilters"
 import useCars from "../../hooks/useCars"
 import DeleteCarButton from "../DeleteCarButton"
+import EditCarButton from "../EditCarButton"
 
 const { Column } = Table
 
@@ -94,7 +95,7 @@ const CarsTable: React.FC = () => {
         render={(id) => (
           <Space>
             <Tooltip title="Edit">
-              <Button icon={<EditOutlined />} />
+              <EditCarButton carId={id} />
             </Tooltip>
             <Tooltip title="Delete">
               <DeleteCarButton carId={id} onFinished={() => mutate()} />
