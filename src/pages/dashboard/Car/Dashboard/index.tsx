@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom"
 import { Typography, Row, Col, Breadcrumb } from "antd"
 import { Helmet } from "react-helmet"
 import AccidentsLogByCar from "../../../../components/widgets/AccidentsLogByCar"
-import BigNumber from "../../../../components/widgets/BigNumber"
 import CameraStreams from "../../../../components/widgets/CameraStreams"
 import PassengersChart from "../../../../components/widgets/PassengersChart"
 import WidgetCard from "../../../../components/widgets/WidgetCard"
@@ -58,14 +57,7 @@ const DashboardCarPage: React.FC = () => {
             }
           />
         </Col>
-        <Col span={6}>
-          <BigNumber
-            title={"Current Passenger(s)"}
-            helpText={"Total number of passengers in this car."}
-            value={"8"}
-          />
-        </Col>
-        <Col span={24}>
+        <Col span={18}>
           <PassengersChart carId={carId} />
         </Col>
         <Col span={24}>
