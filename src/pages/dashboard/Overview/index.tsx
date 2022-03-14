@@ -47,7 +47,7 @@ const DashboardOverviewPage: React.FC = () => {
         </Col>
         <Col xs={24} sm={12} md={6}>
           <BigNumber
-            title={"Passenger(s)"}
+            title={"Total Passenger(s)"}
             helpText={"Total number of passengers in all cars."}
             value={"8"}
           />
