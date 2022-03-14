@@ -71,7 +71,7 @@ const EditCarForm: React.FC<Props> = ({ initialValues }) => {
               Cancel
             </Button>
             <Button type="primary" htmlType="submit">
-              Create
+              Confirm
             </Button>
           </Space>
         </Form.Item>
