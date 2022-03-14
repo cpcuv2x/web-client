@@ -24,7 +24,7 @@ const AppLayout = () => {
 
   const location = useLocation()
   const pathSnippets = location.pathname.split("/").filter((i) => i)
-  const defaultOpenKeys = [pathSnippets[0]]
+  const defaultOpenKeys = ["dashboard", "entity"]
   const defaultSelectedKeys = [pathSnippets.join("-")]
   // TODO: refactor sider
   return (

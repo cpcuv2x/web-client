@@ -7,12 +7,14 @@ import DashboardCarPage from "./pages/dashboard/Car/Dashboard"
 import DashboardDriverPage from "./pages/dashboard/Driver/Dashboard"
 import DashboardOverviewPage from "./pages/dashboard/Overview"
 import EntityCameraPage from "./pages/entity/Camera"
-import EntityCarPage from "./pages/entity/Car"
 import EntityDriverPage from "./pages/entity/Driver"
 import LoginPage from "./pages/Login"
 import NotFoundPage from "./pages/NotFound"
 import axiosFetcher from "./utils/axiosFetcher"
 import DashboardDriverOverviewPage from "./pages/dashboard/Driver/Overview"
+import EntityCarEditPage from "./pages/entity/Car/Edit"
+import EntityCarOverviewPage from "./pages/entity/Car/Overview"
+import EntityCarNewPage from "./pages/entity/Car/New"
 
 function App() {
   return (
@@ -42,7 +44,11 @@ function App() {
             </Route>
             <Route path="entity">
               <Route path="camera" element={<EntityCameraPage />} />
-              <Route path="car" element={<EntityCarPage />} />
+              <Route path="car">
+                <Route index element={<EntityCarOverviewPage />} />
+                <Route path="new" element={<EntityCarNewPage />} />
+                <Route path="edit/:carId" element={<EntityCarEditPage />} />
+              </Route>
               <Route path="driver" element={<EntityDriverPage />} />
             </Route>
           </Route>
