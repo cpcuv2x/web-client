@@ -31,7 +31,12 @@ const AppLayout = () => {
     <Layout style={{ minHeight: "100vh" }}>
       <AppHeader />
       <Layout>
-        <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
+        <Sider
+          collapsible
+          collapsed={collapsed}
+          onCollapse={onCollapse}
+          width={250}
+        >
           <Menu
             theme="light"
             mode="inline"
@@ -53,16 +58,20 @@ const AppLayout = () => {
                 <Link to="/dashboard/driver">Driver</Link>
               </Menu.Item>
             </SubMenu>
-            <SubMenu key="entity" icon={<ControlOutlined />} title="Entity">
-              <Menu.Item key="entity-camera" icon={<CameraOutlined />}>
+            <SubMenu
+              key="entity"
+              icon={<ControlOutlined />}
+              title="Entity Management"
+            >
+              {/* <Menu.Item key="entity-camera" icon={<CameraOutlined />}>
                 <Link to="/entity/camera">Camera</Link>
-              </Menu.Item>
+              </Menu.Item> */}
               <Menu.Item key="entity-car" icon={<CarOutlined />}>
                 <Link to="/entity/car">Car</Link>
               </Menu.Item>
-              <Menu.Item key="entity-driver" icon={<UserOutlined />}>
+              {/* <Menu.Item key="entity-driver" icon={<UserOutlined />}>
                 <Link to="/entity/driver">Driver</Link>
-              </Menu.Item>
+              </Menu.Item> */}
             </SubMenu>
           </Menu>
         </Sider>
