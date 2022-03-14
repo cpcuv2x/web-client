@@ -13,7 +13,7 @@ const BigNumber: React.FC<Props> = ({ value, title, helpText }) => {
     <WidgetCard
       title={title}
       helpText={helpText}
-      content={<span className={styles["value"]}>{value}</span>}
+      content={<div className={styles["value"]}>{value}</div>}
     />
   )
 }

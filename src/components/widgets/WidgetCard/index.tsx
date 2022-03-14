@@ -13,7 +13,11 @@ const WidgetCard: React.FC<Props> = ({ content, title, helpText }) => {
   return (
     <Card
       className={styles["card"]}
-      bodyStyle={{ paddingTop: 12, paddingBottom: 12 }}
+      bodyStyle={{
+        paddingTop: 12,
+        paddingBottom: 12,
+        height: "100%",
+      }}
       title={<span className={styles["card-title"]}>{title}</span>}
       extra={
         <Tooltip title={helpText}>
