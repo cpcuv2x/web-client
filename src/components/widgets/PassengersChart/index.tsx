@@ -2,6 +2,7 @@ import React from "react"
 import Chart from "react-apexcharts"
 import { ApexOptions } from "apexcharts"
 import WidgetCard from "../WidgetCard"
+import { Typography } from "antd"
 
 interface Props {
   carId: string
@@ -38,7 +39,10 @@ const PassengersChart: React.FC<Props> = ({ carId }) => {
         "The graph between total number of passengers in this car and time."
       }
       content={
-        <Chart series={series} options={options} width="100%" height={200} />
+        <div>
+          <Typography.Title level={5}>Current: 20</Typography.Title>
+          <Chart series={series} options={options} width="100%" height={200} />
+        </div>
       }
     />
   )
