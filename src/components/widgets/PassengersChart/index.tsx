@@ -16,22 +16,35 @@ interface ChartData {
 }
 
 const PassengersChart: React.FC<Props> = ({ carId, maxPoints = 10 }) => {
+  const TICKINTERVAL = 1000 // 1000 ms = 1s
+  const XAXISRANGE = TICKINTERVAL * maxPoints // 600000 ms = 600s
   const [current, setCurrent] = useState(0)
   const [series, setSeries] = useState<ChartData[]>([
     {
       name: "No. of passengers",
-      data: [],
+      data: [[1486684800000, 5]],
     },
   ])
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      appendData()
+    }, TICKINTERVAL)
+    return () => clearInterval(intervalId)
+  })
 
   const options: ApexOptions = {
     xaxis: {
       type: "datetime",
-      // range: 90000,
+      range: XAXISRANGE,
+      labels: {
+        format: "HH:mm:ss",
+      },
     },
     yaxis: {
       min: 0,
-      tickAmount: 5,
+      max: 12,
+      tickAmount: 6,
       floating: false,
     },
     grid: {
@@ -39,6 +52,12 @@ const PassengersChart: React.FC<Props> = ({ carId, maxPoints = 10 }) => {
     },
     theme: {
       mode: "dark",
+    },
+    dataLabels: {
+      enabled: true,
+    },
+    markers: {
+      size: 3,
     },
     chart: {
       id: `passengers-charts-${carId}`,
@@ -49,11 +68,7 @@ const PassengersChart: React.FC<Props> = ({ carId, maxPoints = 10 }) => {
         },
       },
       animations: {
-        enabled: true,
-        easing: "linear",
-        dynamicAnimation: {
-          speed: 1000,
-        },
+        enabled: false,
       },
     },
   }
@@ -61,13 +76,14 @@ const PassengersChart: React.FC<Props> = ({ carId, maxPoints = 10 }) => {
   const appendData = () => {
     setSeries((prev) => {
       const newSeries: ChartData[] = _.cloneDeep(prev)
-      if (newSeries[0].data.length >= maxPoints) {
-        newSeries[0].data.shift()
+      const data = newSeries[0].data
+      const lastDate = data[data.length - 1][0]
+      if (data.length >= maxPoints) {
+        data.shift()
       }
-      newSeries[0].data.push([
-        new Date().getTime(),
-        Math.floor(Math.random() * 10),
-      ])
+      const newCurrent = Math.floor(Math.random() * 10)
+      setCurrent(newCurrent)
+      data.push([lastDate + TICKINTERVAL, newCurrent])
       return newSeries
     })
   }
@@ -79,8 +95,14 @@ const PassengersChart: React.FC<Props> = ({ carId, maxPoints = 10 }) => {
       content={
         <div>
           <Typography.Title level={5}>Current: {current}</Typography.Title>
-          <Button onClick={appendData}>Update</Button>
-          <Chart series={series} options={options} width="100%" height={250} />
+          {/* <Button onClick={appendData}>Update</Button> */}
+          <Chart
+            type="line"
+            series={series}
+            options={options}
+            width="100%"
+            height={250}
+          />
         </div>
       }
     />
