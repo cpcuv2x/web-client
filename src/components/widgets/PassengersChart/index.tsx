@@ -1,10 +1,10 @@
-import React, { useEffect, useState, useRef } from "react"
-import Chart from "react-apexcharts"
+import { Typography } from "antd"
 import { ApexOptions } from "apexcharts"
 import _ from "lodash"
-import WidgetCard from "../WidgetCard"
-import { Typography } from "antd"
+import React, { useEffect, useRef, useState } from "react"
+import Chart from "react-apexcharts"
 import { io, Socket } from "socket.io-client"
+import WidgetCard from "../WidgetCard"
 
 interface Props {
   carId: string
@@ -17,7 +17,7 @@ interface ChartData {
 }
 
 const PassengersChart: React.FC<Props> = ({ carId, maxPoints = 10 }) => {
-  const TICKINTERVAL = 1000 // interval between datapoint
+  const TICKINTERVAL = 3000 // interval between datapoint
   const XAXISRANGE = TICKINTERVAL * maxPoints
   const [current, setCurrent] = useState(0)
   const [series, setSeries] = useState<ChartData[]>([
@@ -49,7 +49,7 @@ const PassengersChart: React.FC<Props> = ({ carId, maxPoints = 10 }) => {
           setId(id)
           socket.current?.on(id, (data: any) => {
             console.log(data)
-            // appendData()
+            appendData(data["time"] * 1000, data["passenger"])
           })
         }
       )
