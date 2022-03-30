@@ -1,14 +1,15 @@
-import { useState } from "react"
-import { Link, Outlet, useLocation } from "react-router-dom"
-import { Layout, Menu, Space } from "antd"
 import {
   AreaChartOutlined,
-  CarOutlined,
   CameraOutlined,
+  CarOutlined,
   ControlOutlined,
   PieChartOutlined,
   UserOutlined,
 } from "@ant-design/icons"
+import { Layout, Menu, Space } from "antd"
+import { useState } from "react"
+import { Link, Outlet, useLocation } from "react-router-dom"
+import { routes } from "../../routes/constant"
 import AppHeader from "../AppHeader"
 import styles from "./styles.module.less"
 
@@ -49,13 +50,13 @@ const AppLayout = () => {
               title="Dashboard"
             >
               <Menu.Item key="dashboard-overview" icon={<PieChartOutlined />}>
-                <Link to="/dashboard/overview">Overview</Link>
+                <Link to={routes.DASHBOARD_OVERVIEW}>Overview</Link>
               </Menu.Item>
               <Menu.Item key="dashboard-car" icon={<CarOutlined />}>
-                <Link to="/dashboard/car">Car</Link>
+                <Link to={routes.DASHBOARD_CAR}>Car</Link>
               </Menu.Item>
               <Menu.Item key="dashboard-driver" icon={<UserOutlined />}>
-                <Link to="/dashboard/driver">Driver</Link>
+                <Link to={routes.DASHBOARD_DRIVER}>Driver</Link>
               </Menu.Item>
             </SubMenu>
             <SubMenu
@@ -67,11 +68,11 @@ const AppLayout = () => {
                 <Link to="/entity/camera">Camera</Link>
               </Menu.Item> */}
               <Menu.Item key="entity-car" icon={<CarOutlined />}>
-                <Link to="/entity/car">Car</Link>
+                <Link to={routes.ENTITY_CAR}>Car</Link>
               </Menu.Item>
-              {/* <Menu.Item key="entity-driver" icon={<UserOutlined />}>
-                <Link to="/entity/driver">Driver</Link>
-              </Menu.Item> */}
+              <Menu.Item key="entity-driver" icon={<UserOutlined />}>
+                <Link to={routes.ENTITY_DRIVER}>Driver</Link>
+              </Menu.Item>
             </SubMenu>
           </Menu>
         </Sider>
