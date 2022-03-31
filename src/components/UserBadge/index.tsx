@@ -19,16 +19,18 @@ const UserBadge = () => {
     <Menu>
       <Menu.Item danger key="logout">
         <Space onClick={onLogout}>
-          <LogoutOutlined /> <Typography.Text>Logout</Typography.Text>
+          <LogoutOutlined />
+          <Typography.Text>Log out</Typography.Text>
         </Space>
       </Menu.Item>
     </Menu>
   )
+
   return (
     <Dropdown overlay={menu} placement="bottomRight">
       <Space className={styles.container}>
         <Avatar icon={<UserOutlined />} />
-        {user && <Typography.Text strong>{user?.username}</Typography.Text>}
+        {user && <Typography.Text strong>{user.username}</Typography.Text>}
       </Space>
     </Dropdown>
   )
