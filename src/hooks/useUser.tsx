@@ -1,10 +1,11 @@
 import useSWR from "swr"
+import { User } from "../interfaces/User"
 
 const useUser = () => {
-  const { data, mutate, error } = useSWR("/api/auth/currentuser")
+  const { data, mutate, error } = useSWR<User>("/api/auth/currentuser")
 
   const loading = !data && !error
-  const loggedOut = error && error.status === 401
+  const loggedOut = !!(error && error.status === 401)
 
   return {
     loading,
