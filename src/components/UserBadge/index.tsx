@@ -11,7 +11,7 @@ const UserBadge = () => {
 
   const onLogout = async () => {
     await axiosClient.post("/api/auth/logout")
-    mutate(null)
+    mutate(undefined)
     navigate("/")
   }
 
