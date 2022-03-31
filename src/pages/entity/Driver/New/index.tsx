@@ -14,7 +14,7 @@ const PageBreadcrumb: React.FC = () => (
       <ControlOutlined />
       <span>Entity</span>
     </Breadcrumb.Item>
-    <Breadcrumb.Item href={routes.ENTITY_CAR}>
+    <Breadcrumb.Item href={routes.ENTITY_DRIVER}>
       <UserOutlined />
       <span>Driver</span>
     </Breadcrumb.Item>
