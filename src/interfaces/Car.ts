@@ -10,6 +10,6 @@ export interface Car {
 }
 
 export enum CarStatus {
-  ACTIVE,
-  INACTIVE,
+  ACTIVE = "ACTIVE",
+  INACTIVE = "INACTIVE",
 }

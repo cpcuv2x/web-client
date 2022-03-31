@@ -4,6 +4,6 @@ export interface User {
 }
 
 export enum UserRole {
-  ADMIN,
-  DRIVER,
+  ADMIN = "ADMIN",
+  DRIVER = "DRIVER",
 }
