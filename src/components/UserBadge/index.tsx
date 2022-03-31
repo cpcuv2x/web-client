@@ -1,16 +1,16 @@
-import { Dropdown, Avatar, Menu, Space, Typography } from "antd"
-import axios from "axios"
-import { UserOutlined, LogoutOutlined } from "@ant-design/icons"
+import { LogoutOutlined, UserOutlined } from "@ant-design/icons"
+import { Avatar, Dropdown, Menu, Space, Typography } from "antd"
 import { useNavigate } from "react-router-dom"
-import styles from "./styles.module.less"
 import useUser from "../../hooks/useUser"
+import axiosClient from "../../utils/axiosClient"
+import styles from "./styles.module.less"
 
 const UserBadge = () => {
   const navigate = useNavigate()
   const { user, mutate } = useUser()
 
   const onLogout = async () => {
-    await axios.post("/api/auth/logout")
+    await axiosClient.post("/api/auth/logout")
     mutate(null)
     navigate("/")
   }

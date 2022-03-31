@@ -16,6 +16,7 @@ import { Moment } from "moment"
 import { useNavigate } from "react-router-dom"
 import useDrivers from "../../hooks/useDrivers"
 import { routes } from "../../routes/constant"
+import axiosClient from "../../utils/axiosClient"
 import { normFile } from "../../utils/normFile"
 import { isThaiNationalID } from "../../utils/validators/ThaiNationalID"
 
@@ -47,7 +48,7 @@ const CreateDriverForm = () => {
     formData.append("image", values.image[0].originFileObj as Blob)
 
     try {
-      await axios.post("/api/drivers", formData)
+      await axiosClient.post("/api/drivers", formData)
       mutate()
       navigate(routes.ENTITY_DRIVER)
     } catch (error) {

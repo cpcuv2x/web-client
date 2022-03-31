@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom"
 import useCars from "../../hooks/useCars"
 import { Car } from "../../interfaces/Car"
 import { routes } from "../../routes/constant"
+import axiosClient from "../../utils/axiosClient"
 
 interface Props {
   initialValues: Car
@@ -23,7 +24,7 @@ const EditCarForm: React.FC<Props> = ({ initialValues }) => {
     formData.append("model", model)
 
     try {
-      await axios.patch(`/api/cars/${initialValues.id}`, formData)
+      await axiosClient.patch(`/api/cars/${initialValues.id}`, formData)
       mutate()
       navigate(routes.ENTITY_CAR)
     } catch (error) {

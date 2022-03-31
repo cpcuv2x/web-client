@@ -4,6 +4,7 @@ import axios from "axios"
 import React from "react"
 import { useNavigate } from "react-router-dom"
 import useCars from "../../hooks/useCars"
+import axiosClient from "../../utils/axiosClient"
 
 const normFile = (e: any) => {
   if (Array.isArray(e)) {
@@ -28,7 +29,7 @@ const CreateCarForm: React.FC = () => {
     }
 
     try {
-      await axios.post("/api/cars", formData)
+      await axiosClient.post("/api/cars", formData)
       mutate()
       navigate("/entity/car")
     } catch (error) {

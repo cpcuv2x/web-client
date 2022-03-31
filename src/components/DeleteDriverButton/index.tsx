@@ -1,7 +1,7 @@
 import { DeleteOutlined } from "@ant-design/icons"
 import { Button, Modal, Typography } from "antd"
-import axios from "axios"
 import React from "react"
+import axiosClient from "../../utils/axiosClient"
 
 interface Props {
   driverId: string
@@ -18,7 +18,7 @@ const DeleteDriverButton: React.FC<Props> = ({ driverId, onFinished }) => {
         </span>
       ),
       onOk: async () => {
-        await axios.delete(`/api/drivers/${driverId}`)
+        await axiosClient.delete(`/api/drivers/${driverId}`)
         if (onFinished) onFinished()
       },
     })

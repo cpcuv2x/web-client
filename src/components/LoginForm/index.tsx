@@ -1,11 +1,11 @@
 import { LockOutlined, UserOutlined } from "@ant-design/icons"
-import { Form, Input, Button, Typography, Image, Space, message } from "antd"
+import { Button, Form, Image, Input, message, Space, Typography } from "antd"
 import axios, { AxiosError } from "axios"
-
 import appLogo from "../../assets/app_logo.png"
 import useUser from "../../hooks/useUser"
 import { LoginFormDto } from "../../interfaces/LoginFormDto"
 import { User } from "../../interfaces/User"
+import axiosClient from "../../utils/axiosClient"
 
 const { Title } = Typography
 
@@ -15,7 +15,7 @@ const LoginForm = () => {
 
   const onFinish = async ({ username, password }: LoginFormDto) => {
     try {
-      await axios.post<User>("/api/auth/login", {
+      await axiosClient.post<User>("/api/auth/login", {
         username,
         password,
         role: "ADMIN",
