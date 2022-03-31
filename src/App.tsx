@@ -12,6 +12,7 @@ import EntityCameraPage from "./pages/entity/Camera"
 import EntityCarEditPage from "./pages/entity/Car/Edit"
 import EntityCarNewPage from "./pages/entity/Car/New"
 import EntityCarOverviewPage from "./pages/entity/Car/Overview"
+import EntityDriverEditPage from "./pages/entity/Driver/Edit"
 import EntityDriverNewPage from "./pages/entity/Driver/New"
 import EntityDriverOverviewPage from "./pages/entity/Driver/Overview"
 import LoginPage from "./pages/Login"
@@ -59,6 +60,10 @@ function App() {
                 <Route path="driver">
                   <Route index element={<EntityDriverOverviewPage />} />
                   <Route path="new" element={<EntityDriverNewPage />} />
+                  <Route
+                    path="edit/:driverId"
+                    element={<EntityDriverEditPage />}
+                  />
                 </Route>
               </Route>
             </Route>
