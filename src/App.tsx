@@ -13,6 +13,7 @@ import EntityCarEditPage from "./pages/entity/Car/Edit"
 import EntityCarNewPage from "./pages/entity/Car/New"
 import EntityCarOverviewPage from "./pages/entity/Car/Overview"
 import EntityDriverNewPage from "./pages/entity/Driver/New"
+import EntityDriverOverviewPage from "./pages/entity/Driver/Overview"
 import LoginPage from "./pages/Login"
 import NotFoundPage from "./pages/NotFound"
 import axiosFetcher from "./utils/axiosFetcher"
@@ -56,6 +57,7 @@ function App() {
                   <Route path="edit/:carId" element={<EntityCarEditPage />} />
                 </Route>
                 <Route path="driver">
+                  <Route index element={<EntityDriverOverviewPage />} />
                   <Route path="new" element={<EntityDriverNewPage />} />
                 </Route>
               </Route>
