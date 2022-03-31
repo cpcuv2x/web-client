@@ -1,9 +1,10 @@
+import { Card, Row } from "antd"
 import { useEffect } from "react"
-import { Row, Card } from "antd"
 import { Helmet } from "react-helmet"
 import { useNavigate } from "react-router-dom"
 import LoginForm from "../components/LoginForm"
 import useUser from "../hooks/useUser"
+import { routes } from "../routes/constant"
 
 const LoginPage = () => {
   const { user, loggedOut } = useUser()
@@ -11,7 +12,7 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (user && !loggedOut) {
-      navigate("/dashboard/overview")
+      navigate(routes.DASHBOARD_OVERVIEW)
     }
   }, [user, loggedOut])
 
