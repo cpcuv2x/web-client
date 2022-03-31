@@ -1,34 +1,29 @@
 import { LockOutlined, UserOutlined } from "@ant-design/icons"
-import { Button, Form, Image, Input, message, Space, Typography } from "antd"
-import axios, { AxiosError } from "axios"
+import { Button, Form, Image, Input, Space, Typography } from "antd"
 import appLogo from "../../assets/app_logo.png"
 import useUser from "../../hooks/useUser"
-import { LoginFormDto } from "../../interfaces/LoginFormDto"
-import { User } from "../../interfaces/User"
+import { LoginDto } from "../../interfaces/LoginFormDto"
+import { User, UserRole } from "../../interfaces/User"
 import axiosClient from "../../utils/axiosClient"
+import handleError from "../../utils/handleError"
 
 const { Title } = Typography
 
 const LoginForm = () => {
-  const [form] = Form.useForm()
+  const [form] = Form.useForm<LoginDto>()
   const { mutate } = useUser()
 
-  const onFinish = async ({ username, password }: LoginFormDto) => {
+  const onFinish = async (values: LoginDto) => {
     try {
       await axiosClient.post<User>("/api/auth/login", {
-        username,
-        password,
-        role: "ADMIN",
+        username: values.username,
+        password: values.password,
+        role: UserRole.ADMIN,
       })
+
       mutate()
     } catch (error) {
-      let msg
-      if (axios.isAxiosError(error)) {
-        msg = (error as AxiosError).response?.data || "Some thing went wrong"
-      } else {
-        msg = (error as Error).message
-      }
-      message.error(msg)
+      handleError(error)
     }
   }
 
