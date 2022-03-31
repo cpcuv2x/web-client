@@ -6,5 +6,10 @@ export interface Car {
   lat: number
   long: number
   passengers: number
-  status: "ACTIVE" | "INACTIVE"
+  status: CarStatus
+}
+
+export enum CarStatus {
+  ACTIVE,
+  INACTIVE,
 }

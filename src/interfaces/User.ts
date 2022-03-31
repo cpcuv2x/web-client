@@ -1,4 +1,9 @@
 export interface User {
   username: string
-  role: "ADMIN" | "DRIVER"
+  role: UserRole
+}
+
+export enum UserRole {
+  ADMIN,
+  DRIVER,
 }
