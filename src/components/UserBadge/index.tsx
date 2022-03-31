@@ -3,6 +3,7 @@ import { Avatar, Dropdown, Menu, Space, Typography } from "antd"
 import { useNavigate } from "react-router-dom"
 import useUser from "../../hooks/useUser"
 import axiosClient from "../../utils/axiosClient"
+import handleError from "../../utils/handleError"
 import styles from "./styles.module.less"
 
 const UserBadge = () => {
@@ -10,9 +11,13 @@ const UserBadge = () => {
   const { user, mutate } = useUser()
 
   const onLogout = async () => {
-    await axiosClient.post("/api/auth/logout")
-    mutate(undefined)
-    navigate("/")
+    try {
+      await axiosClient.post("/api/auth/logout")
+      mutate(undefined)
+      navigate("/")
+    } catch (error) {
+      handleError(error)
+    }
   }
 
   const menu = (
