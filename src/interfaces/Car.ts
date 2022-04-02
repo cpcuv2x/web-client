@@ -9,7 +9,7 @@ export interface Car {
   status: CarStatus
 }
 
-export interface CarsFilter {
+export interface CarsFilters {
   licensePlate?: string
   model?: string
   status?: CarStatus
@@ -17,6 +17,15 @@ export interface CarsFilter {
   maxPassengers?: number
   limit?: number
   offset?: number
+  orderBy?: string
+  orderDir?: OrderDir
+}
+
+export type CarsFilter = keyof CarsFilters
+
+export enum OrderDir {
+  ASC = "asc",
+  DESC = "desc",
 }
 
 export enum CarStatus {
