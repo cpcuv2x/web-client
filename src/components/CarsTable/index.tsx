@@ -138,6 +138,12 @@ const CarsTable: React.FC = () => {
       sorter: true,
     },
     {
+      title: "Passenger (s)",
+      dataIndex: "passengers",
+      key: "passengers",
+      sorter: true,
+    },
+    {
       title: "Status",
       dataIndex: "status",
       key: "status",
