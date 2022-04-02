@@ -18,7 +18,7 @@ interface CreateCarFormValues {
 const CreateCarForm: React.FC = () => {
   const [form] = Form.useForm<CreateCarFormValues>()
   const navigate = useNavigate()
-  const { mutate } = useCars({})
+  const { mutate } = useCars()
 
   async function onSubmit(values: CreateCarFormValues) {
     const formData = new FormData()
