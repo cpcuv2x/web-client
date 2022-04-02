@@ -2,6 +2,7 @@ import { DeleteOutlined } from "@ant-design/icons"
 import { Button, Modal, Typography } from "antd"
 import React from "react"
 import axiosClient from "../../utils/axiosClient"
+import handleError from "../../utils/handleError"
 
 interface Props {
   carId: string
@@ -18,8 +19,12 @@ const DeleteCarButton: React.FC<Props> = ({ carId, onFinished }) => {
         </span>
       ),
       onOk: async () => {
-        await axiosClient.delete(`/api/cars/${carId}`)
-        if (onFinished) onFinished()
+        try {
+          await axiosClient.delete(`/api/cars/${carId}`)
+          if (onFinished) onFinished()
+        } catch (error) {
+          handleError(error, "Could not this car now")
+        }
       },
     })
   }
