@@ -1,8 +1,8 @@
 import useSWR from "swr"
-import { CarsFilter, CarsResponse } from "../interfaces/Car"
+import { CarsFilters, CarsResponse } from "../interfaces/Car"
 
-const useCars = (filter: CarsFilter = {}) => {
-  const queryString = new URLSearchParams(Object.entries(filter)).toString()
+const useCars = (filters: CarsFilters = {}) => {
+  const queryString = new URLSearchParams(Object.entries(filters)).toString()
   const url = `/api/cars?${queryString}`
 
   const { data, mutate, error } = useSWR<CarsResponse>(url)
