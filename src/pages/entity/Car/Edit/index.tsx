@@ -46,7 +46,7 @@ const EntityCarEditPage: React.FC = () => {
 
       <Typography.Title>Edit Car: {car.licensePlate}</Typography.Title>
 
-      <EditCarForm initialValues={car} />
+      <EditCarForm initialValues={car} mutate={mutate} />
     </>
   )
 }
