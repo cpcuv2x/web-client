@@ -7,7 +7,7 @@ import { Breadcrumb, Button, Col, Row, Space, Typography } from "antd"
 import React from "react"
 import { Helmet } from "react-helmet"
 import { useNavigate } from "react-router-dom"
-import CarsFilter from "../../../../components/CarsFilter"
+import CarsFiltersForm from "../../../../components/CarsFiltersForm"
 import CarsTable from "../../../../components/CarsTable"
 import { routes } from "../../../../routes/constant"
 
@@ -51,8 +51,8 @@ const EntityCarOverviewPage: React.FC = () => {
         </Row>
       </Typography.Title>
 
-      <Space direction="vertical">
-        <CarsFilter />
+      <Space direction="vertical" style={{ width: "100%" }}>
+        <CarsFiltersForm />
         <CarsTable />
       </Space>
     </>
