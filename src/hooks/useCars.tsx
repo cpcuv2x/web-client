@@ -1,24 +1,11 @@
 import useSWR from "swr"
+import { CarsFilter, CarsResponse } from "../interfaces/Car"
 
-interface CarFilters {
-  licensePlate?: string
-  model?: string
-  imageFilename?: string
-  status?: "ACTIVE" | "INACTIVE"
-  minPassengers?: string
-  maxPassengers?: string
-}
-
-const useCars = (filter: CarFilters, limit: number, offset: number) => {
-  const query = {
-    limit: limit.toString(),
-    offset: offset.toString(),
-    ...filter,
-  }
-  const queryString = new URLSearchParams(query).toString()
+const useCars = (filter: CarsFilter = {}) => {
+  const queryString = new URLSearchParams(Object.entries(filter)).toString()
   const url = `/api/cars?${queryString}`
 
-  const { data, mutate, error } = useSWR(url)
+  const { data, mutate, error } = useSWR<CarsResponse>(url)
 
   const loading = !data && !error
 
