@@ -9,7 +9,6 @@ import {
   Row,
   Select,
   Space,
-  Tag,
 } from "antd"
 import _ from "lodash"
 import React from "react"
@@ -36,7 +35,7 @@ const CarsFiltersForm: React.FC = () => {
   const onSubmit = (values: CarsFiltersFormValues) => {
     const newParams = new URLSearchParams(params)
     Object.entries(values).forEach(([key, value]) => {
-      if (_.isEmpty(value)) {
+      if (value === "" || value === null || value === undefined) {
         newParams.delete(key)
       } else {
         newParams.set(key, value as string)
@@ -63,7 +62,7 @@ const CarsFiltersForm: React.FC = () => {
             <Col span={8}>
               <Form.Item label="Status" name="status">
                 <Select placeholder="Not selected">
-                  <Option value={null}>Not selected</Option>
+                  <Option value="">Not selected</Option>
                   <Option value="ACTIVE">Active</Option>
                   <Option value="INACTIVE">Inactive</Option>
                 </Select>
@@ -71,12 +70,12 @@ const CarsFiltersForm: React.FC = () => {
             </Col>
             <Col span={8}>
               <Form.Item label="Min. Passengers" name="minPassengers">
-                <InputNumber style={{ width: "100%" }} />
+                <InputNumber style={{ width: "100%" }} min={0} />
               </Form.Item>
             </Col>
             <Col span={8}>
               <Form.Item label="Max. Passengers" name="maxPassengers">
-                <InputNumber style={{ width: "100%" }} />
+                <InputNumber style={{ width: "100%" }} min={0} />
               </Form.Item>
             </Col>
           </Row>
