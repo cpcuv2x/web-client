@@ -21,6 +21,12 @@ const useCarsFilter = () => {
     return value ? { [key]: value, ...prev } : prev
   }, {})
 
+  function set(key: string, value: string) {
+    const newParams = new URLSearchParams(params)
+    newParams.set(key, value)
+    setParams(newParams)
+  }
+
   function clear(key: string) {
     const newParams = new URLSearchParams(params)
     newParams.delete(key)
@@ -39,6 +45,7 @@ const useCarsFilter = () => {
     clear,
     clearAll,
     filtersObj,
+    set,
   }
 }
 
