@@ -2,6 +2,7 @@ import { DeleteOutlined } from "@ant-design/icons"
 import { Button, Modal, Typography } from "antd"
 import React from "react"
 import axiosClient from "../../utils/axiosClient"
+import handleError from "../../utils/handleError"
 
 interface Props {
   driverId: string
@@ -18,8 +19,12 @@ const DeleteDriverButton: React.FC<Props> = ({ driverId, onFinished }) => {
         </span>
       ),
       onOk: async () => {
-        await axiosClient.delete(`/api/drivers/${driverId}`)
-        if (onFinished) onFinished()
+        try {
+          await axiosClient.delete(`/api/drivers/${driverId}`)
+          if (onFinished) onFinished()
+        } catch (error) {
+          handleError(error, "Could not delete this driver now")
+        }
       },
     })
   }
