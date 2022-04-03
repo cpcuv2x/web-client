@@ -3,7 +3,7 @@ export interface Driver {
   id: string
   firstName: string
   lastName: string
-  birthDate: Date
+  birthDate: string
   nationalId: string
   carDrivingLicenseId: string
   imageFilename: string
