@@ -81,7 +81,7 @@ const CarsTable: React.FC = () => {
       sorter: true,
       render: (id) => (
         <Row justify="space-between" gutter={8}>
-          <Col>
+          <Col style={{ maxWidth: 100 }}>
             <Typography.Text ellipsis>{id}</Typography.Text>
           </Col>
           <Col>
