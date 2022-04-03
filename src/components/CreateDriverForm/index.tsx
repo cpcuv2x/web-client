@@ -5,22 +5,21 @@ import {
   DatePicker,
   Form,
   Input,
-  message,
   Modal,
   Space,
   Upload,
 } from "antd"
 import { UploadFile } from "antd/lib/upload/interface"
-import axios from "axios"
 import { Moment } from "moment"
 import { useNavigate } from "react-router-dom"
 import useDrivers from "../../hooks/useDrivers"
 import { routes } from "../../routes/constant"
 import axiosClient from "../../utils/axiosClient"
+import handleError from "../../utils/handleError"
 import { normFile } from "../../utils/normFile"
 import { isThaiNationalID } from "../../utils/validators/ThaiNationalID"
 
-interface CreateDriverValue {
+interface CreateDriverFormValues {
   firstName: string
   lastName: string
   birthDate: Moment
@@ -30,15 +29,11 @@ interface CreateDriverValue {
 }
 
 const CreateDriverForm = () => {
-  const [form] = Form.useForm<CreateDriverValue>()
+  const [form] = Form.useForm<CreateDriverFormValues>()
   const navigate = useNavigate()
-  // FIXME: change offset and limit
-  const { mutate, drivers } = useDrivers({}, 100, 0)
-  console.log("drivers", drivers)
+  const { mutate } = useDrivers()
 
-  const onSubmit = async (values: CreateDriverValue) => {
-    console.log("values", values)
-
+  async function onSubmit(values: CreateDriverFormValues) {
     const formData = new FormData()
     formData.append("firstName", values.firstName)
     formData.append("lastName", values.lastName)
@@ -52,12 +47,7 @@ const CreateDriverForm = () => {
       mutate()
       navigate(routes.ENTITY_DRIVER)
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        message.error(error.response?.data)
-        return
-      }
-
-      message.error("Could not create the new driver now")
+      handleError(error)
     }
   }
 
