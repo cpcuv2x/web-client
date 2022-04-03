@@ -23,7 +23,7 @@ const DeleteCarButton: React.FC<Props> = ({ carId, onFinished }) => {
           await axiosClient.delete(`/api/cars/${carId}`)
           if (onFinished) onFinished()
         } catch (error) {
-          handleError(error, "Could not this car now")
+          handleError(error, "Could not delete this car now")
         }
       },
     })
