@@ -10,10 +10,9 @@ import {
   Select,
   Space,
 } from "antd"
-import _ from "lodash"
 import React from "react"
 import { useSearchParams } from "react-router-dom"
-import useCarsFilter from "../../hooks/useCarsFilters"
+import useCarsFilters from "../../hooks/useCarsFilters"
 import { CarStatus } from "../../interfaces/Car"
 
 const { Option } = Select
@@ -28,7 +27,7 @@ interface CarsFiltersFormValues {
 
 const CarsFiltersForm: React.FC = () => {
   const [params, setParams] = useSearchParams()
-  const { clearAll } = useCarsFilter()
+  const { clearAll } = useCarsFilters()
 
   const [form] = Form.useForm<CarsFiltersFormValues>()
 

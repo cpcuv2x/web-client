@@ -13,7 +13,7 @@ export const filters: CarsFilter[] = [
   "orderDir",
 ]
 
-const useCarsFilter = () => {
+const useCarsFilters = () => {
   const [params, setParams] = useSearchParams()
 
   const filtersObj: CarsFilters = filters.reduce((prev, key) => {
@@ -49,4 +49,4 @@ const useCarsFilter = () => {
   }
 }
 
-export default useCarsFilter
+export default useCarsFilters

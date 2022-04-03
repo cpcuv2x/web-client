@@ -20,7 +20,7 @@ import React, { useEffect, useState } from "react"
 import { useSearchParams } from "react-router-dom"
 import appConfig from "../../configuration"
 import useCars from "../../hooks/useCars"
-import useCarsFilter from "../../hooks/useCarsFilters"
+import useCarsFilters from "../../hooks/useCarsFilters"
 import { Car, OrderDir } from "../../interfaces/Car"
 import handleError from "../../utils/handleError"
 import CopyToClipboardButton from "../CopyToClipboardButton"
@@ -29,7 +29,7 @@ import EditCarButton from "../EditCarButton"
 
 const CarsTable: React.FC = () => {
   const [params, setParams] = useSearchParams()
-  const { filtersObj } = useCarsFilter()
+  const { filtersObj } = useCarsFilters()
   const { cars, count, loading, mutate, error } = useCars(filtersObj)
 
   useEffect(() => {
