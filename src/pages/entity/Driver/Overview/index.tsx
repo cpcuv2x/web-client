@@ -6,7 +6,7 @@ import {
 import { Breadcrumb, Button, Col, Row, Space, Typography } from "antd"
 import { Helmet } from "react-helmet"
 import { useNavigate } from "react-router-dom"
-import DriversFilter from "../../../../components/DriversFilter"
+import DriversFiltersForm from "../../../../components/DriversFiltersForm"
 import DriversTable from "../../../../components/DriversTable"
 import { routes } from "../../../../routes/constant"
 
@@ -40,7 +40,7 @@ const EntityDriverOverviewPage: React.FC = () => {
 
       <Typography.Title>
         <Row justify="space-between">
-          <Col>Cars Management</Col>
+          <Col>Drivers Management</Col>
           <Col>
             <Button
               type="primary"
@@ -53,8 +53,8 @@ const EntityDriverOverviewPage: React.FC = () => {
         </Row>
       </Typography.Title>
 
-      <Space direction="vertical">
-        <DriversFilter />
+      <Space direction="vertical" style={{ width: "100%" }}>
+        <DriversFiltersForm />
         <DriversTable />
       </Space>
     </>
