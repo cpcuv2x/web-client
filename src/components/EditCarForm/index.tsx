@@ -75,13 +75,17 @@ const EditCarForm: React.FC<Props> = ({ initialValues, mutate }) => {
             listType="picture"
             accept="image/png, image/jpeg"
             maxCount={1}
-            defaultFileList={[
-              {
-                uid: "1",
-                name: initialValues.imageFilename,
-                url: `${appConfig.webServicesURL}api/cars/images/${initialValues.imageFilename}`,
-              },
-            ]}
+            defaultFileList={
+              initialValues.imageFilename
+                ? [
+                    {
+                      uid: "1",
+                      name: initialValues.imageFilename,
+                      url: `${appConfig.webServicesURL}api/cars/images/${initialValues.imageFilename}`,
+                    },
+                  ]
+                : []
+            }
           >
             <Button icon={<UploadOutlined />}>Click to upload</Button>
           </Upload>
