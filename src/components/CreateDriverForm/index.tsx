@@ -10,7 +10,7 @@ import {
   Upload,
 } from "antd"
 import { UploadFile } from "antd/lib/upload/interface"
-import { Moment } from "moment"
+import moment, { Moment } from "moment"
 import { useNavigate } from "react-router-dom"
 import useDrivers from "../../hooks/useDrivers"
 import { routes } from "../../routes/constant"
@@ -108,7 +108,10 @@ const CreateDriverForm = () => {
           label="Birth Date"
           rules={[{ required: true }]}
         >
-          <DatePicker format="DD/MM/YYYY" />
+          <DatePicker
+            format="DD/MM/YYYY"
+            disabledDate={(date) => date > moment().subtract(18, "years")}
+          />
         </Form.Item>
 
         <Form.Item
