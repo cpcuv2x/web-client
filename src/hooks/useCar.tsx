@@ -6,7 +6,7 @@ const useCar = (carId: string) => {
   const loading = !data && !error
 
   return {
-    car: data ?? {},
+    car: data,
     mutate,
     error,
     loading,
