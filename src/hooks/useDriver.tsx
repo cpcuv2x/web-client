@@ -6,7 +6,7 @@ const useDriver = (driverId: string) => {
   const loading = !data && !error
 
   return {
-    driver: data ?? {},
+    driver: data,
     mutate,
     error,
     loading,
