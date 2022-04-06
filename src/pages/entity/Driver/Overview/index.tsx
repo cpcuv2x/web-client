@@ -1,14 +1,13 @@
 import {
-  CarOutlined,
   ControlOutlined,
   PlusCircleOutlined,
+  UserOutlined,
 } from "@ant-design/icons"
 import { Breadcrumb, Button, Col, Row, Space, Typography } from "antd"
-import React from "react"
 import { Helmet } from "react-helmet"
 import { useNavigate } from "react-router-dom"
-import CarsFiltersForm from "../../../../components/CarsFiltersForm"
-import CarsTable from "../../../../components/CarsTable"
+import DriversFiltersForm from "../../../../components/DriversFiltersForm"
+import DriversTable from "../../../../components/DriversTable"
 import { routes } from "../../../../routes/constant"
 
 const PageBreadcrumb: React.FC = () => (
@@ -17,46 +16,49 @@ const PageBreadcrumb: React.FC = () => (
       <ControlOutlined />
       <span>Entity</span>
     </Breadcrumb.Item>
-    <Breadcrumb.Item href={routes.ENTITY_CAR}>
-      <CarOutlined />
-      <span>Cars</span>
+    <Breadcrumb.Item href={routes.ENTITY_DRIVER}>
+      <UserOutlined />
+      <span>Drivers</span>
     </Breadcrumb.Item>
   </Breadcrumb>
 )
 
-const EntityCarOverviewPage: React.FC = () => {
+const EntityDriverOverviewPage: React.FC = () => {
   const navigate = useNavigate()
-  const onClickRegister = () => {
-    navigate(`${routes.ENTITY_CAR}/new/`)
+
+  function onClickRegister() {
+    navigate(`${routes.ENTITY_DRIVER}/new/`)
   }
+
   return (
     <>
       <Helmet>
-        <title>Cars - Entity | 5G-V2X</title>
+        <title>Drivers - Entity | 5G-V2X</title>
       </Helmet>
 
       <PageBreadcrumb />
+
       <Typography.Title>
         <Row justify="space-between">
-          <Col>Cars Management</Col>
+          <Col>Drivers Management</Col>
           <Col>
             <Button
               type="primary"
               icon={<PlusCircleOutlined />}
               onClick={onClickRegister}
             >
-              Register a new car
+              Register a new driver
             </Button>
           </Col>
         </Row>
       </Typography.Title>
 
       <Space direction="vertical" style={{ width: "100%" }}>
-        <CarsFiltersForm />
-        <CarsTable />
+        <DriversFiltersForm />
+        <DriversTable />
       </Space>
     </>
   )
 }
 
-export default EntityCarOverviewPage
+export default EntityDriverOverviewPage

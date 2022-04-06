@@ -1,7 +1,7 @@
-import axios from "axios"
+import axiosClient from "./axiosClient"
 
 const axiosFetcher = async (path: string) => {
-  const response = await axios.get(path)
+  const response = await axiosClient.get(path)
   return response.data
 }
 

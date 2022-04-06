@@ -6,5 +6,34 @@ export interface Car {
   lat: number
   long: number
   passengers: number
-  status: "ACTIVE" | "INACTIVE"
+  status: CarStatus
+}
+
+export interface CarsFilters {
+  licensePlate?: string
+  model?: string
+  status?: CarStatus
+  minPassengers?: number
+  maxPassengers?: number
+  limit?: number
+  offset?: number
+  orderBy?: string
+  orderDir?: OrderDir
+}
+
+export type CarsFilter = keyof CarsFilters
+
+export enum OrderDir {
+  ASC = "asc",
+  DESC = "desc",
+}
+
+export enum CarStatus {
+  ACTIVE = "ACTIVE",
+  INACTIVE = "INACTIVE",
+}
+
+export interface CarsResponse {
+  cars: Car[]
+  count: number
 }

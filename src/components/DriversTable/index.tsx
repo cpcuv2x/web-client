@@ -6,7 +6,6 @@ import {
   Row,
   Space,
   Table,
-  Tag,
   Tooltip,
   Typography,
 } from "antd"
@@ -16,47 +15,48 @@ import {
   SorterResult,
   TableCurrentDataSource,
 } from "antd/lib/table/interface"
-import React, { useEffect, useState } from "react"
+import moment from "moment"
+import { useEffect, useState } from "react"
 import { useSearchParams } from "react-router-dom"
 import appConfig from "../../configuration"
-import useCars from "../../hooks/useCars"
-import useCarsFilters from "../../hooks/useCarsFilters"
-import { Car, OrderDir } from "../../interfaces/Car"
+import useDrivers from "../../hooks/useDrivers"
+import useDriversFilters from "../../hooks/useDriversFilters"
+import { Driver, OrderDir } from "../../interfaces/Driver"
 import handleError from "../../utils/handleError"
 import CopyToClipboardButton from "../CopyToClipboardButton"
-import DeleteCarButton from "../DeleteCarButton"
-import EditCarButton from "../EditCarButton"
+import DeleteDriverButton from "../DeleteDriverButton"
+import EditDriverButton from "../EditDriverButton"
 
-const CarsTable: React.FC = () => {
+const DriversTable: React.FC = () => {
   const [params, setParams] = useSearchParams()
-  const { filtersObj } = useCarsFilters()
-  const { cars, count, loading, mutate, error } = useCars(filtersObj)
+  const { filtersObj } = useDriversFilters()
+  const { drivers, count, loading, mutate, error } = useDrivers(filtersObj)
 
   useEffect(() => {
     if (error) {
-      handleError(error, "Could not get cars")
+      handleError(error, "Could not get drivers")
     }
   }, [error])
 
   const [visible, setVisible] = useState(false)
   const [imgFileName, setImgFileName] = useState("")
 
-  const handleChange = (
+  function handleChange(
     pagination: TablePaginationConfig,
     filters: Record<string, FilterValue | null>,
-    sorter: SorterResult<Car> | SorterResult<Car>[],
-    extra: TableCurrentDataSource<Car>
-  ) => {
+    sorter: SorterResult<Driver> | SorterResult<Driver>[],
+    extra: TableCurrentDataSource<Driver>
+  ) {
     const newParams = new URLSearchParams(params)
 
-    const orderByKey = (sorter as SorterResult<Car>).column?.key
+    const orderByKey = (sorter as SorterResult<Driver>).column?.key
     if (orderByKey) {
       newParams.set("orderBy", orderByKey as string)
     } else {
       newParams.delete("orderBy")
     }
 
-    const orderDir = (sorter as SorterResult<Car>).order
+    const orderDir = (sorter as SorterResult<Driver>).order
     if (orderDir) {
       newParams.set(
         "orderDir",
@@ -65,7 +65,6 @@ const CarsTable: React.FC = () => {
     } else {
       newParams.delete("orderDir")
     }
-
     setParams(newParams)
   }
 
@@ -73,7 +72,7 @@ const CarsTable: React.FC = () => {
     mutate()
   }
 
-  const columns: ColumnsType<Car> = [
+  const columns: ColumnsType<Driver> = [
     {
       title: "ID",
       dataIndex: "id",
@@ -113,7 +112,7 @@ const CarsTable: React.FC = () => {
               <Image
                 preview={{
                   visible: fileName === imgFileName,
-                  src: `${appConfig.webServicesURL}api/cars/images/${fileName}`,
+                  src: `${appConfig.webServicesURL}api/drivers/images/${fileName}`,
                   onVisibleChange: (value) => {
                     setVisible(value)
                   },
@@ -126,38 +125,35 @@ const CarsTable: React.FC = () => {
         ),
     },
     {
-      title: "License Plate No.",
-      dataIndex: "licensePlate",
-      key: "licensePlate",
+      title: "First Name",
+      dataIndex: "firstName",
+      key: "firstName",
       sorter: true,
     },
     {
-      title: "Model",
-      dataIndex: "model",
-      key: "model",
+      title: "Last Name",
+      dataIndex: "lastName",
+      key: "lastName",
       sorter: true,
     },
     {
-      title: "Passenger (s)",
-      dataIndex: "passengers",
-      key: "passengers",
+      title: "Birth Date",
+      dataIndex: "birthDate",
+      key: "birthDate",
+      sorter: true,
+      render: (isoString) => moment(isoString).format("DD/MM/YYYY"),
+    },
+    {
+      title: "National ID",
+      dataIndex: "nationalId",
+      key: "nationalId",
       sorter: true,
     },
     {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
+      title: "Car Driving License No.",
+      dataIndex: "carDrivingLicenseId",
+      key: "carDrivingLicenseId",
       sorter: true,
-      render: (status) => {
-        const color = status === "ACTIVE" ? "success" : "red"
-        const label = status === "ACTIVE" ? "Active" : "Inactive"
-
-        return (
-          <Tag key={status} color={color}>
-            {label}
-          </Tag>
-        )
-      },
     },
     {
       title: "Actions",
@@ -166,10 +162,10 @@ const CarsTable: React.FC = () => {
       render: (id) => (
         <Space>
           <Tooltip title="Edit">
-            <EditCarButton carId={id} />
+            <EditDriverButton driverId={id} />
           </Tooltip>
           <Tooltip title="Delete">
-            <DeleteCarButton carId={id} onFinished={reload} />
+            <DeleteDriverButton driverId={id} onFinished={reload} />
           </Tooltip>
         </Space>
       ),
@@ -178,7 +174,7 @@ const CarsTable: React.FC = () => {
 
   return (
     <Table
-      dataSource={cars}
+      dataSource={drivers}
       columns={columns}
       rowKey="id"
       loading={loading}
@@ -200,4 +196,4 @@ const CarsTable: React.FC = () => {
   )
 }
 
-export default CarsTable
+export default DriversTable

@@ -1,50 +1,47 @@
 import { UploadOutlined } from "@ant-design/icons"
-import { Button, Card, Form, Input, message, Modal, Space, Upload } from "antd"
-import axios from "axios"
+import { Button, Card, Form, Input, Modal, Space, Upload } from "antd"
+import { UploadFile } from "antd/lib/upload/interface"
 import React from "react"
 import { useNavigate } from "react-router-dom"
 import useCars from "../../hooks/useCars"
+import { routes } from "../../routes/constant"
+import axiosClient from "../../utils/axiosClient"
+import handleError from "../../utils/handleError"
+import { normFile } from "../../utils/normFile"
 
-const normFile = (e: any) => {
-  if (Array.isArray(e)) {
-    return e
-  }
-  return e && e.fileList
+interface CreateCarFormValues {
+  licensePlate: string
+  model: string
+  image: UploadFile[]
 }
 
 const CreateCarForm: React.FC = () => {
-  const [form] = Form.useForm()
+  const [form] = Form.useForm<CreateCarFormValues>()
   const navigate = useNavigate()
-  // FIXME: change offset and limit
-  const { mutate } = useCars({}, 100, 0)
+  const { mutate } = useCars()
 
-  const onCreate = async (values: any) => {
-    const { licensePlate, model, image } = values
+  async function onSubmit(values: CreateCarFormValues) {
     const formData = new FormData()
-    formData.append("licensePlate", licensePlate)
-    formData.append("model", model)
-    if (image && image instanceof Array && image.length) {
-      formData.append("image", image[0].originFileObj)
+    formData.append("licensePlate", values.licensePlate)
+    formData.append("model", values.model)
+    if (values.image && values.image.length) {
+      formData.append("image", values.image[0].originFileObj as Blob)
     }
 
     try {
-      await axios.post("/api/cars", formData)
+      await axiosClient.post("/api/cars", formData)
       mutate()
-      navigate("/entity/car")
+      navigate(routes.ENTITY_CAR)
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        message.error(error.response?.data)
-      } else {
-        message.error("Could not create the new car now")
-      }
+      handleError(error)
     }
   }
 
-  const onCancel = () => {
+  function onCancel() {
     Modal.confirm({
       title: "Do you want to discard all changes?",
       onOk: () => {
-        navigate("/entity/car")
+        navigate(routes.ENTITY_CAR)
       },
     })
   }
@@ -53,7 +50,7 @@ const CreateCarForm: React.FC = () => {
     <Card>
       <Form
         form={form}
-        onFinish={onCreate}
+        onFinish={onSubmit}
         labelCol={{ span: 4 }}
         wrapperCol={{ span: 4 }}
       >
