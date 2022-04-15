@@ -3,6 +3,7 @@ import { Breadcrumb, Col, Row, Typography } from "antd"
 import React from "react"
 import { Helmet } from "react-helmet"
 import ActiveCars from "../../../components/widgets/ActiveCars"
+import ActiveDrivers from "../../../components/widgets/ActiveDrivers"
 import BigNumber from "../../../components/widgets/BigNumber"
 import CarsLocationMap from "../../../components/widgets/CarsLocationMap"
 import { routes } from "../../../routes/constant"
@@ -36,11 +37,7 @@ const DashboardOverviewPage: React.FC = () => {
           <ActiveCars />
         </Col>
         <Col xs={24} sm={12} md={6}>
-          <BigNumber
-            title={"Active Driver(s)"}
-            helpText={"Total number of drivers that are driving."}
-            value={"2 / 5"}
-          />
+          <ActiveDrivers />
         </Col>
         <Col xs={24} sm={12} md={6}>
           <BigNumber

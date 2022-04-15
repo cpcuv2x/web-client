@@ -22,5 +22,8 @@ export interface ClientToServerEvents {
   [SocketEventType.StartStreamActiveCars]: (
     callback: (sId: string) => void
   ) => void
+  [SocketEventType.StartStreamActiveDrivers]: (
+    callback: (sId: string) => void
+  ) => void
   [SocketEventType.StopStream]: (sId: string) => void
 }
