@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react"
 import { Socket } from "socket.io-client"
-import useSocket from "../../contexts/socket/hooks/useSocket"
 import {
   ClientToServerEvents,
   ServerToClientEvents,
   SocketEventType,
 } from "../../interfaces/socket"
+import useSocket from "./useSocket"
 
 interface Location {
   lat: number
