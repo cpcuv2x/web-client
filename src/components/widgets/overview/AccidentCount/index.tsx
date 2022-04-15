@@ -1,4 +1,4 @@
-import useAccidentCount from "../../../../hooks/useAccidentCount"
+import useAccidentCount from "../../../../hooks/socket/useAccidentCount"
 import BigNumber from "../../BigNumber"
 
 const AccidentCount = () => {
