@@ -6,6 +6,7 @@ import ActiveCars from "../../../components/widgets/ActiveCars"
 import ActiveDrivers from "../../../components/widgets/ActiveDrivers"
 import BigNumber from "../../../components/widgets/BigNumber"
 import CarsLocationMap from "../../../components/widgets/CarsLocationMap"
+import TotalPassengers from "../../../components/widgets/TotalPassengers"
 import { routes } from "../../../routes/constant"
 
 const PageBreadcrumb: React.FC = () => (
@@ -40,11 +41,7 @@ const DashboardOverviewPage: React.FC = () => {
           <ActiveDrivers />
         </Col>
         <Col xs={24} sm={12} md={6}>
-          <BigNumber
-            title={"Total Passenger(s)"}
-            helpText={"Total number of passengers in all cars."}
-            value={"8"}
-          />
+          <TotalPassengers />
         </Col>
         <Col xs={24} sm={12} md={6}>
           <BigNumber
