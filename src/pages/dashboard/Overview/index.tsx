@@ -2,7 +2,7 @@ import { AreaChartOutlined, PieChartOutlined } from "@ant-design/icons"
 import { Breadcrumb, Col, Row, Typography } from "antd"
 import React from "react"
 import { Helmet } from "react-helmet"
-import BigNumber from "../../../components/widgets/BigNumber"
+import AccidentCount from "../../../components/widgets/overview/AccidentCount"
 import ActiveCars from "../../../components/widgets/overview/ActiveCars"
 import ActiveDrivers from "../../../components/widgets/overview/ActiveDrivers"
 import CarsLocationMap from "../../../components/widgets/overview/CarsLocationMap"
@@ -44,11 +44,7 @@ const DashboardOverviewPage: React.FC = () => {
           <TotalPassengers />
         </Col>
         <Col xs={24} sm={12} md={6}>
-          <BigNumber
-            title={"Weekly Accident(s)"}
-            helpText={"Total number of accidents occurred in this week."}
-            value={"1"}
-          />
+          <AccidentCount />
         </Col>
 
         <Col span={24}>
