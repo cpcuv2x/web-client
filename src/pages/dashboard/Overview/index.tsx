@@ -2,6 +2,7 @@ import { AreaChartOutlined, PieChartOutlined } from "@ant-design/icons"
 import { Breadcrumb, Col, Row, Typography } from "antd"
 import React from "react"
 import { Helmet } from "react-helmet"
+import ActiveCars from "../../../components/widgets/ActiveCars"
 import BigNumber from "../../../components/widgets/BigNumber"
 import CarsLocationMap from "../../../components/widgets/CarsLocationMap"
 import { routes } from "../../../routes/constant"
@@ -32,11 +33,7 @@ const DashboardOverviewPage: React.FC = () => {
 
       <Row gutter={[16, 16]}>
         <Col xs={24} sm={12} md={6}>
-          <BigNumber
-            title={"Active Car(s)"}
-            helpText={"Total number of cars that are operating."}
-            value={"2 / 3"}
-          />
+          <ActiveCars />
         </Col>
         <Col xs={24} sm={12} md={6}>
           <BigNumber
