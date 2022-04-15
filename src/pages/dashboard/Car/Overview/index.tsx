@@ -3,6 +3,7 @@ import { Breadcrumb, Button, Dropdown, Menu, Typography } from "antd"
 import React from "react"
 import { Helmet } from "react-helmet"
 import { Link } from "react-router-dom"
+import useCars from "../../../../hooks/useCars"
 import { routes } from "../../../../routes/constant"
 
 const PageBreadcrumb: React.FC = () => (
@@ -19,12 +20,7 @@ const PageBreadcrumb: React.FC = () => (
 )
 
 const DashboardOverviewPage: React.FC = () => {
-  // FIXME: use real cars data
-  const cars = [
-    { id: "car-1", licensePlate: "AA-0000" },
-    { id: "car-2", licensePlate: "AA-0001" },
-    { id: "car-3", licensePlate: "AA-0002" },
-  ]
+  const { cars } = useCars()
 
   const menu = (
     <Menu>
