@@ -1,5 +1,5 @@
-import useActiveDrivers from "../../../hooks/useActiveDrivers"
-import BigNumber from "../BigNumber"
+import useActiveDrivers from "../../../../hooks/useActiveDrivers"
+import BigNumber from "../../BigNumber"
 
 const ActiveDrivers = () => {
   const { active, total } = useActiveDrivers()

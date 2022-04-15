@@ -1,7 +1,7 @@
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api"
-import appConfig from "../../../configuration"
-import useCars from "../../../hooks/useCars"
-import useCarsLocations from "../../../hooks/useCarsLocations"
+import appConfig from "../../../../configuration"
+import useCars from "../../../../hooks/useCars"
+import useCarsLocations from "../../../../hooks/useCarsLocations"
 
 // Chulalongkorn university location
 const center = {

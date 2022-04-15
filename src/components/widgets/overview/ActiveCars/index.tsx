@@ -1,5 +1,5 @@
-import useActiveCars from "../../../hooks/useActiveCars"
-import BigNumber from "../BigNumber"
+import useActiveCars from "../../../../hooks/useActiveCars"
+import BigNumber from "../../BigNumber"
 
 const ActiveCars = () => {
   const { active, total } = useActiveCars()

@@ -1,5 +1,5 @@
-import useTotalPassengers from "../../../hooks/useTotalPassengers"
-import BigNumber from "../BigNumber"
+import useTotalPassengers from "../../../../hooks/useTotalPassengers"
+import BigNumber from "../../BigNumber"
 
 const TotalPassengers = () => {
   const total = useTotalPassengers()
