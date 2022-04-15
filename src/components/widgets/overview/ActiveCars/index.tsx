@@ -1,4 +1,4 @@
-import useActiveCars from "../../../../hooks/useActiveCars"
+import useActiveCars from "../../../../hooks/socket/useActiveCars"
 import BigNumber from "../../BigNumber"
 
 const ActiveCars = () => {

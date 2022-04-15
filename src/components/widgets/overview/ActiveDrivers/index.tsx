@@ -1,4 +1,4 @@
-import useActiveDrivers from "../../../../hooks/useActiveDrivers"
+import useActiveDrivers from "../../../../hooks/socket/useActiveDrivers"
 import BigNumber from "../../BigNumber"
 
 const ActiveDrivers = () => {

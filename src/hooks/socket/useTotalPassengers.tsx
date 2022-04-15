@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react"
 import { Socket } from "socket.io-client"
-import useSocket from "../contexts/socket/hooks/useSocket"
+import useSocket from "../../contexts/socket/hooks/useSocket"
 import {
   ClientToServerEvents,
   ServerToClientEvents,
   SocketEventType,
-} from "../interfaces/socket"
+} from "../../interfaces/socket"
 
 const useTotalPassengers = () => {
   const socketRef = useRef<Socket<ServerToClientEvents, ClientToServerEvents>>(

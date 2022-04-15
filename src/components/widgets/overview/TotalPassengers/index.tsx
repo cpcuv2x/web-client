@@ -1,4 +1,4 @@
-import useTotalPassengers from "../../../../hooks/useTotalPassengers"
+import useTotalPassengers from "../../../../hooks/socket/useTotalPassengers"
 import BigNumber from "../../BigNumber"
 
 const TotalPassengers = () => {
