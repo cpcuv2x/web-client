@@ -1,4 +1,5 @@
 import { Col, Image, Row } from "antd"
+import moment from "moment"
 import React from "react"
 import appConfig from "../../../../configuration"
 import useDriverInformation from "../../../../hooks/socket/useDriverInformation"
@@ -32,7 +33,9 @@ const DriverInformation: React.FC<Props> = ({ driverId }: Props) => {
               <Col span={12}>Last Name: </Col>
               <Col span={12}>{driver?.lastName}</Col>
               <Col span={12}>Birth Date: </Col>
-              <Col span={12}>{driver?.birthDate}</Col>
+              <Col span={12}>
+                {moment(driver?.birthDate).format("DD/MM/YYYY")}
+              </Col>
               <Col span={12}>National ID: </Col>
               <Col span={12}>{driver?.nationalId}</Col>
               <Col span={12}>Car Driving License No.: </Col>
