@@ -31,5 +31,9 @@ export interface ClientToServerEvents {
   [SocketEventType.StartStreamTotalAccidentCount]: (
     callback: (sId: string) => void
   ) => void
+  [SocketEventType.StartStreamCarInformation]: (
+    carId: string,
+    callback: (sId: string) => void
+  ) => void
   [SocketEventType.StopStream]: (sId: string) => void
 }

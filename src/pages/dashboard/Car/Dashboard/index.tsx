@@ -1,13 +1,13 @@
+import { AreaChartOutlined, CarOutlined } from "@ant-design/icons"
+import { Breadcrumb, Col, Row, Typography } from "antd"
 import React from "react"
-import { useParams } from "react-router-dom"
-import { Typography, Row, Col, Breadcrumb } from "antd"
 import { Helmet } from "react-helmet"
+import { useParams } from "react-router-dom"
 import AccidentsLogByCar from "../../../../components/widgets/AccidentsLogByCar"
 import CameraStreams from "../../../../components/widgets/CameraStreams"
+import CarInformation from "../../../../components/widgets/car/CarInformation"
 import PassengersChart from "../../../../components/widgets/PassengersChart"
-import WidgetCard from "../../../../components/widgets/WidgetCard"
 import { routes } from "../../../../routes/constant"
-import { AreaChartOutlined, CarOutlined } from "@ant-design/icons"
 
 const PageBreadcrumb: React.FC<{ carId: string }> = ({ carId }) => (
   <Breadcrumb>
@@ -42,20 +42,7 @@ const DashboardCarPage: React.FC = () => {
 
       <Row gutter={[16, 16]}>
         <Col span={6}>
-          <WidgetCard
-            title={carId}
-            helpText={"Car information."}
-            content={
-              <Row gutter={8}>
-                <Col span={6}>Model: </Col>
-                <Col span={18}>T1</Col>
-                <Col span={6}>Driver: </Col>
-                <Col span={18}>Somchai</Col>
-                <Col span={6}>Status: </Col>
-                <Col span={18}>Active</Col>
-              </Row>
-            }
-          />
+          <CarInformation carId={carId} />
         </Col>
         <Col span={18}>
           <PassengersChart carId={carId} />
