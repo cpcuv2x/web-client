@@ -1,13 +1,19 @@
 import { AreaChartOutlined, UserOutlined } from "@ant-design/icons"
-import { Typography, Row, Col, Breadcrumb } from "antd"
+import { Breadcrumb, Col, Row, Typography } from "antd"
 import { Helmet } from "react-helmet"
 import { useParams } from "react-router-dom"
 import AccidentsLogByDriver from "../../../../components/widgets/AccidentsLogByDriver"
+import DriverInformation from "../../../../components/widgets/driver/DriverInformation"
 import DrowsinessLog from "../../../../components/widgets/DrowsinessLog"
-import WidgetCard from "../../../../components/widgets/WidgetCard"
 import { routes } from "../../../../routes/constant"
 
-const PageBreadcrumb: React.FC<{ driverId: string }> = ({ driverId }) => (
+interface PageBreadcrumbProps {
+  driverId: string
+}
+
+const PageBreadcrumb: React.FC<PageBreadcrumbProps> = ({
+  driverId,
+}: PageBreadcrumbProps) => (
   <Breadcrumb>
     <Breadcrumb.Item href={routes.DASHBOARD_OVERVIEW}>
       <AreaChartOutlined />
@@ -38,21 +44,8 @@ const DashboardDriverPage = () => {
 
       <Typography.Title>Driver: {driverId}</Typography.Title>
       <Row gutter={[16, 16]}>
-        <Col span={6}>
-          <WidgetCard
-            title={"Somchai Jaidee"}
-            helpText={"Driver information."}
-            content={
-              <Row gutter={8}>
-                <Col span={8}>Gender: </Col>
-                <Col span={16}>Male</Col>
-                <Col span={8}>Registered: </Col>
-                <Col span={16}>15/02/2022</Col>
-                <Col span={8}>Status: </Col>
-                <Col span={16}>Active</Col>
-              </Row>
-            }
-          />
+        <Col span={24}>
+          <DriverInformation driverId={driverId} />
         </Col>
         <Col span={24}>
           <DrowsinessLog driverId={driverId} />
