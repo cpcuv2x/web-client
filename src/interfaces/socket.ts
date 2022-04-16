@@ -43,5 +43,9 @@ export interface ClientToServerEvents {
     driverId: string,
     callback: (sId: string) => void
   ) => void
+  [SocketEventType.StartStreamDriverECR]: (
+    driverId: string,
+    callback: (sId: string) => void
+  ) => void
   [SocketEventType.StopStream]: (sId: string) => void
 }

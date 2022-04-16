@@ -3,6 +3,7 @@ import { Breadcrumb, Col, Row, Typography } from "antd"
 import { Helmet } from "react-helmet"
 import { useParams } from "react-router-dom"
 import AccidentsLogByDriver from "../../../../components/widgets/AccidentsLogByDriver"
+import DriverECRChart from "../../../../components/widgets/driver/DriverECRChart"
 import DriverInformation from "../../../../components/widgets/driver/DriverInformation"
 import DrowsinessLog from "../../../../components/widgets/DrowsinessLog"
 import { routes } from "../../../../routes/constant"
@@ -46,6 +47,9 @@ const DashboardDriverPage = () => {
       <Row gutter={[16, 16]}>
         <Col span={24}>
           <DriverInformation driverId={driverId} />
+        </Col>
+        <Col span={24}>
+          <DriverECRChart driverId={driverId} />
         </Col>
         <Col span={24}>
           <DrowsinessLog driverId={driverId} />
