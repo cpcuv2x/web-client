@@ -4,6 +4,7 @@ import _ from "lodash"
 import React, { useEffect, useRef, useState } from "react"
 import Chart from "react-apexcharts"
 import { io, Socket } from "socket.io-client"
+import useCarPassengers from "../../../hooks/socket/useCarPassengers"
 import WidgetCard from "../WidgetCard"
 
 interface Props {
@@ -13,11 +14,11 @@ interface Props {
 
 interface ChartData {
   name: string
-  data: [number, number][]
+  data: [string, number][]
 }
 
 const PassengersChart: React.FC<Props> = ({ carId, maxPoints = 10 }) => {
-  const TICKINTERVAL = 3000 // interval between datapoint
+  const TICKINTERVAL = 60000 // interval between datapoint
   const XAXISRANGE = TICKINTERVAL * maxPoints
   const [current, setCurrent] = useState(0)
   const [series, setSeries] = useState<ChartData[]>([
@@ -27,50 +28,25 @@ const PassengersChart: React.FC<Props> = ({ carId, maxPoints = 10 }) => {
     },
   ])
 
-  // useEffect(() => {
-  //   const intervalId = setInterval(() => {
-  //     appendData()
-  //   }, TICKINTERVAL)
-  //   return () => clearInterval(intervalId)
-  // })
-
-  const [id, setId] = useState("")
-  const socket = useRef<Socket>()
+  const passenger = useCarPassengers(carId)
 
   useEffect(() => {
-    socket.current = io("http://localhost:5000/")
-    socket.current?.on("connect", () => {
-      console.log("connected")
-      socket.current?.emit(
-        "START_STREAM_CAR_PASSENGERS",
-        "b9c64923-9fca-4c37-af82-6f59496bf542",
-        (id: any) => {
-          console.log("id", id)
-          setId(id)
-          socket.current?.on(id, (data: any) => {
-            console.log(data)
-            appendData(data["time"] * 1000, data["passenger"])
-          })
-        }
-      )
-    })
-
-    return () => {
-      socket.current?.close()
-    }
-  }, [])
-
-  // const onDisconnect = () => {
-  //   socket.current?.emit("STOP_STREAM", id)
-  // }
+    if (passenger && passenger.timestamp && passenger.passengers)
+      appendData(passenger.timestamp, passenger.passengers)
+  }, [JSON.stringify(passenger)])
 
   const options: ApexOptions = {
     xaxis: {
       type: "datetime",
       range: XAXISRANGE,
       labels: {
-        format: "HH:mm:ss",
+        formatter: function (value, timestamp, opts) {
+          return new Date(timestamp || "").toLocaleTimeString("en-US", {
+            hour12: false,
+          })
+        },
       },
+      tickPlacement: "on",
     },
     yaxis: {
       min: 0,
@@ -104,30 +80,15 @@ const PassengersChart: React.FC<Props> = ({ carId, maxPoints = 10 }) => {
     },
   }
 
-  const appendData = (time: number, passenger: number) => {
+  const appendData = (timestamp: string, passenger: number) => {
     setSeries((prev) => {
       const newSeries: ChartData[] = _.cloneDeep(prev)
       const data = newSeries[0].data
       setCurrent(passenger)
-      data.push([time, passenger])
+      data.push([timestamp, passenger])
       return newSeries
     })
   }
-
-  // const appendData = () => {
-  //   setSeries((prev) => {
-  //     const newSeries: ChartData[] = _.cloneDeep(prev)
-  //     const data = newSeries[0].data
-  //     const lastDate = data[data.length - 1][0]
-  //     if (data.length >= maxPoints) {
-  //       data.shift()
-  //     }
-  //     const newCurrent = Math.floor(Math.random() * 10)
-  //     setCurrent(newCurrent)
-  //     data.push([lastDate + TICKINTERVAL, newCurrent])
-  //     return newSeries
-  //   })
-  // }
 
   return (
     <WidgetCard
@@ -136,7 +97,6 @@ const PassengersChart: React.FC<Props> = ({ carId, maxPoints = 10 }) => {
       content={
         <div>
           <Typography.Title level={5}>Current: {current}</Typography.Title>
-          {/* <Button onClick={appendData}>Update</Button> */}
           <Chart
             type="line"
             series={series}

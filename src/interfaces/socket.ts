@@ -35,5 +35,9 @@ export interface ClientToServerEvents {
     carId: string,
     callback: (sId: string) => void
   ) => void
+  [SocketEventType.StartStreamCarPassengers]: (
+    carId: string,
+    callback: (sId: string) => void
+  ) => void
   [SocketEventType.StopStream]: (sId: string) => void
 }

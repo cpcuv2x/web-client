@@ -3,6 +3,7 @@ import { Breadcrumb, Col, Row, Typography } from "antd"
 import React from "react"
 import { Helmet } from "react-helmet"
 import { useParams } from "react-router-dom"
+import CopyToClipboardButton from "../../../../components/CopyToClipboardButton"
 import AccidentsLogByCar from "../../../../components/widgets/AccidentsLogByCar"
 import CameraStreams from "../../../../components/widgets/CameraStreams"
 import CarInformation from "../../../../components/widgets/car/CarInformation"
@@ -38,7 +39,11 @@ const DashboardCarPage: React.FC = () => {
 
       <PageBreadcrumb carId={carId} />
 
-      <Typography.Title>Car: {carId}</Typography.Title>
+      <Row align="middle">
+        <Typography.Title>
+          Car: {carId} <CopyToClipboardButton text={carId} />
+        </Typography.Title>
+      </Row>
 
       <Row gutter={[16, 16]}>
         <Col span={6}>
