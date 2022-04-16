@@ -26,7 +26,7 @@ const DashboardOverviewPage: React.FC = () => {
     <Menu>
       {cars.map(({ id, licensePlate }) => (
         <Menu.Item key={id}>
-          <Link to={licensePlate}>{licensePlate}</Link>
+          <Link to={id}>{licensePlate}</Link>
         </Menu.Item>
       ))}
     </Menu>
