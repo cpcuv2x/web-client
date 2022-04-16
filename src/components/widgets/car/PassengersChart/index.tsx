@@ -1,11 +1,10 @@
 import { Typography } from "antd"
 import { ApexOptions } from "apexcharts"
 import _ from "lodash"
-import React, { useEffect, useRef, useState } from "react"
+import React, { useEffect, useState } from "react"
 import Chart from "react-apexcharts"
-import { io, Socket } from "socket.io-client"
-import useCarPassengers from "../../../hooks/socket/useCarPassengers"
-import WidgetCard from "../WidgetCard"
+import useCarPassengers from "../../../../hooks/socket/useCarPassengers"
+import WidgetCard from "../../WidgetCard"
 
 interface Props {
   carId: string

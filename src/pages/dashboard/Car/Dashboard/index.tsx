@@ -7,7 +7,7 @@ import CopyToClipboardButton from "../../../../components/CopyToClipboardButton"
 import AccidentsLogByCar from "../../../../components/widgets/AccidentsLogByCar"
 import CameraStreams from "../../../../components/widgets/CameraStreams"
 import CarInformation from "../../../../components/widgets/car/CarInformation"
-import PassengersChart from "../../../../components/widgets/PassengersChart"
+import PassengersChart from "../../../../components/widgets/car/PassengersChart"
 import { routes } from "../../../../routes/constant"
 
 const PageBreadcrumb: React.FC<{ carId: string }> = ({ carId }) => (
