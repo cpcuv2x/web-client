@@ -14,12 +14,12 @@ const DriverInformation: React.FC<Props> = ({ driverId }: Props) => {
   // TODO: add driver status
   return (
     <Row gutter={8}>
-      <Col span={8}>
+      <Col span={4}>
         <Image
           src={`${appConfig.webServicesURL}api/drivers/images/${driver?.imageFilename}`}
         />
       </Col>
-      <Col span={16}>
+      <Col span={20}>
         <WidgetCard
           title="Personal information"
           helpText="Driver's personal information."
@@ -34,7 +34,8 @@ const DriverInformation: React.FC<Props> = ({ driverId }: Props) => {
               <Col span={12}>{driver?.lastName}</Col>
               <Col span={12}>Birth Date: </Col>
               <Col span={12}>
-                {moment(driver?.birthDate).format("DD/MM/YYYY")}
+                {driver?.birthDate &&
+                  moment(driver?.birthDate).format("DD/MM/YYYY")}
               </Col>
               <Col span={12}>National ID: </Col>
               <Col span={12}>{driver?.nationalId}</Col>

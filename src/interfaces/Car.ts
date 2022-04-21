@@ -37,3 +37,12 @@ export interface CarsResponse {
   cars: Car[]
   count: number
 }
+
+export interface CarAccident {
+  id: string
+  carId: string
+  driverId: string
+  timestamp: string
+  lat: number
+  lng: number
+}
