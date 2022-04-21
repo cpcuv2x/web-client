@@ -1,9 +1,12 @@
 import { AreaChartOutlined, PieChartOutlined } from "@ant-design/icons"
-import { Typography, Row, Col, Breadcrumb } from "antd"
+import { Breadcrumb, Col, Row, Typography } from "antd"
 import React from "react"
 import { Helmet } from "react-helmet"
-import BigNumber from "../../../components/widgets/BigNumber"
-import CarsLocationMap from "../../../components/widgets/CarsLocationMap"
+import AccidentCount from "../../../components/widgets/overview/AccidentCount"
+import ActiveCars from "../../../components/widgets/overview/ActiveCars"
+import ActiveDrivers from "../../../components/widgets/overview/ActiveDrivers"
+import CarsLocationMap from "../../../components/widgets/overview/CarsLocationMap"
+import TotalPassengers from "../../../components/widgets/overview/TotalPassengers"
 import { routes } from "../../../routes/constant"
 
 const PageBreadcrumb: React.FC = () => (
@@ -32,32 +35,16 @@ const DashboardOverviewPage: React.FC = () => {
 
       <Row gutter={[16, 16]}>
         <Col xs={24} sm={12} md={6}>
-          <BigNumber
-            title={"Active Car(s)"}
-            helpText={"Total number of cars that are operating."}
-            value={"2 / 3"}
-          />
+          <ActiveCars />
         </Col>
         <Col xs={24} sm={12} md={6}>
-          <BigNumber
-            title={"Active Driver(s)"}
-            helpText={"Total number of drivers that are driving."}
-            value={"2 / 5"}
-          />
+          <ActiveDrivers />
         </Col>
         <Col xs={24} sm={12} md={6}>
-          <BigNumber
-            title={"Total Passenger(s)"}
-            helpText={"Total number of passengers in all cars."}
-            value={"8"}
-          />
+          <TotalPassengers />
         </Col>
         <Col xs={24} sm={12} md={6}>
-          <BigNumber
-            title={"Weekly Accident(s)"}
-            helpText={"Total number of accidents occurred in this week."}
-            value={"1"}
-          />
+          <AccidentCount />
         </Col>
 
         <Col span={24}>

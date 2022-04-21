@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom"
 import { SWRConfig } from "swr"
 import AppLayout from "./components/AppLayout"
 import RequireAuth from "./components/RequireAuth"
+import SocketContext, { socket } from "./contexts/socket/SocketContext"
 import DashboardCarPage from "./pages/dashboard/Car/Dashboard"
 import DashboardCarOverviewPage from "./pages/dashboard/Car/Overview"
 import DashboardDriverPage from "./pages/dashboard/Driver/Dashboard"
@@ -25,52 +26,54 @@ const validateMessages = {
 
 function App() {
   return (
-    <ConfigProvider form={{ validateMessages }}>
-      <SWRConfig value={{ fetcher: axiosFetcher }}>
-        <BrowserRouter>
-          <Routes>
-            <Route index element={<LoginPage />} />
-            <Route path="*" element={<NotFoundPage />} />
-            <Route
-              path="/"
-              element={
-                <RequireAuth>
-                  <AppLayout />
-                </RequireAuth>
-              }
-            >
-              <Route path="dashboard">
-                <Route path="overview" element={<DashboardOverviewPage />} />
-                <Route path="car">
-                  <Route index element={<DashboardCarOverviewPage />} />
-                  <Route path=":carId" element={<DashboardCarPage />} />
+    <SocketContext.Provider value={socket}>
+      <ConfigProvider form={{ validateMessages }}>
+        <SWRConfig value={{ fetcher: axiosFetcher }}>
+          <BrowserRouter>
+            <Routes>
+              <Route index element={<LoginPage />} />
+              <Route path="*" element={<NotFoundPage />} />
+              <Route
+                path="/"
+                element={
+                  <RequireAuth>
+                    <AppLayout />
+                  </RequireAuth>
+                }
+              >
+                <Route path="dashboard">
+                  <Route path="overview" element={<DashboardOverviewPage />} />
+                  <Route path="car">
+                    <Route index element={<DashboardCarOverviewPage />} />
+                    <Route path=":carId" element={<DashboardCarPage />} />
+                  </Route>
+                  <Route path="driver">
+                    <Route index element={<DashboardDriverOverviewPage />} />
+                    <Route path=":driverId" element={<DashboardDriverPage />} />
+                  </Route>
                 </Route>
-                <Route path="driver">
-                  <Route index element={<DashboardDriverOverviewPage />} />
-                  <Route path=":driverId" element={<DashboardDriverPage />} />
+                <Route path="entity">
+                  <Route path="camera" element={<EntityCameraPage />} />
+                  <Route path="car">
+                    <Route index element={<EntityCarOverviewPage />} />
+                    <Route path="new" element={<EntityCarNewPage />} />
+                    <Route path="edit/:carId" element={<EntityCarEditPage />} />
+                  </Route>
+                  <Route path="driver">
+                    <Route index element={<EntityDriverOverviewPage />} />
+                    <Route path="new" element={<EntityDriverNewPage />} />
+                    <Route
+                      path="edit/:driverId"
+                      element={<EntityDriverEditPage />}
+                    />
+                  </Route>
                 </Route>
               </Route>
-              <Route path="entity">
-                <Route path="camera" element={<EntityCameraPage />} />
-                <Route path="car">
-                  <Route index element={<EntityCarOverviewPage />} />
-                  <Route path="new" element={<EntityCarNewPage />} />
-                  <Route path="edit/:carId" element={<EntityCarEditPage />} />
-                </Route>
-                <Route path="driver">
-                  <Route index element={<EntityDriverOverviewPage />} />
-                  <Route path="new" element={<EntityDriverNewPage />} />
-                  <Route
-                    path="edit/:driverId"
-                    element={<EntityDriverEditPage />}
-                  />
-                </Route>
-              </Route>
-            </Route>
-          </Routes>
-        </BrowserRouter>
-      </SWRConfig>
-    </ConfigProvider>
+            </Routes>
+          </BrowserRouter>
+        </SWRConfig>
+      </ConfigProvider>
+    </SocketContext.Provider>
   )
 }
 

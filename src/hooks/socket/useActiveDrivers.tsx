@@ -1,0 +1,46 @@
+import { useEffect, useRef, useState } from "react"
+import { Socket } from "socket.io-client"
+import {
+  ClientToServerEvents,
+  ServerToClientEvents,
+  SocketEventType,
+} from "../../interfaces/socket"
+import useSocket from "./useSocket"
+
+interface ActiveDriversResponse {
+  active: number
+  total: number
+}
+
+const useActiveDrivers = () => {
+  const socketRef = useRef<Socket<ServerToClientEvents, ClientToServerEvents>>(
+    useSocket()
+  )
+  const socketIdRef = useRef("")
+  const [active, setActive] = useState(0)
+  const [total, setTotal] = useState(0)
+
+  useEffect(() => {
+    const { current: socket } = socketRef
+    socket.emit(SocketEventType.StartStreamActiveDrivers, (sId: string) => {
+      socketIdRef.current = sId
+      socket.on(sId, (res: ActiveDriversResponse) => {
+        // FIXME: remove console
+        console.log(SocketEventType.StartStreamActiveDrivers, res)
+        setActive(res.active)
+        setTotal(res.total)
+      })
+    })
+
+    return () => {
+      socketRef.current?.emit(SocketEventType.StopStream, socketIdRef.current)
+    }
+  }, [])
+
+  return {
+    active,
+    total,
+  }
+}
+
+export default useActiveDrivers

@@ -7,6 +7,7 @@ import { Breadcrumb, Button, Dropdown, Menu, Typography } from "antd"
 import React from "react"
 import { Helmet } from "react-helmet"
 import { Link } from "react-router-dom"
+import useDrivers from "../../../../hooks/useDrivers"
 import { routes } from "../../../../routes/constant"
 
 const PageBreadcrumb: React.FC = () => (
@@ -24,11 +25,7 @@ const PageBreadcrumb: React.FC = () => (
 
 const DashboardDriverOverviewPage: React.FC = () => {
   // FIXME: use real drivers data
-  const drivers = [
-    { id: "driver-1", firstName: "Somchai", lastName: "Jaidee" },
-    { id: "driver-2", firstName: "Somying", lastName: "Jaideemark" },
-    { id: "driver-3", firstName: "Sommai", lastName: "Jairai" },
-  ]
+  const { drivers } = useDrivers()
 
   const menu = (
     <Menu>
