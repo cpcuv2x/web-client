@@ -1,49 +1,69 @@
 import { UploadOutlined } from "@ant-design/icons"
-import { Button, Card, Form, Input, Modal, Space, Upload } from "antd"
+import { Button, Card, Form, Input, Modal, Select, Space, Upload } from "antd"
 import { UploadFile } from "antd/lib/upload/interface"
 import React from "react"
 import { useNavigate } from "react-router-dom"
+import useCameras from "../../hooks/useCameras"
 import useCars from "../../hooks/useCars"
+import { Car } from "../../interfaces/Car"
 import { routes } from "../../routes/constant"
 import axiosClient from "../../utils/axiosClient"
 import handleError from "../../utils/handleError"
 import { normFile } from "../../utils/normFile"
 
+const { Option } = Select
 interface CreateCarFormValues {
   licensePlate: string
   model: string
   image: UploadFile[]
+  cameras: string[]
 }
 
 const CreateCarForm: React.FC = () => {
   const [form] = Form.useForm<CreateCarFormValues>()
   const navigate = useNavigate()
   const { mutate } = useCars()
+  const { cameras } = useCameras()
 
   async function onSubmit(values: CreateCarFormValues) {
-    const formData = new FormData()
-    formData.append("licensePlate", values.licensePlate)
-    formData.append("model", values.model)
-    if (values.image && values.image.length) {
-      formData.append("image", values.image[0].originFileObj as Blob)
-    }
+    const { image, cameras, ...rest } = values
+    const cameraIds = cameras.map((id) => ({
+      id,
+    }))
 
     try {
-      await axiosClient.post("/api/cars", formData)
+      // Create a car
+      const payload = {
+        ...rest,
+        cameras: cameraIds,
+      }
+      const response = await axiosClient.post<Car>("/api/cars", payload)
+      // Upload an image if exists
+      if (image && image.length) {
+        const { id: newCarId } = response.data
+        const formData = new FormData()
+        formData.append("image", image[0].originFileObj as Blob)
+
+        await axiosClient.patch(`/api/cars/${newCarId}/image`, formData)
+      }
       mutate()
-      navigate(routes.ENTITY_CAR)
+      navigate(routes.ENTITY_CAMERA)
     } catch (error) {
       handleError(error)
     }
   }
 
   function onCancel() {
-    Modal.confirm({
-      title: "Do you want to discard all changes?",
-      onOk: () => {
-        navigate(routes.ENTITY_CAR)
-      },
-    })
+    if (form.isFieldsTouched()) {
+      Modal.confirm({
+        title: "Do you want to discard all changes?",
+        onOk: () => {
+          navigate(routes.ENTITY_CAR)
+        },
+      })
+      return
+    }
+    navigate(routes.ENTITY_CAR)
   }
 
   return (
@@ -81,6 +101,16 @@ const CreateCarForm: React.FC = () => {
 
         <Form.Item name="model" label="Model" rules={[{ required: true }]}>
           <Input />
+        </Form.Item>
+
+        <Form.Item name="cameras" label="Cameras">
+          <Select mode="tags">
+            {cameras.map(({ id, name }) => (
+              <Option key={id} value={id}>
+                {name}
+              </Option>
+            ))}
+          </Select>
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 4 }}>
