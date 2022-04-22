@@ -1,16 +1,17 @@
 import { DeleteOutlined } from "@ant-design/icons"
 import { Button, Modal, Typography } from "antd"
-import useCameras from "../../hooks/useCameras"
 import axiosClient from "../../utils/axiosClient"
 import handleError from "../../utils/handleError"
 
 interface Props {
   cameraId: string
+  onFinished?: VoidFunction
 }
 
-const DeleteCameraButton: React.FC<Props> = ({ cameraId }: Props) => {
-  const { mutate } = useCameras()
-
+const DeleteCameraButton: React.FC<Props> = ({
+  cameraId,
+  onFinished,
+}: Props) => {
   function onDelete(cameraId: string) {
     Modal.confirm({
       title: "Do you want to delete this camera?",
@@ -22,7 +23,7 @@ const DeleteCameraButton: React.FC<Props> = ({ cameraId }: Props) => {
       onOk: async () => {
         try {
           await axiosClient.delete(`/api/cameras/${cameraId}`)
-          mutate()
+          if (onFinished) onFinished()
         } catch (error) {
           handleError(error)
         }

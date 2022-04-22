@@ -149,7 +149,7 @@ const CamerasTable: React.FC = () => {
             <EditCameraButton cameraId={id} />
           </Tooltip>
           <Tooltip title="Delete">
-            <DeleteCameraButton cameraId={id} />
+            <DeleteCameraButton cameraId={id} onFinished={reload} />
           </Tooltip>
         </Space>
       ),
