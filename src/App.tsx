@@ -9,7 +9,7 @@ import DashboardCarOverviewPage from "./pages/dashboard/Car/Overview"
 import DashboardDriverPage from "./pages/dashboard/Driver/Dashboard"
 import DashboardDriverOverviewPage from "./pages/dashboard/Driver/Overview"
 import DashboardOverviewPage from "./pages/dashboard/Overview"
-import EntityCameraPage from "./pages/entity/Camera"
+import EntityCameraNewPage from "./pages/entity/Camera/New"
 import EntityCarEditPage from "./pages/entity/Car/Edit"
 import EntityCarNewPage from "./pages/entity/Car/New"
 import EntityCarOverviewPage from "./pages/entity/Car/Overview"
@@ -53,7 +53,6 @@ function App() {
                   </Route>
                 </Route>
                 <Route path="entity">
-                  <Route path="camera" element={<EntityCameraPage />} />
                   <Route path="car">
                     <Route index element={<EntityCarOverviewPage />} />
                     <Route path="new" element={<EntityCarNewPage />} />
@@ -66,6 +65,11 @@ function App() {
                       path="edit/:driverId"
                       element={<EntityDriverEditPage />}
                     />
+                  </Route>
+                  <Route path="camera">
+                    {/* <Route index element={<EntityCameraOverviewPage />} /> */}
+                    <Route path="new" element={<EntityCameraNewPage />} />
+                    {/* <Route path="edit/:cameraId" element={<EntityCameraEditPage />} /> */}
                   </Route>
                 </Route>
               </Route>
