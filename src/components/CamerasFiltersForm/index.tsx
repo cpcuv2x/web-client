@@ -53,7 +53,7 @@ const CamerasFiltersForm: React.FC = () => {
             </Form.Item>
           </Col>
           <Col span={8}>
-            <Form.Item label="Position" name="position">
+            <Form.Item label="Position" name="role">
               <Select placeholder="Not selected">
                 <Option value="">Not selected</Option>
                 <Option value={CameraRole.DOOR}>Entrance Door</Option>
