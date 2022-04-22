@@ -26,6 +26,7 @@ export interface CamerasResponse {
 }
 
 export interface CamerasFilters {
+  id?: string
   name?: string
   description?: string
   streamUrl?: string

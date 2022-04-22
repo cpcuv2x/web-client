@@ -2,6 +2,7 @@ import { useSearchParams } from "react-router-dom"
 import { CamerasFilter, CamerasFilters } from "../interfaces/Camera"
 
 export const filters: CamerasFilter[] = [
+  "id",
   "name",
   "description",
   "streamUrl",

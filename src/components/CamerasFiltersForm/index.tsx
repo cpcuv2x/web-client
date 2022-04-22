@@ -38,6 +38,11 @@ const CamerasFiltersForm: React.FC = () => {
       <Form form={form} onFinish={onSubmit} layout="vertical">
         <Row gutter={24}>
           <Col span={8}>
+            <Form.Item label="ID" name="id">
+              <Input />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
             <Form.Item label="Name" name="name">
               <Input />
             </Form.Item>
