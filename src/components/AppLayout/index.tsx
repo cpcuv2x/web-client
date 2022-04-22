@@ -6,7 +6,7 @@ import {
   PieChartOutlined,
   UserOutlined,
 } from "@ant-design/icons"
-import { Layout, Menu, Space } from "antd"
+import { Layout, Menu } from "antd"
 import { useState } from "react"
 import { Link, Outlet, useLocation } from "react-router-dom"
 import { routes } from "../../routes/constant"
@@ -64,9 +64,9 @@ const AppLayout = () => {
               icon={<ControlOutlined />}
               title="Entity Management"
             >
-              {/* <Menu.Item key="entity-camera" icon={<CameraOutlined />}>
-                <Link to="/entity/camera">Camera</Link>
-              </Menu.Item> */}
+              <Menu.Item key="entity-camera" icon={<CameraOutlined />}>
+                <Link to={routes.ENTITY_CAMERA}>Camera</Link>
+              </Menu.Item>
               <Menu.Item key="entity-car" icon={<CarOutlined />}>
                 <Link to={routes.ENTITY_CAR}>Car</Link>
               </Menu.Item>
