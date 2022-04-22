@@ -10,7 +10,7 @@ import handleError from "../../utils/handleError"
 const { Option } = Select
 
 interface CreateCameraFormValues {
-  name: string
+  name: string | null
   description: string
   streamUrl: string
   role: CameraRole
@@ -24,10 +24,8 @@ const CreateCameraForm: React.FC = () => {
   const { cars } = useCars()
 
   async function onSubmit(values: CreateCameraFormValues) {
-    const { carId, ...rest } = values
-    const payload = carId === "" ? { carId: null, ...rest } : values
     try {
-      await axiosClient.post("/api/cameras", payload)
+      await axiosClient.post("/api/cameras", values)
       mutate()
       navigate(routes.ENTITY_CAMERA)
     } catch (error) {
@@ -83,7 +81,7 @@ const CreateCameraForm: React.FC = () => {
         </Form.Item>
         <Form.Item name="carId" label="Attached to car">
           <Select>
-            <Option value="">Not set</Option>
+            <Option value={null}>Not set</Option>
             {cars.map((car) => (
               <Option key={car.id} value={car.id}>
                 {car.id} | {car.licensePlate}
