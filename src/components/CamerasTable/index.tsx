@@ -1,10 +1,16 @@
 import { ReloadOutlined } from "@ant-design/icons"
 import { Button, Col, Row, Space, Table, Tag, Tooltip, Typography } from "antd"
 import { ColumnsType, TablePaginationConfig } from "antd/lib/table"
+import {
+  FilterValue,
+  SorterResult,
+  TableCurrentDataSource,
+} from "antd/lib/table/interface"
 import React, { useEffect } from "react"
 import { useNavigate, useSearchParams } from "react-router-dom"
 import useCameras from "../../hooks/useCameras"
-import { Camera, CameraStatus } from "../../interfaces/Camera"
+import useCamerasFilters from "../../hooks/useCamerasFilters"
+import { Camera, CameraStatus, OrderDir } from "../../interfaces/Camera"
 import { routes } from "../../routes/constant"
 import handleError from "../../utils/handleError"
 import CopyToClipboardButton from "../CopyToClipboardButton"
@@ -14,9 +20,8 @@ import EditCameraButton from "../EditCameraButton"
 const CamerasTable: React.FC = () => {
   const navigate = useNavigate()
   const [params, setParams] = useSearchParams()
-  // const { filtersObj } = useDriversFilters()
-  // const { drivers, count, loading, mutate, error } = useDrivers(filtersObj)
-  const { cameras, count, loading, mutate, error } = useCameras()
+  const { filtersObj } = useCamerasFilters()
+  const { cameras, count, loading, mutate, error } = useCameras(filtersObj)
 
   useEffect(() => {
     if (error) {
@@ -24,7 +29,32 @@ const CamerasTable: React.FC = () => {
     }
   }, [error])
 
-  function handleChange() {}
+  function handleChange(
+    pagination: TablePaginationConfig,
+    filters: Record<string, FilterValue | null>,
+    sorter: SorterResult<Camera> | SorterResult<Camera>[],
+    extra: TableCurrentDataSource<Camera>
+  ) {
+    const newParams = new URLSearchParams(params)
+
+    const orderByKey = (sorter as SorterResult<Camera>).column?.key
+    if (orderByKey) {
+      newParams.set("orderBy", orderByKey as string)
+    } else {
+      newParams.delete("orderBy")
+    }
+
+    const orderDir = (sorter as SorterResult<Camera>).order
+    if (orderDir) {
+      newParams.set(
+        "orderDir",
+        orderDir === "ascend" ? OrderDir.ASC : OrderDir.DESC
+      )
+    } else {
+      newParams.delete("orderDir")
+    }
+    setParams(newParams)
+  }
 
   function reload() {
     mutate()
@@ -91,6 +121,7 @@ const CamerasTable: React.FC = () => {
       title: "Attached To",
       dataIndex: "carId",
       key: "carId",
+      sorter: true,
       render: (carId) => {
         return carId ? (
           <div style={{ maxWidth: 150 }}>

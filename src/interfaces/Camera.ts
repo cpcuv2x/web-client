@@ -29,6 +29,8 @@ export interface CamerasFilters {
   name?: string
   description?: string
   streamUrl?: string
+  role?: CameraRole
+  status?: CameraStatus
   carId?: string
   limit?: number
   offset?: number
