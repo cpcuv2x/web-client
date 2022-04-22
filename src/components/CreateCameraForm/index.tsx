@@ -84,7 +84,7 @@ const CreateCameraForm: React.FC = () => {
             <Option value={null}>Not set</Option>
             {cars.map((car) => (
               <Option key={car.id} value={car.id}>
-                {car.id} | {car.licensePlate}
+                {car.licensePlate} ({car.id})
               </Option>
             ))}
           </Select>

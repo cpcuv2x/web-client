@@ -91,7 +91,7 @@ const EditCameraForm: React.FC<Props> = ({ initialValues, mutate }: Props) => {
             <Option value={null}>Not set</Option>
             {cars.map((car) => (
               <Option key={car.id} value={car.id}>
-                {car.id} | {car.licensePlate}
+                {car.licensePlate} ({car.id})
               </Option>
             ))}
           </Select>
