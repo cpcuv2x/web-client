@@ -25,7 +25,7 @@ const CreateCameraForm: React.FC = () => {
 
   async function onSubmit(values: CreateCameraFormValues) {
     const { carId, ...rest } = values
-    const payload = carId !== "" ? values : rest
+    const payload = carId === "" ? { carId: null, ...rest } : values
     try {
       await axiosClient.post("/api/cameras", payload)
       mutate()
