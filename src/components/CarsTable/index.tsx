@@ -17,17 +17,20 @@ import {
   TableCurrentDataSource,
 } from "antd/lib/table/interface"
 import React, { useEffect, useState } from "react"
-import { useSearchParams } from "react-router-dom"
+import { useNavigate, useSearchParams } from "react-router-dom"
 import appConfig from "../../configuration"
 import useCars from "../../hooks/useCars"
 import useCarsFilters from "../../hooks/useCarsFilters"
-import { Car, OrderDir } from "../../interfaces/Car"
+import { Car, CarStatus, OrderDir } from "../../interfaces/Car"
+import { Driver } from "../../interfaces/Driver"
+import { routes } from "../../routes/constant"
 import handleError from "../../utils/handleError"
 import CopyToClipboardButton from "../CopyToClipboardButton"
 import DeleteCarButton from "../DeleteCarButton"
 import EditCarButton from "../EditCarButton"
 
 const CarsTable: React.FC = () => {
+  const navigate = useNavigate()
   const [params, setParams] = useSearchParams()
   const { filtersObj } = useCarsFilters()
   const { cars, count, loading, mutate, error } = useCars(filtersObj)
@@ -39,7 +42,7 @@ const CarsTable: React.FC = () => {
   }, [error])
 
   const [visible, setVisible] = useState(false)
-  const [imgFileName, setImgFileName] = useState("")
+  const [imgCarId, setImgCarId] = useState("")
 
   const handleChange = (
     pagination: TablePaginationConfig,
@@ -81,7 +84,7 @@ const CarsTable: React.FC = () => {
       sorter: true,
       render: (id) => (
         <Row justify="space-between" gutter={8}>
-          <Col style={{ maxWidth: 100 }}>
+          <Col style={{ maxWidth: 200 }}>
             <Typography.Text ellipsis>{id}</Typography.Text>
           </Col>
           <Col>
@@ -95,15 +98,15 @@ const CarsTable: React.FC = () => {
       dataIndex: "imageFilename",
       key: "imageFilename",
       sorter: true,
-      render: (fileName) =>
-        fileName ? (
+      render: (imageFilename, record) =>
+        imageFilename ? (
           <>
             <Button
               type="link"
               icon={<ZoomInOutlined />}
               style={{ padding: 0 }}
               onClick={() => {
-                setImgFileName(fileName)
+                setImgCarId(record.id)
                 setVisible(true)
               }}
             >
@@ -112,8 +115,8 @@ const CarsTable: React.FC = () => {
             {visible && (
               <Image
                 preview={{
-                  visible: fileName === imgFileName,
-                  src: `${appConfig.webServicesURL}api/cars/images/${fileName}`,
+                  visible: record.id === imgCarId,
+                  src: `${appConfig.webServicesURL}api/cars/${record.id}/image`,
                   onVisibleChange: (value) => {
                     setVisible(value)
                   },
@@ -149,8 +152,8 @@ const CarsTable: React.FC = () => {
       key: "status",
       sorter: true,
       render: (status) => {
-        const color = status === "ACTIVE" ? "success" : "red"
-        const label = status === "ACTIVE" ? "Active" : "Inactive"
+        const color = status === CarStatus.ACTIVE ? "success" : "red"
+        const label = status === CarStatus.ACTIVE ? "Active" : "Inactive"
 
         return (
           <Tag key={status} color={color}>
@@ -158,6 +161,27 @@ const CarsTable: React.FC = () => {
           </Tag>
         )
       },
+    },
+    {
+      title: "Driver",
+      dataIndex: "Driver",
+      key: "driverId",
+      sorter: true,
+      render: (driver: Driver) =>
+        driver ? (
+          <div style={{ maxWidth: 150 }}>
+            <Typography.Link
+              onClick={() => {
+                navigate(`${routes.DASHBOARD_DRIVER}/${driver?.id}`)
+              }}
+              ellipsis
+            >
+              {driver?.firstName}
+            </Typography.Link>
+          </div>
+        ) : (
+          "-"
+        ),
     },
     {
       title: "Actions",
