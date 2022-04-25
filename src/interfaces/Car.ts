@@ -1,3 +1,6 @@
+import { Camera } from "./Camera"
+import { Driver } from "./Driver"
+
 export interface Car {
   id: string
   imageFilename: string
@@ -7,6 +10,9 @@ export interface Car {
   long: number
   passengers: number
   status: CarStatus
+  driverId: string
+  Driver: Driver | null
+  Camera: Camera[]
 }
 
 export interface CarsFilters {
