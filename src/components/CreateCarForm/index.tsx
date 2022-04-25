@@ -47,7 +47,7 @@ const CreateCarForm: React.FC = () => {
         await axiosClient.patch(`/api/cars/${newCarId}/image`, formData)
       }
       mutate()
-      navigate(routes.ENTITY_CAMERA)
+      navigate(routes.ENTITY_CAR)
     } catch (error) {
       handleError(error)
     }
