@@ -99,7 +99,7 @@ const CreateCameraForm: React.FC = () => {
             options={[
               { label: "Not Selected", value: null },
               ...cars.map(({ id, licensePlate }) => ({
-                label: licensePlate,
+                label: `${licensePlate}  (${id})`,
                 value: id,
               })),
             ]}
