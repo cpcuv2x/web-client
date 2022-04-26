@@ -49,22 +49,22 @@ const CarsFiltersForm: React.FC = () => {
       <Card>
         <Form form={form} onFinish={onSubmit} layout="vertical">
           <Row gutter={24}>
-            <Col span={8}>
+            <Col span={4}>
               <Form.Item label="ID" name="id">
                 <Input />
               </Form.Item>
             </Col>
-            <Col span={8}>
+            <Col span={4}>
               <Form.Item label="License Plate No." name="licensePlate">
                 <Input />
               </Form.Item>
             </Col>
-            <Col span={8}>
+            <Col span={4}>
               <Form.Item label="Model" name="model">
                 <Input />
               </Form.Item>
             </Col>
-            <Col span={8}>
+            <Col span={4}>
               <Form.Item label="Status" name="status">
                 <Select placeholder="Not selected">
                   <Option value="">Not selected</Option>
@@ -73,12 +73,12 @@ const CarsFiltersForm: React.FC = () => {
                 </Select>
               </Form.Item>
             </Col>
-            <Col span={8}>
+            <Col span={4}>
               <Form.Item label="Min. Passengers" name="minPassengers">
                 <InputNumber style={{ width: "100%" }} min={0} />
               </Form.Item>
             </Col>
-            <Col span={8}>
+            <Col span={4}>
               <Form.Item label="Max. Passengers" name="maxPassengers">
                 <InputNumber style={{ width: "100%" }} min={0} />
               </Form.Item>
