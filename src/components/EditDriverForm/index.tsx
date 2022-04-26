@@ -1,11 +1,21 @@
-import { UploadOutlined } from "@ant-design/icons"
-import { Button, Card, Form, Input, Modal, Space, Upload } from "antd"
+import { DeleteOutlined, EditOutlined, UploadOutlined } from "@ant-design/icons"
+import {
+  Button,
+  Card,
+  DatePicker,
+  Form,
+  Input,
+  Modal,
+  Select,
+  Space,
+  Upload,
+} from "antd"
 import { UploadFile } from "antd/lib/upload/interface"
-import { Moment } from "moment"
+import moment, { Moment } from "moment"
 import { useNavigate } from "react-router-dom"
 import appConfig from "../../configuration"
-import useDrivers from "../../hooks/useDrivers"
-import { Driver } from "../../interfaces/Driver"
+import { driverGenderLabel, fieldLabel } from "../../constants/Driver"
+import { Driver, DriverGender } from "../../interfaces/Driver"
 import { routes } from "../../routes/constant"
 import axiosClient from "../../utils/axiosClient"
 import handleError from "../../utils/handleError"
@@ -18,36 +28,62 @@ interface Props {
 }
 
 interface EditDriverFormValues {
-  firstName: string
-  lastName: string
+  firstNameTH: string
+  lastNameTH: string
+  firstNameEN: string
+  lastNameEN: string
+  gender: DriverGender
   birthDate: Moment
   nationalId: string
   carDrivingLicenseId: string
   image: UploadFile[]
+  username: string
 }
 
 const EditDriverForm: React.FC<Props> = ({ initialValues, mutate }: Props) => {
+  const formInitialValues = {
+    ...initialValues,
+    image: initialValues.imageFilename
+      ? [
+          {
+            uid: "1",
+            name: initialValues.imageFilename,
+            url: `${appConfig.webServicesURL}api/drivers/${initialValues.id}/image`,
+          },
+        ]
+      : [],
+    username: initialValues.User.username,
+    birthDate: moment(initialValues.birthDate),
+  }
+
   const [form] = Form.useForm()
   const navigate = useNavigate()
-  const { mutate: mutateDrivers } = useDrivers()
 
   async function onSubmit(values: EditDriverFormValues) {
-    console.log("values", values)
-    const formData = new FormData()
-    formData.append("firstName", values.firstName)
-    formData.append("lastName", values.lastName)
-    // FIXME: use value from input instead
-    formData.append("birthDate", initialValues.birthDate)
-    formData.append("nationalId", values.nationalId)
-    formData.append("carDrivingLicenseId", values.carDrivingLicenseId)
-    if (values.image && values.image.length) {
-      formData.append("image", values.image[0].originFileObj as Blob)
-    }
-
     try {
-      await axiosClient.patch(`/api/drivers/${initialValues.id}`, formData)
-      mutate()
-      mutateDrivers()
+      // Update the driver
+      const payload = {
+        firstNameTH: values.firstNameTH,
+        lastNameTH: values.lastNameTH,
+        firstNameEN: values.firstNameEN,
+        lastNameEN: values.lastNameEN,
+        gender: values.gender,
+        birthDate: values.birthDate.toISOString(),
+        nationalId: values.nationalId,
+        carDrivingLicenseId: values.carDrivingLicenseId,
+      }
+      await axiosClient.patch(`/api/drivers/${formInitialValues.id}`, payload)
+
+      // Update image
+      if (form.isFieldTouched("image") && values.image.length) {
+        const formData = new FormData()
+        formData.append("image", values.image[0].originFileObj as Blob)
+        await axiosClient.patch(
+          `/api/drivers/${formInitialValues.id}/image`,
+          formData
+        )
+      }
+      await mutate()
       navigate(routes.ENTITY_DRIVER)
     } catch (error) {
       handleError(error)
@@ -55,30 +91,32 @@ const EditDriverForm: React.FC<Props> = ({ initialValues, mutate }: Props) => {
   }
 
   function onCancel() {
-    Modal.confirm({
-      title: "Do you want to discard all changes?",
-      onOk: () => {
-        navigate(routes.ENTITY_DRIVER)
-      },
-    })
+    if (form.isFieldsTouched()) {
+      Modal.confirm({
+        title: "Do you want to discard all changes?",
+        onOk: () => {
+          navigate(routes.ENTITY_DRIVER)
+        },
+      })
+      return
+    }
+    navigate(routes.ENTITY_DRIVER)
   }
-
-  //   FIXME: enable birth date input
 
   return (
     <Card>
       <Form
         form={form}
+        layout="vertical"
         onFinish={onSubmit}
-        labelCol={{ span: 4 }}
-        wrapperCol={{ span: 6 }}
-        initialValues={initialValues}
+        initialValues={formInitialValues}
       >
         <Form.Item
           name="image"
-          label="Image"
+          label={fieldLabel["image"]}
           valuePropName="fileList"
           getValueFromEvent={normFile}
+          rules={[{ required: true }]}
         >
           <Upload
             name="image"
@@ -86,52 +124,75 @@ const EditDriverForm: React.FC<Props> = ({ initialValues, mutate }: Props) => {
             listType="picture"
             accept="image/png, image/jpeg"
             maxCount={1}
-            defaultFileList={
-              initialValues.imageFilename
-                ? [
-                    {
-                      uid: "1",
-                      name: initialValues.imageFilename,
-                      url: `${appConfig.webServicesURL}api/drivers/images/${initialValues.imageFilename}`,
-                    },
-                  ]
-                : []
-            }
           >
             <Button icon={<UploadOutlined />}>Click to upload</Button>
           </Upload>
         </Form.Item>
 
         <Form.Item
-          name="firstName"
-          label="First Name"
+          name="firstNameTH"
+          label={fieldLabel["firstNameTH"]}
           rules={[{ required: true }]}
         >
           <Input />
         </Form.Item>
 
         <Form.Item
-          name="lastName"
-          label="Last Name"
+          name="lastNameTH"
+          label={fieldLabel["lastNameTH"]}
           rules={[{ required: true }]}
         >
           <Input />
         </Form.Item>
 
-        {/* <Form.Item
+        <Form.Item
+          name="firstNameEN"
+          label={fieldLabel["firstNameEN"]}
+          rules={[{ required: true }]}
+        >
+          <Input />
+        </Form.Item>
+
+        <Form.Item
+          name="lastNameEN"
+          label={fieldLabel["lastNameEN"]}
+          rules={[{ required: true }]}
+        >
+          <Input />
+        </Form.Item>
+
+        <Form.Item
+          name="gender"
+          label={fieldLabel["gender"]}
+          rules={[{ required: true }]}
+        >
+          <Select
+            options={[
+              DriverGender.MALE,
+              DriverGender.FEMALE,
+              DriverGender.NOT_SPECIFIED,
+            ].map((role) => ({
+              label: driverGenderLabel[role],
+              value: role,
+            }))}
+          />
+        </Form.Item>
+
+        <Form.Item
           name="birthDate"
-          label="Birth Date"
+          label={fieldLabel["birthDate"]}
           rules={[{ required: true }]}
         >
           <DatePicker
             format="DD/MM/YYYY"
+            placeholder="DD/MM/YYYY"
             disabledDate={(date) => date > moment().subtract(18, "years")}
           />
-        </Form.Item> */}
+        </Form.Item>
 
         <Form.Item
           name="nationalId"
-          label="National ID"
+          label={fieldLabel["nationalId"]}
           rules={[
             { required: true },
             {
@@ -150,7 +211,7 @@ const EditDriverForm: React.FC<Props> = ({ initialValues, mutate }: Props) => {
 
         <Form.Item
           name="carDrivingLicenseId"
-          label="Car Driving License No."
+          label={fieldLabel["carDrivingLicenseId"]}
           rules={[
             { required: true },
             { message: "Invalid license ID", pattern: /^[0-9]*$/g },
@@ -159,13 +220,21 @@ const EditDriverForm: React.FC<Props> = ({ initialValues, mutate }: Props) => {
           <Input />
         </Form.Item>
 
-        <Form.Item wrapperCol={{ offset: 4 }}>
+        <Form.Item
+          name="username"
+          label={fieldLabel["username"]}
+          rules={[{ required: true }]}
+        >
+          <Input disabled />
+        </Form.Item>
+
+        <Form.Item>
           <Space>
-            <Button type="default" onClick={onCancel}>
+            <Button type="default" onClick={onCancel} icon={<DeleteOutlined />}>
               Cancel
             </Button>
-            <Button type="primary" htmlType="submit">
-              Create
+            <Button type="primary" htmlType="submit" icon={<EditOutlined />}>
+              Submit
             </Button>
           </Space>
         </Form.Item>
