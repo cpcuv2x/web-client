@@ -18,11 +18,11 @@ const EntityDriverEditPage: React.FC = () => {
 
   if (error || !driver) return <div>An error occurred.</div>
 
-  const driverFullName = `${driver.firstName} ${driver.lastName}`
+  const driverFullName = `${driver.firstNameEN} ${driver.lastNameEN}`
   return (
     <>
       <Helmet>
-        <title>Edit Driver({driver.id}) - Entity | 5G-V2X</title>
+        <title>Edit Driver: {driverFullName} - Entity | 5G-V2X</title>
       </Helmet>
 
       <PageBreadcrumb
