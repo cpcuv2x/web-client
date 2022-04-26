@@ -16,6 +16,7 @@ export interface Car {
 }
 
 export interface CarsFilters {
+  id?: string
   licensePlate?: string
   model?: string
   status?: CarStatus

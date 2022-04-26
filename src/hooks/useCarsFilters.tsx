@@ -2,6 +2,7 @@ import { useSearchParams } from "react-router-dom"
 import { CarsFilter, CarsFilters } from "../interfaces/Car"
 
 export const filters: CarsFilter[] = [
+  "id",
   "licensePlate",
   "model",
   "status",

@@ -18,6 +18,7 @@ import { CarStatus } from "../../interfaces/Car"
 const { Option } = Select
 
 interface CarsFiltersFormValues {
+  id?: string
   licensePlate?: string
   model?: string
   status?: CarStatus
@@ -48,6 +49,11 @@ const CarsFiltersForm: React.FC = () => {
       <Card>
         <Form form={form} onFinish={onSubmit} layout="vertical">
           <Row gutter={24}>
+            <Col span={8}>
+              <Form.Item label="ID" name="id">
+                <Input />
+              </Form.Item>
+            </Col>
             <Col span={8}>
               <Form.Item label="License Plate No." name="licensePlate">
                 <Input />
