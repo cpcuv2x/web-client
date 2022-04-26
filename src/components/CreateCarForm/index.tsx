@@ -7,6 +7,7 @@ import { Button, Card, Form, Input, Modal, Select, Space, Upload } from "antd"
 import { UploadFile } from "antd/lib/upload/interface"
 import React from "react"
 import { useNavigate } from "react-router-dom"
+import { fieldLabel } from "../../constants/Car"
 import useCameras from "../../hooks/useCameras"
 import useCars from "../../hooks/useCars"
 import { Car } from "../../interfaces/Car"
@@ -77,7 +78,7 @@ const CreateCarForm: React.FC = () => {
       <Form form={form} onFinish={onSubmit} layout="vertical">
         <Form.Item
           name="image"
-          label="Image"
+          label={fieldLabel["image"]}
           valuePropName="fileList"
           getValueFromEvent={normFile}
         >
@@ -94,17 +95,21 @@ const CreateCarForm: React.FC = () => {
 
         <Form.Item
           name="licensePlate"
-          label="License Plate"
+          label={fieldLabel["licensePlate"]}
           rules={[{ required: true }]}
         >
           <Input />
         </Form.Item>
 
-        <Form.Item name="model" label="Model" rules={[{ required: true }]}>
+        <Form.Item
+          name="model"
+          label={fieldLabel["model"]}
+          rules={[{ required: true }]}
+        >
           <Input />
         </Form.Item>
 
-        <Form.Item name="cameras" label="Cameras">
+        <Form.Item name="cameras" label={fieldLabel["cameras"]}>
           <Select
             mode="multiple"
             placeholder="Not selected"
