@@ -10,6 +10,7 @@ import {
   Row,
   Space,
   Table,
+  Tag,
   Tooltip,
   Typography,
 } from "antd"
@@ -26,7 +27,12 @@ import appConfig from "../../configuration"
 import { driverGenderLabel, fieldLabel } from "../../constants/Driver"
 import useDrivers from "../../hooks/useDrivers"
 import useDriversFilters from "../../hooks/useDriversFilters"
-import { Driver, DriverGender, OrderDir } from "../../interfaces/Driver"
+import {
+  Driver,
+  DriverGender,
+  DriverStatus,
+  OrderDir,
+} from "../../interfaces/Driver"
 import { User } from "../../interfaces/User"
 import { routes } from "../../routes/constant"
 import handleError from "../../utils/handleError"
@@ -166,11 +172,17 @@ const DriversTable: React.FC = () => {
       sorter: true,
       render: (gender: DriverGender) => driverGenderLabel[gender],
     },
-
     {
       title: fieldLabel["birthDate"],
       dataIndex: "birthDate",
       key: "birthDate",
+      sorter: true,
+      render: (isoString) => moment(isoString).format("DD/MM/YYYY"),
+    },
+    {
+      title: fieldLabel["registerDate"],
+      dataIndex: "registerDate",
+      key: "registerDate",
       sorter: true,
       render: (isoString) => moment(isoString).format("DD/MM/YYYY"),
     },
@@ -191,6 +203,22 @@ const DriversTable: React.FC = () => {
       dataIndex: "User",
       key: "username",
       render: (user: User) => user.username,
+    },
+    {
+      title: fieldLabel["status"],
+      dataIndex: "status",
+      key: "status",
+      sorter: true,
+      render: (status) => {
+        const color = status === DriverStatus.ACTIVE ? "success" : "red"
+        const label = status === DriverStatus.ACTIVE ? "Active" : "Inactive"
+
+        return (
+          <Tag key={status} color={color}>
+            {label}
+          </Tag>
+        )
+      },
     },
     {
       title: "Actions",
