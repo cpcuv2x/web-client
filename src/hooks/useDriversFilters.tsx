@@ -2,10 +2,15 @@ import { useSearchParams } from "react-router-dom"
 import { DriversFilter, DriversFilters } from "../interfaces/Driver"
 
 export const filters: DriversFilter[] = [
-  "firstName",
-  "lastName",
+  "id",
+  "firstNameTH",
+  "lastNameTH",
+  "firstNameEN",
+  "lastNameEN",
+  "gender",
   "nationalId",
   "carDrivingLicenseId",
+  "status",
   "limit",
   "offset",
   "orderBy",
