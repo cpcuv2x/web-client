@@ -195,7 +195,7 @@ const CarsTable: React.FC = () => {
           <div style={{ maxWidth: 150 }}>
             <Typography.Link
               onClick={() => {
-                navigate(`${routes.DASHBOARD_DRIVER}/${driver?.id}`)
+                navigate(`${routes.ENTITY_DRIVER}?id=${driver?.id}`)
               }}
               ellipsis
             >
