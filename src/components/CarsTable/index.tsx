@@ -101,7 +101,7 @@ const CarsTable: React.FC = () => {
       ),
     },
     {
-      title: "Image",
+      title: fieldLabel["image"],
       dataIndex: "imageFilename",
       key: "imageFilename",
       sorter: true,
