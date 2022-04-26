@@ -1,4 +1,8 @@
-import { ReloadOutlined, ZoomInOutlined } from "@ant-design/icons"
+import {
+  PieChartOutlined,
+  ReloadOutlined,
+  ZoomInOutlined,
+} from "@ant-design/icons"
 import {
   Button,
   Col,
@@ -17,17 +21,21 @@ import {
 } from "antd/lib/table/interface"
 import moment from "moment"
 import { useEffect, useState } from "react"
-import { useSearchParams } from "react-router-dom"
+import { useNavigate, useSearchParams } from "react-router-dom"
 import appConfig from "../../configuration"
+import { driverGenderLabel, fieldLabel } from "../../constants/Driver"
 import useDrivers from "../../hooks/useDrivers"
 import useDriversFilters from "../../hooks/useDriversFilters"
-import { Driver, OrderDir } from "../../interfaces/Driver"
+import { Driver, DriverGender, OrderDir } from "../../interfaces/Driver"
+import { User } from "../../interfaces/User"
+import { routes } from "../../routes/constant"
 import handleError from "../../utils/handleError"
 import CopyToClipboardButton from "../CopyToClipboardButton"
 import DeleteDriverButton from "../DeleteDriverButton"
 import EditDriverButton from "../EditDriverButton"
 
 const DriversTable: React.FC = () => {
+  const navigate = useNavigate()
   const [params, setParams] = useSearchParams()
   const { filtersObj } = useDriversFilters()
   const { drivers, count, loading, mutate, error } = useDrivers(filtersObj)
@@ -39,7 +47,7 @@ const DriversTable: React.FC = () => {
   }, [error])
 
   const [visible, setVisible] = useState(false)
-  const [imgFileName, setImgFileName] = useState("")
+  const [imgCarId, setImgCarId] = useState("")
 
   function handleChange(
     pagination: TablePaginationConfig,
@@ -74,35 +82,38 @@ const DriversTable: React.FC = () => {
 
   const columns: ColumnsType<Driver> = [
     {
-      title: "ID",
+      title: fieldLabel["id"],
       dataIndex: "id",
       key: "id",
       sorter: true,
+      ellipsis: true,
       render: (id) => (
-        <Row justify="space-between" gutter={8}>
-          <Col style={{ maxWidth: 100 }}>
-            <Typography.Text ellipsis>{id}</Typography.Text>
-          </Col>
+        <Row justify="space-between" gutter={8} wrap={false}>
           <Col>
             <CopyToClipboardButton text={id} />
+          </Col>
+          <Col style={{ maxWidth: 100 }}>
+            <Tooltip title={id}>
+              <Typography.Text ellipsis>{id}</Typography.Text>
+            </Tooltip>
           </Col>
         </Row>
       ),
     },
     {
-      title: "Image",
+      title: fieldLabel["image"],
       dataIndex: "imageFilename",
       key: "imageFilename",
       sorter: true,
-      render: (fileName) =>
-        fileName ? (
+      render: (imageFilename, record) =>
+        imageFilename ? (
           <>
             <Button
               type="link"
               icon={<ZoomInOutlined />}
               style={{ padding: 0 }}
               onClick={() => {
-                setImgFileName(fileName)
+                setImgCarId(record.id)
                 setVisible(true)
               }}
             >
@@ -111,8 +122,8 @@ const DriversTable: React.FC = () => {
             {visible && (
               <Image
                 preview={{
-                  visible: fileName === imgFileName,
-                  src: `${appConfig.webServicesURL}api/drivers/images/${fileName}`,
+                  visible: record.id === imgCarId,
+                  src: `${appConfig.webServicesURL}api/drivers/${record.id}/image`,
                   onVisibleChange: (value) => {
                     setVisible(value)
                   },
@@ -125,48 +136,78 @@ const DriversTable: React.FC = () => {
         ),
     },
     {
-      title: "First Name",
-      dataIndex: "firstName",
-      key: "firstName",
+      title: fieldLabel["firstNameTH"],
+      dataIndex: "firstNameTH",
+      key: "firstNameTH",
       sorter: true,
     },
     {
-      title: "Last Name",
-      dataIndex: "lastName",
-      key: "lastName",
+      title: fieldLabel["lastNameTH"],
+      dataIndex: "lastNameTH",
+      key: "lastNameTH",
       sorter: true,
     },
     {
-      title: "Birth Date",
+      title: fieldLabel["firstNameEN"],
+      dataIndex: "firstNameEN",
+      key: "firstNameEN",
+      sorter: true,
+    },
+    {
+      title: fieldLabel["lastNameEN"],
+      dataIndex: "lastNameEN",
+      key: "lastNameEN",
+      sorter: true,
+    },
+    {
+      title: fieldLabel["gender"],
+      dataIndex: "gender",
+      key: "gender",
+      sorter: true,
+      render: (gender: DriverGender) => driverGenderLabel[gender],
+    },
+
+    {
+      title: fieldLabel["birthDate"],
       dataIndex: "birthDate",
       key: "birthDate",
       sorter: true,
       render: (isoString) => moment(isoString).format("DD/MM/YYYY"),
     },
     {
-      title: "National ID",
+      title: fieldLabel["nationalId"],
       dataIndex: "nationalId",
       key: "nationalId",
       sorter: true,
     },
     {
-      title: "Car Driving License No.",
+      title: fieldLabel["carDrivingLicenseId"],
       dataIndex: "carDrivingLicenseId",
       key: "carDrivingLicenseId",
       sorter: true,
     },
     {
+      title: fieldLabel["username"],
+      dataIndex: "User",
+      key: "username",
+      render: (user: User) => user.username,
+    },
+    {
       title: "Actions",
       dataIndex: "id",
       key: "action",
+      fixed: "right",
       render: (id) => (
         <Space>
-          <Tooltip title="Edit">
-            <EditDriverButton driverId={id} />
-          </Tooltip>
-          <Tooltip title="Delete">
-            <DeleteDriverButton driverId={id} onFinished={reload} />
-          </Tooltip>
+          <EditDriverButton driverId={id} />
+          <DeleteDriverButton driverId={id} onFinished={reload} />
+
+          <Button
+            onClick={() => {
+              navigate(`${routes.DASHBOARD_DRIVER}/${id}`)
+            }}
+            icon={<PieChartOutlined />}
+          />
         </Space>
       ),
     },
@@ -179,6 +220,8 @@ const DriversTable: React.FC = () => {
       rowKey="id"
       loading={loading}
       onChange={handleChange}
+      tableLayout="fixed"
+      scroll={{ x: true }}
       title={() => (
         <Row justify="space-between">
           <Col>
