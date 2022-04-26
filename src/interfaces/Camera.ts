@@ -4,7 +4,7 @@ export interface Camera {
   id: string
   name: string
   description: string
-  streamUrl: string
+  // streamUrl: string
   role: CameraRole
   status: CameraStatus
   carId: string
