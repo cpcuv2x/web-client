@@ -1,5 +1,4 @@
 import {
-  DashboardOutlined,
   PieChartOutlined,
   ReloadOutlined,
   ZoomInOutlined,
