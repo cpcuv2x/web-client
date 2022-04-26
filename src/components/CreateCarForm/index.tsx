@@ -16,7 +16,6 @@ import axiosClient from "../../utils/axiosClient"
 import handleError from "../../utils/handleError"
 import { normFile } from "../../utils/normFile"
 
-const { Option } = Select
 interface CreateCarFormValues {
   licensePlate: string
   model: string
@@ -117,13 +116,7 @@ const CreateCarForm: React.FC = () => {
               label: name,
               value: id,
             }))}
-          >
-            {cameras.map(({ id, name }) => (
-              <Option key={id} value={id}>
-                {name}
-              </Option>
-            ))}
-          </Select>
+          />
         </Form.Item>
 
         <Form.Item>
