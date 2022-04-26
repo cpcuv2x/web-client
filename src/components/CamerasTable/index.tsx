@@ -119,19 +119,19 @@ const CamerasTable: React.FC = () => {
     },
     {
       title: "Attached To",
-      dataIndex: "carId",
+      dataIndex: "Car",
       key: "carId",
       sorter: true,
-      render: (carId) => {
-        return carId ? (
+      render: (car) => {
+        return car ? (
           <div style={{ maxWidth: 150 }}>
             <Typography.Link
               onClick={() => {
-                navigate(`${routes.DASHBOARD_CAR}/${carId}`)
+                navigate(`${routes.DASHBOARD_CAR}/${car.id}`)
               }}
               ellipsis
             >
-              {carId}
+              {car.licensePlate}
             </Typography.Link>
           </div>
         ) : (

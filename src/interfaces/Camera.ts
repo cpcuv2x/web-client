@@ -1,3 +1,5 @@
+import { Car } from "./Car"
+
 export interface Camera {
   id: string
   name: string
@@ -6,6 +8,7 @@ export interface Camera {
   role: CameraRole
   status: CameraStatus
   carId: string
+  Car: Car
 }
 
 export enum CameraRole {
