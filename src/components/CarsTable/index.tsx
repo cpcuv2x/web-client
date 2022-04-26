@@ -1,4 +1,9 @@
-import { ReloadOutlined, ZoomInOutlined } from "@ant-design/icons"
+import {
+  DashboardOutlined,
+  PieChartOutlined,
+  ReloadOutlined,
+  ZoomInOutlined,
+} from "@ant-design/icons"
 import {
   Button,
   Col,
@@ -17,17 +22,22 @@ import {
   TableCurrentDataSource,
 } from "antd/lib/table/interface"
 import React, { useEffect, useState } from "react"
-import { useSearchParams } from "react-router-dom"
+import { useNavigate, useSearchParams } from "react-router-dom"
 import appConfig from "../../configuration"
+import { fieldLabel } from "../../constants/Car"
 import useCars from "../../hooks/useCars"
 import useCarsFilters from "../../hooks/useCarsFilters"
-import { Car, OrderDir } from "../../interfaces/Car"
+import { Camera, CameraStatus } from "../../interfaces/Camera"
+import { Car, CarStatus, OrderDir } from "../../interfaces/Car"
+import { Driver } from "../../interfaces/Driver"
+import { routes } from "../../routes/constant"
 import handleError from "../../utils/handleError"
 import CopyToClipboardButton from "../CopyToClipboardButton"
 import DeleteCarButton from "../DeleteCarButton"
 import EditCarButton from "../EditCarButton"
 
 const CarsTable: React.FC = () => {
+  const navigate = useNavigate()
   const [params, setParams] = useSearchParams()
   const { filtersObj } = useCarsFilters()
   const { cars, count, loading, mutate, error } = useCars(filtersObj)
@@ -39,7 +49,7 @@ const CarsTable: React.FC = () => {
   }, [error])
 
   const [visible, setVisible] = useState(false)
-  const [imgFileName, setImgFileName] = useState("")
+  const [imgCarId, setImgCarId] = useState("")
 
   const handleChange = (
     pagination: TablePaginationConfig,
@@ -75,17 +85,18 @@ const CarsTable: React.FC = () => {
 
   const columns: ColumnsType<Car> = [
     {
-      title: "ID",
+      title: fieldLabel["id"],
       dataIndex: "id",
       key: "id",
       sorter: true,
+      ellipsis: true,
       render: (id) => (
-        <Row justify="space-between" gutter={8}>
-          <Col style={{ maxWidth: 100 }}>
-            <Typography.Text ellipsis>{id}</Typography.Text>
-          </Col>
+        <Row justify="space-between" gutter={8} wrap={false}>
           <Col>
             <CopyToClipboardButton text={id} />
+          </Col>
+          <Col>
+            <Tooltip title={id}>{id}</Tooltip>
           </Col>
         </Row>
       ),
@@ -95,15 +106,15 @@ const CarsTable: React.FC = () => {
       dataIndex: "imageFilename",
       key: "imageFilename",
       sorter: true,
-      render: (fileName) =>
-        fileName ? (
+      render: (imageFilename, record) =>
+        imageFilename ? (
           <>
             <Button
               type="link"
               icon={<ZoomInOutlined />}
               style={{ padding: 0 }}
               onClick={() => {
-                setImgFileName(fileName)
+                setImgCarId(record.id)
                 setVisible(true)
               }}
             >
@@ -112,8 +123,8 @@ const CarsTable: React.FC = () => {
             {visible && (
               <Image
                 preview={{
-                  visible: fileName === imgFileName,
-                  src: `${appConfig.webServicesURL}api/cars/images/${fileName}`,
+                  visible: record.id === imgCarId,
+                  src: `${appConfig.webServicesURL}api/cars/${record.id}/image`,
                   onVisibleChange: (value) => {
                     setVisible(value)
                   },
@@ -126,31 +137,31 @@ const CarsTable: React.FC = () => {
         ),
     },
     {
-      title: "License Plate No.",
+      title: fieldLabel["licensePlate"],
       dataIndex: "licensePlate",
       key: "licensePlate",
       sorter: true,
     },
     {
-      title: "Model",
+      title: fieldLabel["model"],
       dataIndex: "model",
       key: "model",
       sorter: true,
     },
     {
-      title: "Passenger (s)",
+      title: fieldLabel["passengers"],
       dataIndex: "passengers",
       key: "passengers",
       sorter: true,
     },
     {
-      title: "Status",
+      title: fieldLabel["status"],
       dataIndex: "status",
       key: "status",
       sorter: true,
       render: (status) => {
-        const color = status === "ACTIVE" ? "success" : "red"
-        const label = status === "ACTIVE" ? "Active" : "Inactive"
+        const color = status === CarStatus.ACTIVE ? "success" : "red"
+        const label = status === CarStatus.ACTIVE ? "Active" : "Inactive"
 
         return (
           <Tag key={status} color={color}>
@@ -160,17 +171,56 @@ const CarsTable: React.FC = () => {
       },
     },
     {
+      title: fieldLabel["cameras"],
+      dataIndex: "Camera",
+      key: "id",
+      render: (cameras: Camera[]) =>
+        cameras.length
+          ? cameras.map(({ id, name, status }) => {
+              const color = status === CameraStatus.ACTIVE ? "success" : "red"
+              return (
+                <Tag key={id} color={color}>
+                  {name}
+                </Tag>
+              )
+            })
+          : "-",
+    },
+    {
+      title: fieldLabel["Driver"],
+      dataIndex: "Driver",
+      key: "driverId",
+      sorter: true,
+      render: (driver: Driver) =>
+        driver ? (
+          <div style={{ maxWidth: 150 }}>
+            <Typography.Link
+              onClick={() => {
+                navigate(`${routes.DASHBOARD_DRIVER}/${driver?.id}`)
+              }}
+              ellipsis
+            >
+              {driver?.firstName}
+            </Typography.Link>
+          </div>
+        ) : (
+          "-"
+        ),
+    },
+    {
       title: "Actions",
       dataIndex: "id",
       key: "action",
       render: (id) => (
         <Space>
-          <Tooltip title="Edit">
-            <EditCarButton carId={id} />
-          </Tooltip>
-          <Tooltip title="Delete">
-            <DeleteCarButton carId={id} onFinished={reload} />
-          </Tooltip>
+          <EditCarButton carId={id} />
+          <DeleteCarButton carId={id} onFinished={reload} />
+          <Button
+            onClick={() => {
+              navigate(`${routes.DASHBOARD_CAR}/${id}`)
+            }}
+            icon={<PieChartOutlined />}
+          />
         </Space>
       ),
     },
@@ -183,6 +233,7 @@ const CarsTable: React.FC = () => {
       rowKey="id"
       loading={loading}
       onChange={handleChange}
+      tableLayout="fixed"
       title={() => (
         <Row justify="space-between">
           <Col>

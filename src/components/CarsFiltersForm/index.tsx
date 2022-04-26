@@ -12,12 +12,14 @@ import {
 } from "antd"
 import React from "react"
 import { useSearchParams } from "react-router-dom"
+import { fieldLabel } from "../../constants/Car"
 import useCarsFilters from "../../hooks/useCarsFilters"
 import { CarStatus } from "../../interfaces/Car"
 
 const { Option } = Select
 
 interface CarsFiltersFormValues {
+  id?: string
   licensePlate?: string
   model?: string
   status?: CarStatus
@@ -48,32 +50,43 @@ const CarsFiltersForm: React.FC = () => {
       <Card>
         <Form form={form} onFinish={onSubmit} layout="vertical">
           <Row gutter={24}>
-            <Col span={8}>
-              <Form.Item label="License Plate No." name="licensePlate">
+            <Col span={4}>
+              <Form.Item label="ID" name="id">
                 <Input />
               </Form.Item>
             </Col>
-            <Col span={8}>
-              <Form.Item label="Model" name="model">
+            <Col span={4}>
+              <Form.Item label={fieldLabel["licensePlate"]} name="licensePlate">
                 <Input />
               </Form.Item>
             </Col>
-            <Col span={8}>
-              <Form.Item label="Status" name="status">
+            <Col span={4}>
+              <Form.Item label={fieldLabel["model"]} name="model">
+                <Input />
+              </Form.Item>
+            </Col>
+            <Col span={4}>
+              <Form.Item label={fieldLabel["status"]} name="status">
                 <Select placeholder="Not selected">
                   <Option value="">Not selected</Option>
-                  <Option value="ACTIVE">Active</Option>
-                  <Option value="INACTIVE">Inactive</Option>
+                  <Option value={CarStatus.ACTIVE}>Active</Option>
+                  <Option value={CarStatus.INACTIVE}>Inactive</Option>
                 </Select>
               </Form.Item>
             </Col>
-            <Col span={8}>
-              <Form.Item label="Min. Passengers" name="minPassengers">
+            <Col span={4}>
+              <Form.Item
+                label={fieldLabel["minPassengers"]}
+                name="minPassengers"
+              >
                 <InputNumber style={{ width: "100%" }} min={0} />
               </Form.Item>
             </Col>
-            <Col span={8}>
-              <Form.Item label="Max. Passengers" name="maxPassengers">
+            <Col span={4}>
+              <Form.Item
+                label={fieldLabel["maxPassengers"]}
+                name="maxPassengers"
+              >
                 <InputNumber style={{ width: "100%" }} min={0} />
               </Form.Item>
             </Col>

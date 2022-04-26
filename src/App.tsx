@@ -30,7 +30,7 @@ function App() {
   return (
     <SocketContext.Provider value={socket}>
       <ConfigProvider form={{ validateMessages }}>
-        <SWRConfig value={{ fetcher: axiosFetcher }}>
+        <SWRConfig value={{ fetcher: axiosFetcher, revalidateOnMount: true }}>
           <BrowserRouter>
             <Routes>
               <Route index element={<LoginPage />} />
