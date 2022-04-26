@@ -26,8 +26,7 @@ interface CreateCarFormValues {
 const CreateCarForm: React.FC = () => {
   const [form] = Form.useForm<CreateCarFormValues>()
   const navigate = useNavigate()
-  const { mutate: mutateCars } = useCars()
-  const { cameras, mutate: mutateCameras } = useCameras()
+  const { cameras } = useCameras()
 
   async function onSubmit(values: CreateCarFormValues) {
     try {
@@ -50,9 +49,6 @@ const CreateCarForm: React.FC = () => {
         formData.append("image", values.image[0].originFileObj as Blob)
         await axiosClient.patch(`/api/cars/${newCarId}/image`, formData)
       }
-
-      mutateCars()
-      mutateCameras()
       navigate(routes.ENTITY_CAR)
     } catch (error) {
       handleError(error)
