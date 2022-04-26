@@ -14,6 +14,7 @@ import { normFile } from "../../utils/normFile"
 
 interface Props {
   initialValues: Car
+  mutate: VoidFunction
 }
 
 interface EditCarFormValues {
@@ -23,7 +24,7 @@ interface EditCarFormValues {
   cameras: string[]
 }
 
-const EditCarForm: React.FC<Props> = ({ initialValues }) => {
+const EditCarForm: React.FC<Props> = ({ initialValues, mutate }) => {
   const formInitialValues = {
     ...initialValues,
     cameras: initialValues.Camera.map(({ id }) => id),
@@ -68,6 +69,7 @@ const EditCarForm: React.FC<Props> = ({ initialValues }) => {
           await axiosClient.delete(`/api/cars/${formInitialValues.id}/image`)
         }
       }
+      await mutate()
       navigate(routes.ENTITY_CAR)
     } catch (error) {
       handleError(error)

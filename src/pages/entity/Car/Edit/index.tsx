@@ -12,7 +12,7 @@ const EntityCarEditPage: React.FC = () => {
   const { carId } = useParams()
   if (!carId) return <div>Loading...</div>
 
-  const { car, loading, error } = useCar(carId)
+  const { car, loading, error, mutate } = useCar(carId)
   if (loading) return <div>Loading...</div>
 
   if (error || !car) return <div>An error occurred.</div>
@@ -34,7 +34,7 @@ const EntityCarEditPage: React.FC = () => {
 
       <Typography.Title>Edit car: {car.licensePlate}</Typography.Title>
 
-      <EditCarForm initialValues={car} />
+      <EditCarForm initialValues={car} mutate={mutate} />
     </>
   )
 }
