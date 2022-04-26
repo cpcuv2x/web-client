@@ -86,8 +86,6 @@ const CreateDriverForm = () => {
     navigate(routes.ENTITY_DRIVER)
   }
 
-  // TODO: add Username and Password fields
-
   return (
     <Card>
       <Form form={form} onFinish={onSubmit} layout="vertical">
