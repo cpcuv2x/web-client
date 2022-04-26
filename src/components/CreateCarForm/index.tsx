@@ -1,4 +1,8 @@
-import { UploadOutlined } from "@ant-design/icons"
+import {
+  DeleteOutlined,
+  PlusCircleOutlined,
+  UploadOutlined,
+} from "@ant-design/icons"
 import { Button, Card, Form, Input, Modal, Select, Space, Upload } from "antd"
 import { UploadFile } from "antd/lib/upload/interface"
 import React from "react"
@@ -22,33 +26,33 @@ interface CreateCarFormValues {
 const CreateCarForm: React.FC = () => {
   const [form] = Form.useForm<CreateCarFormValues>()
   const navigate = useNavigate()
-  const { mutate } = useCars()
-  const { cameras } = useCameras()
+  const { mutate: mutateCars } = useCars()
+  const { cameras, mutate: mutateCameras } = useCameras()
 
   async function onSubmit(values: CreateCarFormValues) {
-    const { image, cameras, ...rest } = values
-    const cameraIds = cameras
-      ? cameras.map((id) => ({
-          id,
-        }))
-      : []
-
     try {
-      // Create a car
+      // Create a new car
       const payload = {
-        ...rest,
-        cameras: cameraIds,
+        licensePlate: values.licensePlate,
+        model: values.model,
+        cameras: values.cameras
+          ? values.cameras.map((id) => ({
+              id,
+            }))
+          : [],
       }
       const response = await axiosClient.post<Car>("/api/cars", payload)
-      // Upload an image if exists
-      if (image && image.length) {
-        const { id: newCarId } = response.data
-        const formData = new FormData()
-        formData.append("image", image[0].originFileObj as Blob)
 
+      // Upload an image if exists
+      if (values.image && values.image.length) {
+        const newCarId = response.data.id
+        const formData = new FormData()
+        formData.append("image", values.image[0].originFileObj as Blob)
         await axiosClient.patch(`/api/cars/${newCarId}/image`, formData)
       }
-      mutate()
+
+      mutateCars()
+      mutateCameras()
       navigate(routes.ENTITY_CAR)
     } catch (error) {
       handleError(error)
@@ -70,12 +74,7 @@ const CreateCarForm: React.FC = () => {
 
   return (
     <Card>
-      <Form
-        form={form}
-        onFinish={onSubmit}
-        labelCol={{ span: 4 }}
-        wrapperCol={{ span: 4 }}
-      >
+      <Form form={form} onFinish={onSubmit} layout="vertical">
         <Form.Item
           name="image"
           label="Image"
@@ -106,7 +105,14 @@ const CreateCarForm: React.FC = () => {
         </Form.Item>
 
         <Form.Item name="cameras" label="Cameras">
-          <Select mode="tags">
+          <Select
+            mode="multiple"
+            placeholder="Not selected"
+            options={cameras.map(({ id, name }) => ({
+              label: name,
+              value: id,
+            }))}
+          >
             {cameras.map(({ id, name }) => (
               <Option key={id} value={id}>
                 {name}
@@ -115,12 +121,16 @@ const CreateCarForm: React.FC = () => {
           </Select>
         </Form.Item>
 
-        <Form.Item wrapperCol={{ offset: 4 }}>
+        <Form.Item>
           <Space>
-            <Button type="default" onClick={onCancel}>
+            <Button type="default" onClick={onCancel} icon={<DeleteOutlined />}>
               Cancel
             </Button>
-            <Button type="primary" htmlType="submit">
+            <Button
+              type="primary"
+              htmlType="submit"
+              icon={<PlusCircleOutlined />}
+            >
               Create
             </Button>
           </Space>
