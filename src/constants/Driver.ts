@@ -13,6 +13,8 @@ export const fieldLabel = {
   image: "Image",
   username: "Username",
   password: "Password",
+  registerDate: "Register Date",
+  status: "Status",
 }
 
 export const driverGenderLabel = {
