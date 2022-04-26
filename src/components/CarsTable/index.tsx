@@ -199,7 +199,7 @@ const CarsTable: React.FC = () => {
               }}
               ellipsis
             >
-              {driver?.firstName}
+              {driver?.firstNameTH} ({driver?.id})
             </Typography.Link>
           </div>
         ) : (
