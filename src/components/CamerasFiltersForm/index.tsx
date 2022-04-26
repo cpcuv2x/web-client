@@ -2,17 +2,19 @@ import { DeleteOutlined, SearchOutlined } from "@ant-design/icons"
 import { Button, Card, Col, Form, Input, Row, Select, Space } from "antd"
 import React from "react"
 import { useSearchParams } from "react-router-dom"
+import { cameraPositionLabel, fieldLabel } from "../../constants/Camera"
 import useCamerasFilters from "../../hooks/useCamerasFilters"
+import useCars from "../../hooks/useCars"
 import { CameraRole, CameraStatus } from "../../interfaces/Camera"
 
-const { Option } = Select
-
 interface CamerasFiltersFormValues {
+  id?: string
   name?: string
   description?: string
-  streamUrl?: string
-  carId?: string
+  // streamUrl?: string
+  role?: CameraRole
   status?: CameraStatus
+  carId?: string
 }
 
 const CamerasFiltersForm: React.FC = () => {
@@ -20,6 +22,7 @@ const CamerasFiltersForm: React.FC = () => {
   const { clearAll } = useCamerasFilters()
 
   const [form] = Form.useForm<CamerasFiltersFormValues>()
+  const { cars } = useCars()
 
   function onSubmit(values: CamerasFiltersFormValues) {
     const newParams = new URLSearchParams(params)
@@ -37,49 +40,66 @@ const CamerasFiltersForm: React.FC = () => {
     <Card>
       <Form form={form} onFinish={onSubmit} layout="vertical">
         <Row gutter={24}>
-          <Col span={8}>
-            <Form.Item label="ID" name="id">
+          <Col span={4}>
+            <Form.Item label={fieldLabel["id"]} name="id">
               <Input />
             </Form.Item>
           </Col>
-          <Col span={8}>
-            <Form.Item label="Name" name="name">
+          <Col span={4}>
+            <Form.Item label={fieldLabel["name"]} name="name">
               <Input />
             </Form.Item>
           </Col>
-          <Col span={8}>
-            <Form.Item label="Description" name="description">
+          <Col span={4}>
+            <Form.Item label={fieldLabel["description"]} name="description">
               <Input />
             </Form.Item>
           </Col>
-          <Col span={8}>
-            <Form.Item label="Stream URL" name="streamUrl">
+          {/* <Col span={4}>
+            <Form.Item label={fieldLabel["streamUrl"]} name="streamUrl">
               <Input />
             </Form.Item>
-          </Col>
-          <Col span={8}>
-            <Form.Item label="Position" name="role">
-              <Select placeholder="Not selected">
-                <Option value="">Not selected</Option>
-                <Option value={CameraRole.DOOR}>Entrance Door</Option>
-                <Option value={CameraRole.DRIVER}>Driver Face</Option>
-                <Option value={CameraRole.SEATS_FRONT}>Front</Option>
-                <Option value={CameraRole.SEATS_BACK}>Back</Option>
-              </Select>
+          </Col> */}
+          <Col span={4}>
+            <Form.Item label={fieldLabel["role"]} name="role">
+              <Select
+                options={[
+                  { label: "Not Selected", value: null },
+                  ...[
+                    CameraRole.DOOR,
+                    CameraRole.DRIVER,
+                    CameraRole.SEATS_FRONT,
+                    CameraRole.SEATS_BACK,
+                  ].map((role) => ({
+                    label: cameraPositionLabel[role],
+                    value: role,
+                  })),
+                ]}
+              />
             </Form.Item>
           </Col>
-          <Col span={8}>
-            <Form.Item label="Status" name="status">
-              <Select placeholder="Not selected">
-                <Option value="">Not selected</Option>
-                <Option value={CameraStatus.ACTIVE}>Active</Option>
-                <Option value={CameraStatus.INACTIVE}>Inactive</Option>
-              </Select>
+          <Col span={4}>
+            <Form.Item label={fieldLabel["status"]} name="status">
+              <Select
+                options={[
+                  { label: "Not selected", value: null },
+                  { label: "Active", value: CameraStatus.ACTIVE },
+                  { label: "Inactive", value: CameraStatus.INACTIVE },
+                ]}
+              />
             </Form.Item>
           </Col>
-          <Col span={8}>
-            <Form.Item label="Car ID" name="carId">
-              <Input />
+          <Col span={4}>
+            <Form.Item label={fieldLabel["carId"]} name="carId">
+              <Select
+                options={[
+                  { label: "Not Selected", value: null },
+                  ...cars.map(({ id, licensePlate }) => ({
+                    label: `${licensePlate}  (${id})`,
+                    value: id,
+                  })),
+                ]}
+              />
             </Form.Item>
           </Col>
         </Row>

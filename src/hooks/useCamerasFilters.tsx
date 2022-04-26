@@ -5,7 +5,7 @@ export const filters: CamerasFilter[] = [
   "id",
   "name",
   "description",
-  "streamUrl",
+  // "streamUrl",
   "role",
   "status",
   "carId",
