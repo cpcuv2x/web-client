@@ -7,4 +7,6 @@ export const fieldLabel = {
   passengers: "Passenger (s)",
   status: "Status",
   Driver: "Driver",
+  minPassengers: "Min. Passengers",
+  maxPassengers: "Max. Passengers",
 }
