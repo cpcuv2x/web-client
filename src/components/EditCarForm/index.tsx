@@ -22,21 +22,30 @@ interface EditCarFormValues {
   image: UploadFile[]
 }
 
+// TODO: add camera edit
 const EditCarForm: React.FC<Props> = ({ initialValues, mutate }) => {
   const [form] = Form.useForm()
   const navigate = useNavigate()
   const { mutate: mutateCars } = useCars()
 
   async function onSubmit(values: EditCarFormValues) {
-    const formData = new FormData()
-    formData.append("licensePlate", values.licensePlate)
-    formData.append("model", values.model)
-    if (values.image && values.image.length) {
-      formData.append("image", values.image[0].originFileObj as Blob)
-    }
+    const { image, ...rest } = values
 
     try {
-      await axiosClient.patch(`/api/cars/${initialValues.id}`, formData)
+      // Update the car
+      await axiosClient.patch(`/api/cars/${initialValues.id}`, rest)
+      if (form.isFieldTouched("image")) {
+        if (image.length) {
+          const formData = new FormData()
+          formData.append("image", image[0].originFileObj as Blob)
+          await axiosClient.patch(
+            `/api/cars/${initialValues.id}/image`,
+            formData
+          )
+        } else {
+          await axiosClient.delete(`/api/cars/${initialValues.id}/image`)
+        }
+      }
       mutate()
       mutateCars()
       navigate(routes.ENTITY_CAR)
@@ -46,12 +55,16 @@ const EditCarForm: React.FC<Props> = ({ initialValues, mutate }) => {
   }
 
   function onCancel() {
-    Modal.confirm({
-      title: "Do you want to discard all changes?",
-      onOk: () => {
-        navigate(routes.ENTITY_CAR)
-      },
-    })
+    if (form.isFieldsTouched()) {
+      Modal.confirm({
+        title: "Do you want to discard all changes?",
+        onOk: () => {
+          navigate(routes.ENTITY_CAR)
+        },
+      })
+      return
+    }
+    navigate(routes.ENTITY_CAR)
   }
 
   return (
@@ -81,7 +94,7 @@ const EditCarForm: React.FC<Props> = ({ initialValues, mutate }) => {
                     {
                       uid: "1",
                       name: initialValues.imageFilename,
-                      url: `${appConfig.webServicesURL}api/cars/images/${initialValues.imageFilename}`,
+                      url: `${appConfig.webServicesURL}api/cars/${initialValues.id}/image`,
                     },
                   ]
                 : []
