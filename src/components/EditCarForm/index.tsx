@@ -157,7 +157,7 @@ const EditCarForm: React.FC<Props> = ({ initialValues, mutate }) => {
               Cancel
             </Button>
             <Button type="primary" htmlType="submit" icon={<EditOutlined />}>
-              Edit
+              Submit
             </Button>
           </Space>
         </Form.Item>
