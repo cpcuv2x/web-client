@@ -27,9 +27,11 @@ const CreateCarForm: React.FC = () => {
 
   async function onSubmit(values: CreateCarFormValues) {
     const { image, cameras, ...rest } = values
-    const cameraIds = cameras.map((id) => ({
-      id,
-    }))
+    const cameraIds = cameras
+      ? cameras.map((id) => ({
+          id,
+        }))
+      : []
 
     try {
       // Create a car
