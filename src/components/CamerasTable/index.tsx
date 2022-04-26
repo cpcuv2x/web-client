@@ -8,9 +8,15 @@ import {
 } from "antd/lib/table/interface"
 import React, { useEffect } from "react"
 import { useNavigate, useSearchParams } from "react-router-dom"
+import { cameraPositionLabel, fieldLabel } from "../../constants/Camera"
 import useCameras from "../../hooks/useCameras"
 import useCamerasFilters from "../../hooks/useCamerasFilters"
-import { Camera, CameraStatus, OrderDir } from "../../interfaces/Camera"
+import {
+  Camera,
+  CameraRole,
+  CameraStatus,
+  OrderDir,
+} from "../../interfaces/Camera"
 import { routes } from "../../routes/constant"
 import handleError from "../../utils/handleError"
 import CopyToClipboardButton from "../CopyToClipboardButton"
@@ -62,47 +68,49 @@ const CamerasTable: React.FC = () => {
 
   const columns: ColumnsType<Camera> = [
     {
-      title: "ID",
+      title: fieldLabel["id"],
       dataIndex: "id",
       key: "id",
       sorter: true,
+      ellipsis: true,
       render: (id) => (
-        <Row justify="space-between" gutter={8}>
-          <Col style={{ maxWidth: 200 }}>
-            <Typography.Text ellipsis>{id}</Typography.Text>
-          </Col>
+        <Row justify="space-between" gutter={8} wrap={false}>
           <Col>
             <CopyToClipboardButton text={id} />
+          </Col>
+          <Col>
+            <Tooltip title={id}>{id}</Tooltip>
           </Col>
         </Row>
       ),
     },
     {
-      title: "Name",
+      title: fieldLabel["name"],
       dataIndex: "name",
       key: "name",
       sorter: true,
     },
     {
-      title: "Description",
+      title: fieldLabel["description"],
       dataIndex: "description",
       key: "description",
       sorter: true,
     },
+    // {
+    //   title: fieldLabel["streamUrl"],
+    //   dataIndex: "streamUrl",
+    //   key: "streamUrl",
+    //   sorter: true,
+    // },
     {
-      title: "Stream URL",
-      dataIndex: "streamUrl",
-      key: "streamUrl",
-      sorter: true,
-    },
-    {
-      title: "Position",
+      title: fieldLabel["role"],
       dataIndex: "role",
       key: "role",
       sorter: true,
+      render: (role: CameraRole) => cameraPositionLabel[role],
     },
     {
-      title: "Status",
+      title: fieldLabel["status"],
       dataIndex: "status",
       key: "status",
       sorter: true,
@@ -118,22 +126,20 @@ const CamerasTable: React.FC = () => {
       },
     },
     {
-      title: "Attached To",
-      dataIndex: "carId",
+      title: fieldLabel["carId"],
+      dataIndex: "Car",
       key: "carId",
       sorter: true,
-      render: (carId) => {
-        return carId ? (
-          <div style={{ maxWidth: 150 }}>
-            <Typography.Link
-              onClick={() => {
-                navigate(`${routes.DASHBOARD_CAR}/${carId}`)
-              }}
-              ellipsis
-            >
-              {carId}
-            </Typography.Link>
-          </div>
+      render: (car) => {
+        return car ? (
+          <Typography.Link
+            onClick={() => {
+              navigate(`${routes.ENTITY_CAR}?id=${car.id}`)
+            }}
+            ellipsis
+          >
+            {car.licensePlate}
+          </Typography.Link>
         ) : (
           "-"
         )
@@ -145,12 +151,8 @@ const CamerasTable: React.FC = () => {
       key: "action",
       render: (id) => (
         <Space>
-          <Tooltip title="Edit">
-            <EditCameraButton cameraId={id} />
-          </Tooltip>
-          <Tooltip title="Delete">
-            <DeleteCameraButton cameraId={id} onFinished={reload} />
-          </Tooltip>
+          <EditCameraButton cameraId={id} />
+          <DeleteCameraButton cameraId={id} onFinished={reload} />
         </Space>
       ),
     },
@@ -163,6 +165,7 @@ const CamerasTable: React.FC = () => {
       rowKey="id"
       loading={loading}
       onChange={handleChange}
+      tableLayout="fixed"
       title={() => (
         <Row justify="space-between">
           <Col>

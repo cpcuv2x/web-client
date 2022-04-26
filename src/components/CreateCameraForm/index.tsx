@@ -1,18 +1,16 @@
+import { DeleteOutlined, PlusCircleOutlined } from "@ant-design/icons"
 import { Button, Card, Form, Input, Modal, Select, Space } from "antd"
 import { useNavigate } from "react-router-dom"
-import useCameras from "../../hooks/useCameras"
+import { cameraPositionLabel, fieldLabel } from "../../constants/Camera"
 import useCars from "../../hooks/useCars"
 import { CameraRole } from "../../interfaces/Camera"
 import { routes } from "../../routes/constant"
 import axiosClient from "../../utils/axiosClient"
 import handleError from "../../utils/handleError"
-
-const { Option } = Select
-
 interface CreateCameraFormValues {
   name: string | null
   description: string
-  streamUrl: string
+  // streamUrl: string
   role: CameraRole
   carId: string
 }
@@ -20,13 +18,17 @@ interface CreateCameraFormValues {
 const CreateCameraForm: React.FC = () => {
   const [form] = Form.useForm<CreateCameraFormValues>()
   const navigate = useNavigate()
-  const { mutate } = useCameras()
   const { cars } = useCars()
 
   async function onSubmit(values: CreateCameraFormValues) {
     try {
-      await axiosClient.post("/api/cameras", values)
-      mutate()
+      const payload = {
+        name: values.name,
+        description: values.description,
+        role: values.role,
+        carId: values.carId,
+      }
+      await axiosClient.post("/api/cameras", payload)
       navigate(routes.ENTITY_CAMERA)
     } catch (error) {
       handleError(error)
@@ -51,50 +53,68 @@ const CreateCameraForm: React.FC = () => {
       <Form
         form={form}
         onFinish={onSubmit}
-        labelCol={{ span: 4 }}
-        wrapperCol={{ span: 6 }}
+        layout="vertical"
+        initialValues={{ carId: null }}
       >
-        <Form.Item name="name" label="Name" rules={[{ required: true }]}>
+        <Form.Item
+          name="name"
+          label={fieldLabel["name"]}
+          rules={[{ required: true }]}
+        >
           <Input />
         </Form.Item>
         <Form.Item
           name="description"
-          label="Description"
+          label={fieldLabel["description"]}
           rules={[{ required: true }]}
         >
           <Input.TextArea />
         </Form.Item>
-        <Form.Item
+        {/* <Form.Item
           name="streamUrl"
           label="Stream URL"
           rules={[{ required: true }]}
         >
           <Input type="url" />
+        </Form.Item> */}
+        <Form.Item
+          name="role"
+          label={fieldLabel["role"]}
+          rules={[{ required: true }]}
+        >
+          <Select
+            options={[
+              CameraRole.DOOR,
+              CameraRole.DRIVER,
+              CameraRole.SEATS_FRONT,
+              CameraRole.SEATS_BACK,
+            ].map((role) => ({
+              label: cameraPositionLabel[role],
+              value: role,
+            }))}
+          />
         </Form.Item>
-        <Form.Item name="role" label="Position" rules={[{ required: true }]}>
-          <Select>
-            <Option value={CameraRole.DOOR}>Entrance Door</Option>
-            <Option value={CameraRole.DRIVER}>Driver Face</Option>
-            <Option value={CameraRole.SEATS_FRONT}>Front</Option>
-            <Option value={CameraRole.SEATS_BACK}>Back</Option>
-          </Select>
+        <Form.Item name="carId" label={fieldLabel["carId"]}>
+          <Select
+            options={[
+              { label: "Not Selected", value: null },
+              ...cars.map(({ id, licensePlate }) => ({
+                label: `${licensePlate}  (${id})`,
+                value: id,
+              })),
+            ]}
+          />
         </Form.Item>
-        <Form.Item name="carId" label="Attached to car">
-          <Select>
-            <Option value={null}>Not set</Option>
-            {cars.map((car) => (
-              <Option key={car.id} value={car.id}>
-                {car.licensePlate} ({car.id})
-              </Option>
-            ))}
-          </Select>
-        </Form.Item>
-        <Form.Item wrapperCol={{ offset: 4 }}>
+        <Form.Item>
           <Space>
-            <Button type="default" onClick={onCancel}>
+            <Button type="default" onClick={onCancel} icon={<DeleteOutlined />}>
               Cancel
             </Button>
-            <Button type="primary" htmlType="submit">
+            <Button
+              type="primary"
+              htmlType="submit"
+              icon={<PlusCircleOutlined />}
+            >
               Create
             </Button>
           </Space>

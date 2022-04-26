@@ -3,26 +3,14 @@ import {
   ControlOutlined,
   PlusCircleOutlined,
 } from "@ant-design/icons"
-import { Breadcrumb, Button, Col, Row, Space, Typography } from "antd"
+import { Button, Col, Row, Space, Typography } from "antd"
 import React from "react"
 import { Helmet } from "react-helmet"
 import { useNavigate } from "react-router-dom"
 import CamerasFiltersForm from "../../../../components/CamerasFiltersForm"
 import CamerasTable from "../../../../components/CamerasTable"
+import PageBreadcrumb from "../../../../components/PageBreadcrumb"
 import { routes } from "../../../../routes/constant"
-
-const PageBreadcrumb: React.FC = () => (
-  <Breadcrumb>
-    <Breadcrumb.Item>
-      <ControlOutlined />
-      <span>Entity</span>
-    </Breadcrumb.Item>
-    <Breadcrumb.Item href={routes.ENTITY_CAMERA}>
-      <CameraOutlined />
-      <span>Cameras</span>
-    </Breadcrumb.Item>
-  </Breadcrumb>
-)
 
 const EntityCameraOverviewPage: React.FC = () => {
   const navigate = useNavigate()
@@ -36,7 +24,16 @@ const EntityCameraOverviewPage: React.FC = () => {
         <title>Cameras - Entity | 5G-V2X</title>
       </Helmet>
 
-      <PageBreadcrumb />
+      <PageBreadcrumb
+        items={[
+          { label: "Entity", icon: <ControlOutlined /> },
+          {
+            label: "Camera",
+            icon: <CameraOutlined />,
+            href: routes.ENTITY_CAMERA,
+          },
+        ]}
+      />
 
       <Typography.Title>
         <Row justify="space-between">

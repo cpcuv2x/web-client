@@ -1,5 +1,4 @@
 import {
-  DashboardOutlined,
   PieChartOutlined,
   ReloadOutlined,
   ZoomInOutlined,
@@ -102,7 +101,7 @@ const CarsTable: React.FC = () => {
       ),
     },
     {
-      title: "Image",
+      title: fieldLabel["image"],
       dataIndex: "imageFilename",
       key: "imageFilename",
       sorter: true,
@@ -196,7 +195,7 @@ const CarsTable: React.FC = () => {
           <div style={{ maxWidth: 150 }}>
             <Typography.Link
               onClick={() => {
-                navigate(`${routes.DASHBOARD_DRIVER}/${driver?.id}`)
+                navigate(`${routes.ENTITY_DRIVER}?id=${driver?.id}`)
               }}
               ellipsis
             >

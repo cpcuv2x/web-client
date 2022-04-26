@@ -16,8 +16,6 @@ import { fieldLabel } from "../../constants/Car"
 import useCarsFilters from "../../hooks/useCarsFilters"
 import { CarStatus } from "../../interfaces/Car"
 
-const { Option } = Select
-
 interface CarsFiltersFormValues {
   id?: string
   licensePlate?: string
@@ -51,7 +49,7 @@ const CarsFiltersForm: React.FC = () => {
         <Form form={form} onFinish={onSubmit} layout="vertical">
           <Row gutter={24}>
             <Col span={4}>
-              <Form.Item label="ID" name="id">
+              <Form.Item label={fieldLabel["id"]} name="id">
                 <Input />
               </Form.Item>
             </Col>
@@ -67,11 +65,13 @@ const CarsFiltersForm: React.FC = () => {
             </Col>
             <Col span={4}>
               <Form.Item label={fieldLabel["status"]} name="status">
-                <Select placeholder="Not selected">
-                  <Option value="">Not selected</Option>
-                  <Option value={CarStatus.ACTIVE}>Active</Option>
-                  <Option value={CarStatus.INACTIVE}>Inactive</Option>
-                </Select>
+                <Select
+                  options={[
+                    { label: "Not selected", value: null },
+                    { label: "Active", value: CarStatus.ACTIVE },
+                    { label: "Inactive", value: CarStatus.INACTIVE },
+                  ]}
+                />
               </Form.Item>
             </Col>
             <Col span={4}>

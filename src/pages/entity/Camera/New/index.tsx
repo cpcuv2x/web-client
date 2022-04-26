@@ -3,27 +3,11 @@ import {
   ControlOutlined,
   PlusCircleOutlined,
 } from "@ant-design/icons"
-import { Breadcrumb, Typography } from "antd"
+import { Typography } from "antd"
 import { Helmet } from "react-helmet"
 import CreateCameraForm from "../../../../components/CreateCameraForm"
+import PageBreadcrumb from "../../../../components/PageBreadcrumb"
 import { routes } from "../../../../routes/constant"
-
-const PageBreadcrumb: React.FC = () => (
-  <Breadcrumb>
-    <Breadcrumb.Item>
-      <ControlOutlined />
-      <span>Entity</span>
-    </Breadcrumb.Item>
-    <Breadcrumb.Item href={routes.ENTITY_CAMERA}>
-      <CameraOutlined />
-      <span>Camera</span>
-    </Breadcrumb.Item>
-    <Breadcrumb.Item>
-      <PlusCircleOutlined />
-      <span>New</span>
-    </Breadcrumb.Item>
-  </Breadcrumb>
-)
 
 const EntityCameraNewPage: React.FC = () => {
   return (
@@ -32,7 +16,17 @@ const EntityCameraNewPage: React.FC = () => {
         <title>New camera - Entity | 5G-V2X</title>
       </Helmet>
 
-      <PageBreadcrumb />
+      <PageBreadcrumb
+        items={[
+          { label: "Entity", icon: <ControlOutlined /> },
+          {
+            label: "Camera",
+            icon: <CameraOutlined />,
+            href: routes.ENTITY_CAMERA,
+          },
+          { label: "New", icon: <PlusCircleOutlined /> },
+        ]}
+      />
 
       <Typography.Title>Register a new camera</Typography.Title>
 
