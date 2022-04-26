@@ -1,10 +1,11 @@
-import { UploadOutlined } from "@ant-design/icons"
-import { Button, Card, Form, Input, Modal, Space, Upload } from "antd"
+import { DeleteOutlined, EditOutlined, UploadOutlined } from "@ant-design/icons"
+import { Button, Card, Form, Input, Modal, Select, Space, Upload } from "antd"
 import { UploadFile } from "antd/lib/upload/interface"
 import React from "react"
 import { useNavigate } from "react-router-dom"
 import appConfig from "../../configuration"
-import useCars from "../../hooks/useCars"
+import { fieldLabel } from "../../constants/Car"
+import useCameras from "../../hooks/useCameras"
 import { Car } from "../../interfaces/Car"
 import { routes } from "../../routes/constant"
 import axiosClient from "../../utils/axiosClient"
@@ -13,41 +14,60 @@ import { normFile } from "../../utils/normFile"
 
 interface Props {
   initialValues: Car
-  mutate: VoidFunction
 }
 
 interface EditCarFormValues {
   licensePlate: string
   model: string
   image: UploadFile[]
+  cameras: string[]
 }
 
-// TODO: add camera edit
-const EditCarForm: React.FC<Props> = ({ initialValues, mutate }) => {
-  const [form] = Form.useForm()
+const EditCarForm: React.FC<Props> = ({ initialValues }) => {
+  const formInitialValues = {
+    ...initialValues,
+    cameras: initialValues.Camera.map(({ id }) => id),
+  }
+
+  const [form] = Form.useForm<EditCarFormValues>()
   const navigate = useNavigate()
-  const { mutate: mutateCars } = useCars()
+  const { cameras } = useCameras()
 
   async function onSubmit(values: EditCarFormValues) {
-    const { image, ...rest } = values
-
     try {
       // Update the car
-      await axiosClient.patch(`/api/cars/${initialValues.id}`, rest)
+      const oldCameraIds = new Set(formInitialValues.cameras)
+      const newCameraIds = new Set(values.cameras)
+      const connectedCameraIds = Array.from(newCameraIds)
+        .filter((item) => !oldCameraIds.has(item))
+        .map((id) => ({ id }))
+      const disconnectedCameraIds = Array.from(oldCameraIds)
+        .filter((item) => !newCameraIds.has(item))
+        .map((id) => ({ id }))
+
+      const payload = {
+        licensePlate: values.licensePlate,
+        model: values.model,
+        cameras: {
+          connect: connectedCameraIds,
+          disconnect: disconnectedCameraIds,
+        },
+      }
+      await axiosClient.patch(`/api/cars/${formInitialValues.id}`, payload)
+
+      // Update image
       if (form.isFieldTouched("image")) {
-        if (image.length) {
+        if (values.image.length) {
           const formData = new FormData()
-          formData.append("image", image[0].originFileObj as Blob)
+          formData.append("image", values.image[0].originFileObj as Blob)
           await axiosClient.patch(
-            `/api/cars/${initialValues.id}/image`,
+            `/api/cars/${formInitialValues.id}/image`,
             formData
           )
         } else {
-          await axiosClient.delete(`/api/cars/${initialValues.id}/image`)
+          await axiosClient.delete(`/api/cars/${formInitialValues.id}/image`)
         }
       }
-      mutate()
-      mutateCars()
       navigate(routes.ENTITY_CAR)
     } catch (error) {
       handleError(error)
@@ -72,13 +92,12 @@ const EditCarForm: React.FC<Props> = ({ initialValues, mutate }) => {
       <Form
         form={form}
         onFinish={onSubmit}
-        labelCol={{ span: 4 }}
-        wrapperCol={{ span: 4 }}
-        initialValues={initialValues}
+        layout="vertical"
+        initialValues={formInitialValues}
       >
         <Form.Item
           name="image"
-          label="Image"
+          label={fieldLabel["image"]}
           valuePropName="fileList"
           getValueFromEvent={normFile}
         >
@@ -89,12 +108,12 @@ const EditCarForm: React.FC<Props> = ({ initialValues, mutate }) => {
             accept="image/png, image/jpeg"
             maxCount={1}
             defaultFileList={
-              initialValues.imageFilename
+              formInitialValues.imageFilename
                 ? [
                     {
                       uid: "1",
-                      name: initialValues.imageFilename,
-                      url: `${appConfig.webServicesURL}api/cars/${initialValues.id}/image`,
+                      name: formInitialValues.imageFilename,
+                      url: `${appConfig.webServicesURL}api/cars/${formInitialValues.id}/image`,
                     },
                   ]
                 : []
@@ -105,23 +124,38 @@ const EditCarForm: React.FC<Props> = ({ initialValues, mutate }) => {
         </Form.Item>
         <Form.Item
           name="licensePlate"
-          label="License Plate"
+          label={fieldLabel["licensePlate"]}
           rules={[{ required: true }]}
         >
           <Input />
         </Form.Item>
 
-        <Form.Item name="model" label="Model" rules={[{ required: true }]}>
+        <Form.Item
+          name="model"
+          label={fieldLabel["model"]}
+          rules={[{ required: true }]}
+        >
           <Input />
         </Form.Item>
 
-        <Form.Item wrapperCol={{ offset: 4 }}>
+        <Form.Item name="cameras" label={fieldLabel["cameras"]}>
+          <Select
+            mode="multiple"
+            placeholder="Not selected"
+            options={cameras.map(({ id, name }) => ({
+              label: name,
+              value: id,
+            }))}
+          />
+        </Form.Item>
+
+        <Form.Item>
           <Space>
-            <Button type="default" onClick={onCancel}>
+            <Button type="default" onClick={onCancel} icon={<DeleteOutlined />}>
               Cancel
             </Button>
-            <Button type="primary" htmlType="submit">
-              Confirm
+            <Button type="primary" htmlType="submit" icon={<EditOutlined />}>
+              Edit
             </Button>
           </Space>
         </Form.Item>
