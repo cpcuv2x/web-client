@@ -30,11 +30,17 @@ export enum DriverStatus {
 }
 
 export interface DriversFilters {
-  firstName?: string
-  lastName?: string
+  id?: string
+  firstNameTH?: string
+  lastNameTH?: string
+  firstNameEN?: string
+  lastNameEN?: string
+  gender?: DriverGender
+  birthDate?: string
+  registerDate?: string
   nationalId?: string
   carDrivingLicenseId?: string
-  imageFilename?: string
+  status?: DriverStatus
   limit?: number
   offset?: number
   orderBy?: string
