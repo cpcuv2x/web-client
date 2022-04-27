@@ -7,6 +7,7 @@ import AccidentsLogByDriver from "../../../../components/widgets/AccidentsLogByD
 import DriverECRChart from "../../../../components/widgets/driver/DriverECRChart"
 import DriverInformation from "../../../../components/widgets/driver/DriverInformation"
 import DrowsinessLog from "../../../../components/widgets/DrowsinessLog"
+import useDriver from "../../../../hooks/useDriver"
 import { routes } from "../../../../routes/constant"
 
 const DashboardDriverPage = () => {
@@ -14,10 +15,18 @@ const DashboardDriverPage = () => {
 
   if (!driverId) return <div>Loading...</div>
 
+  const { driver, loading, error } = useDriver(driverId)
+
+  if (loading) return <div>Loading...</div>
+
+  if (error || !driver) return <div>An error occurred.</div>
+
   return (
     <>
       <Helmet>
-        <title>Driver({driverId}) - Dashboard | 5G-V2X</title>
+        <title>
+          Driver: {driver.firstNameTH} {driver.lastNameTH} - Dashboard | 5G-V2X
+        </title>
       </Helmet>
 
       <PageBreadcrumb
@@ -38,7 +47,9 @@ const DashboardDriverPage = () => {
         ]}
       />
 
-      <Typography.Title>Driver: {driverId}</Typography.Title>
+      <Typography.Title>
+        Driver: {driver.firstNameTH} {driver.lastNameTH}
+      </Typography.Title>
       <Row gutter={[16, 16]}>
         <Col span={24}>
           <DriverInformation driverId={driverId} />
