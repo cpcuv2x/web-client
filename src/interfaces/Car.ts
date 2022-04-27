@@ -45,11 +45,11 @@ export interface CarsResponse {
   count: number
 }
 
-export interface CarAccident {
+export interface AccidentLogByCar {
   id: string
   carId: string
   driverId: string
-  timestamp: string
   lat: number
-  lng: number
+  long: number
+  timestamp: string
 }
