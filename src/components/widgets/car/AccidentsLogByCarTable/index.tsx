@@ -1,10 +1,10 @@
 import { ReloadOutlined } from "@ant-design/icons"
-import { Button, Col, DatePicker, Row, Table, Typography } from "antd"
+import { Button, Col, DatePicker, Row, Table, Tooltip, Typography } from "antd"
 import { ColumnsType } from "antd/lib/table"
 import moment, { Moment } from "moment"
 import React, { useState } from "react"
 import useAccidentsLogByCar from "../../../../hooks/useAccidentsLogByCar"
-import { CarAccident } from "../../../../interfaces/Car"
+import { AccidentLogByCar } from "../../../../interfaces/Car"
 import CopyToClipboardButton from "../../../CopyToClipboardButton"
 import WidgetCard from "../../WidgetCard"
 
@@ -12,37 +12,48 @@ interface Props {
   carId: string
 }
 
-const AccidentsLogByCar: React.FC<Props> = ({ carId }) => {
-  const [startTime, setStartTime] = useState(moment().subtract(1, "hours"))
-  const [endTime, setEndTime] = useState(moment())
+type EventValue<DateType> = DateType | null
+type RangeValue<DateType> = [EventValue<DateType>, EventValue<DateType>] | null
+
+const AccidentsLogByCarTable: React.FC<Props> = ({ carId }) => {
+  const [dateRange, setDateRange] = useState<RangeValue<Moment>>([
+    moment().subtract(1, "hours"),
+    moment(),
+  ])
+
+  const startTime =
+    dateRange?.length && dateRange[0] ? dateRange[0].toISOString() : ""
+  const endTime =
+    dateRange?.length && dateRange[1] ? dateRange[1].toISOString() : ""
+
   const { accidents, loading, mutate } = useAccidentsLogByCar(
     carId,
-    startTime.toISOString(),
-    endTime.toISOString()
+    startTime,
+    endTime
   )
-
-  const onDateTimeChange = ([sTime, eTime]: [Moment, Moment]) => {
-    setStartTime(sTime)
-    setEndTime(eTime)
-  }
 
   function reload() {
     mutate()
   }
 
-  const columns: ColumnsType<CarAccident> = [
+  function onDateTimeChange(dates: RangeValue<Moment>) {
+    setDateRange(dates)
+  }
+
+  const columns: ColumnsType<AccidentLogByCar> = [
     {
       title: "ID",
       dataIndex: "id",
       key: "id",
-      sorter: true,
+      // sorter: true,
+      ellipsis: true,
       render: (id) => (
-        <Row justify="space-between" gutter={8}>
-          <Col style={{ maxWidth: 100 }}>
-            <Typography.Text ellipsis>{id}</Typography.Text>
-          </Col>
+        <Row justify="space-between" gutter={8} wrap={false}>
           <Col>
             <CopyToClipboardButton text={id} />
+          </Col>
+          <Col>
+            <Tooltip title={id}>{id}</Tooltip>
           </Col>
         </Row>
       ),
@@ -51,26 +62,41 @@ const AccidentsLogByCar: React.FC<Props> = ({ carId }) => {
       title: "Time Occurred",
       dataIndex: "timestamp",
       key: "timestamp",
-      sorter: true,
-      render: (timestamp) => {
-        return moment(timestamp).format("DD/MM/YYYY HH:mm:ss")
-      },
+      // sorter: true,
+      render: (timestamp: string) =>
+        moment(timestamp).format("DD/MM/YYYY HH:mm:ss"),
+    },
+    {
+      title: "Driver",
+      dataIndex: "driverId",
+      key: "driverId",
+      // sorter: true,
+      ellipsis: true,
+      render: (id) => (
+        <Row justify="space-between" gutter={8} wrap={false}>
+          <Col>
+            <CopyToClipboardButton text={id} />
+          </Col>
+          <Col>
+            <Tooltip title={id}>{id}</Tooltip>
+          </Col>
+        </Row>
+      ),
     },
     {
       title: "Latitude",
       dataIndex: "lat",
       key: "lat",
-      sorter: true,
+      // sorter: true,
     },
     {
       title: "Longitude",
       dataIndex: "long",
       key: "long",
-      sorter: true,
+      // sorter: true,
     },
   ]
 
-  // FIXME: change onDateTimeChange type
   return (
     <WidgetCard
       title={
@@ -78,14 +104,15 @@ const AccidentsLogByCar: React.FC<Props> = ({ carId }) => {
           <Col>Accidents Log</Col>
           <Col style={{ marginRight: 8 }}>
             <DatePicker.RangePicker
+              format="DD/MM/YYYY HH:mm:ss"
               showTime
               onChange={onDateTimeChange}
-              defaultValue={[moment().subtract(1, "hours"), moment()]}
+              value={dateRange}
             />
           </Col>
         </Row>
       }
-      helpText={"Accidents occurred with this car."}
+      helpText="Accidents occurred with this car."
       content={
         <Table
           dataSource={accidents}
@@ -113,4 +140,4 @@ const AccidentsLogByCar: React.FC<Props> = ({ carId }) => {
   )
 }
 
-export default AccidentsLogByCar
+export default AccidentsLogByCarTable
