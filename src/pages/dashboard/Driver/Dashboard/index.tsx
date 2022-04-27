@@ -1,34 +1,13 @@
 import { AreaChartOutlined, UserOutlined } from "@ant-design/icons"
-import { Breadcrumb, Col, Row, Typography } from "antd"
+import { Col, Row, Typography } from "antd"
 import { Helmet } from "react-helmet"
 import { useParams } from "react-router-dom"
+import PageBreadcrumb from "../../../../components/PageBreadcrumb"
 import AccidentsLogByDriver from "../../../../components/widgets/AccidentsLogByDriver"
 import DriverECRChart from "../../../../components/widgets/driver/DriverECRChart"
 import DriverInformation from "../../../../components/widgets/driver/DriverInformation"
 import DrowsinessLog from "../../../../components/widgets/DrowsinessLog"
 import { routes } from "../../../../routes/constant"
-
-interface PageBreadcrumbProps {
-  driverId: string
-}
-
-const PageBreadcrumb: React.FC<PageBreadcrumbProps> = ({
-  driverId,
-}: PageBreadcrumbProps) => (
-  <Breadcrumb>
-    <Breadcrumb.Item href={routes.DASHBOARD_OVERVIEW}>
-      <AreaChartOutlined />
-      <span>Dashboard</span>
-    </Breadcrumb.Item>
-    <Breadcrumb.Item href={routes.DASHBOARD_DRIVER}>
-      <UserOutlined />
-      <span>Driver</span>
-    </Breadcrumb.Item>
-    <Breadcrumb.Item>
-      <span>{driverId}</span>
-    </Breadcrumb.Item>
-  </Breadcrumb>
-)
 
 const DashboardDriverPage = () => {
   const { driverId } = useParams()
@@ -41,7 +20,23 @@ const DashboardDriverPage = () => {
         <title>Driver({driverId}) - Dashboard | 5G-V2X</title>
       </Helmet>
 
-      <PageBreadcrumb driverId={driverId} />
+      <PageBreadcrumb
+        items={[
+          {
+            label: "Dashboard",
+            icon: <AreaChartOutlined />,
+            href: routes.DASHBOARD_OVERVIEW,
+          },
+          {
+            label: "Driver",
+            icon: <UserOutlined />,
+            href: routes.DASHBOARD_DRIVER,
+          },
+          {
+            label: driverId,
+          },
+        ]}
+      />
 
       <Typography.Title>Driver: {driverId}</Typography.Title>
       <Row gutter={[16, 16]}>
