@@ -1,9 +1,14 @@
-import { Col, Image, Row } from "antd"
+import { Col, Row, Space, Typography } from "antd"
 import moment from "moment"
 import React from "react"
-import appConfig from "../../../../configuration"
+import { useNavigate } from "react-router-dom"
+import { driverGenderLabel, fieldLabel } from "../../../../constants/Driver"
 import useDriverInformation from "../../../../hooks/socket/useDriverInformation"
+import { routes } from "../../../../routes/constant"
+import DriverStatusTag from "../../../DriverStatusTag"
 import WidgetCard from "../../WidgetCard"
+
+const { Text, Link } = Typography
 
 interface Props {
   driverId: string
@@ -11,41 +16,108 @@ interface Props {
 
 const DriverInformation: React.FC<Props> = ({ driverId }: Props) => {
   const driver = useDriverInformation(driverId)
-  // TODO: add driver status
+  const navigate = useNavigate()
   return (
-    <Row gutter={8}>
-      <Col span={4}>
-        <Image
-          src={`${appConfig.webServicesURL}api/drivers/images/${driver?.imageFilename}`}
-        />
-      </Col>
-      <Col span={20}>
-        <WidgetCard
-          title="Personal information"
-          helpText="Driver's personal information."
-          content={
-            <Row gutter={8} wrap>
-              {/* TODO: add driver's gender */}
-              {/* <Col span={8}>Gender: </Col>
-          <Col span={16}>Male</Col> */}
-              <Col span={12}>First Name: </Col>
-              <Col span={12}>{driver?.firstName}</Col>
-              <Col span={12}>Last Name: </Col>
-              <Col span={12}>{driver?.lastName}</Col>
-              <Col span={12}>Birth Date: </Col>
-              <Col span={12}>
+    <WidgetCard
+      title="Personal information"
+      helpText="Driver's personal information."
+      content={
+        <Row gutter={[16, 16]} wrap>
+          <Col span={4}>
+            <Space direction="vertical">
+              <Text strong>{fieldLabel["firstNameTH"]}</Text>
+              <Text type="secondary">{driver?.firstNameTH}</Text>
+            </Space>
+          </Col>
+          <Col span={4}>
+            <Space direction="vertical">
+              <Text strong>{fieldLabel["lastNameTH"]}</Text>
+              <Text type="secondary">{driver?.lastNameTH}</Text>
+            </Space>
+          </Col>
+          <Col span={4}>
+            <Space direction="vertical">
+              <Text strong>{fieldLabel["firstNameEN"]}</Text>
+              <Text type="secondary">{driver?.firstNameEN}</Text>
+            </Space>
+          </Col>
+          <Col span={4}>
+            <Space direction="vertical">
+              <Text strong>{fieldLabel["lastNameEN"]}</Text>
+              <Text type="secondary">{driver?.lastNameEN}</Text>
+            </Space>
+          </Col>
+          <Col span={4}>
+            <Space direction="vertical">
+              <Text strong>{fieldLabel["gender"]}</Text>
+              <Text type="secondary">
+                {driver?.gender && driverGenderLabel[driver?.gender]}
+              </Text>
+            </Space>
+          </Col>
+          <Col span={4}>
+            <Space direction="vertical">
+              <Text strong>{fieldLabel["birthDate"]}</Text>
+              <Text type="secondary">
                 {driver?.birthDate &&
-                  moment(driver?.birthDate).format("DD/MM/YYYY")}
-              </Col>
-              <Col span={12}>National ID: </Col>
-              <Col span={12}>{driver?.nationalId}</Col>
-              <Col span={12}>Car Driving License No.: </Col>
-              <Col span={12}>{driver?.carDrivingLicenseId}</Col>
-            </Row>
-          }
-        />
-      </Col>
-    </Row>
+                  moment(driver?.birthDate).format("D MMMM YYYY")}
+              </Text>
+            </Space>
+          </Col>
+          <Col span={4}>
+            <Space direction="vertical">
+              <Text strong>{fieldLabel["registerDate"]}</Text>
+              <Text type="secondary">
+                {driver?.registerDate &&
+                  moment(driver?.registerDate).format("D MMMM YYYY")}
+              </Text>
+            </Space>
+          </Col>
+          <Col span={4}>
+            <Space direction="vertical">
+              <Text strong>{fieldLabel["nationalId"]}</Text>
+              <Text type="secondary">{driver?.nationalId}</Text>
+            </Space>
+          </Col>
+          <Col span={4}>
+            <Space direction="vertical">
+              <Text strong>{fieldLabel["carDrivingLicenseId"]}</Text>
+              <Text type="secondary">{driver?.carDrivingLicenseId}</Text>
+            </Space>
+          </Col>
+          <Col span={4}>
+            <Space direction="vertical">
+              <Text strong>{fieldLabel["username"]}</Text>
+              <Text type="secondary">{driver?.User?.username}</Text>
+            </Space>
+          </Col>
+          <Col span={4}>
+            <Space direction="vertical">
+              <Text strong>{fieldLabel["status"]}</Text>
+              <Text type="secondary">
+                <DriverStatusTag status={driver?.status} />
+              </Text>
+            </Space>
+          </Col>
+          <Col span={4}>
+            <Space direction="vertical">
+              <Text strong>Now Driving</Text>
+              {driver?.Car ? (
+                <Link
+                  onClick={() =>
+                    navigate(`${routes.DASHBOARD_CAR}/${driver?.Car?.id}`)
+                  }
+                >
+                  {driver?.Car.licensePlate}
+                </Link>
+              ) : (
+                <Text type="secondary">-</Text>
+              )}
+            </Space>
+          </Col>
+        </Row>
+      }
+    />
   )
 }
 

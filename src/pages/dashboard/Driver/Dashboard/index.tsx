@@ -1,61 +1,71 @@
 import { AreaChartOutlined, UserOutlined } from "@ant-design/icons"
-import { Breadcrumb, Col, Row, Typography } from "antd"
+import { Col, Row, Typography } from "antd"
 import { Helmet } from "react-helmet"
 import { useParams } from "react-router-dom"
-import AccidentsLogByDriver from "../../../../components/widgets/AccidentsLogByDriver"
+import PageBreadcrumb from "../../../../components/PageBreadcrumb"
+import AccidentLogByDriverTable from "../../../../components/widgets/driver/AccidentLogByDriverTable"
 import DriverECRChart from "../../../../components/widgets/driver/DriverECRChart"
+import DriverImage from "../../../../components/widgets/driver/DriverImage"
 import DriverInformation from "../../../../components/widgets/driver/DriverInformation"
-import DrowsinessLog from "../../../../components/widgets/DrowsinessLog"
+import DrowsinessLogTable from "../../../../components/widgets/driver/DrowsinessLogTable"
+import useDriver from "../../../../hooks/useDriver"
 import { routes } from "../../../../routes/constant"
-
-interface PageBreadcrumbProps {
-  driverId: string
-}
-
-const PageBreadcrumb: React.FC<PageBreadcrumbProps> = ({
-  driverId,
-}: PageBreadcrumbProps) => (
-  <Breadcrumb>
-    <Breadcrumb.Item href={routes.DASHBOARD_OVERVIEW}>
-      <AreaChartOutlined />
-      <span>Dashboard</span>
-    </Breadcrumb.Item>
-    <Breadcrumb.Item href={routes.DASHBOARD_DRIVER}>
-      <UserOutlined />
-      <span>Driver</span>
-    </Breadcrumb.Item>
-    <Breadcrumb.Item>
-      <span>{driverId}</span>
-    </Breadcrumb.Item>
-  </Breadcrumb>
-)
 
 const DashboardDriverPage = () => {
   const { driverId } = useParams()
 
   if (!driverId) return <div>Loading...</div>
 
+  const { driver, loading, error } = useDriver(driverId)
+
+  if (loading) return <div>Loading...</div>
+
+  if (error || !driver) return <div>An error occurred.</div>
+
   return (
     <>
       <Helmet>
-        <title>Driver({driverId}) - Dashboard | 5G-V2X</title>
+        <title>
+          Driver: {driver.firstNameTH} {driver.lastNameTH} - Dashboard | 5G-V2X
+        </title>
       </Helmet>
 
-      <PageBreadcrumb driverId={driverId} />
+      <PageBreadcrumb
+        items={[
+          {
+            label: "Dashboard",
+            icon: <AreaChartOutlined />,
+            href: routes.DASHBOARD_OVERVIEW,
+          },
+          {
+            label: "Driver",
+            icon: <UserOutlined />,
+            href: routes.DASHBOARD_DRIVER,
+          },
+          {
+            label: driverId,
+          },
+        ]}
+      />
 
-      <Typography.Title>Driver: {driverId}</Typography.Title>
+      <Typography.Title>
+        Driver: {driver.firstNameTH} {driver.lastNameTH}
+      </Typography.Title>
       <Row gutter={[16, 16]}>
+        <Col span={7}>
+          <DriverImage driverId={driverId} />
+        </Col>
+        <Col span={17}>
+          <DriverECRChart driverId={driverId} />
+        </Col>
         <Col span={24}>
           <DriverInformation driverId={driverId} />
         </Col>
         <Col span={24}>
-          <DriverECRChart driverId={driverId} />
+          <DrowsinessLogTable driverId={driverId} />
         </Col>
         <Col span={24}>
-          <DrowsinessLog driverId={driverId} />
-        </Col>
-        <Col span={24}>
-          <AccidentsLogByDriver driverId={driverId} />
+          <AccidentLogByDriverTable driverId={driverId} />
         </Col>
       </Row>
     </>

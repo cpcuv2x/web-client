@@ -58,3 +58,22 @@ export interface DriversResponse {
   drivers: Driver[]
   count: number
 }
+
+export interface AccidentLogByDriver {
+  id: string
+  carId: string
+  driverId: string
+  lat: number
+  long: number
+  timestamp: string
+}
+
+export interface DrowsinessLog {
+  id: string
+  carId: string
+  driverId: string
+  lat: number
+  long: number
+  responseTime: number
+  timestamp: string
+}

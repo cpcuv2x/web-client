@@ -3,36 +3,23 @@ import {
   DownOutlined,
   UserOutlined,
 } from "@ant-design/icons"
-import { Breadcrumb, Button, Dropdown, Menu, Typography } from "antd"
+import { Button, Dropdown, Menu, Typography } from "antd"
 import React from "react"
 import { Helmet } from "react-helmet"
 import { Link } from "react-router-dom"
+import PageBreadcrumb from "../../../../components/PageBreadcrumb"
 import useDrivers from "../../../../hooks/useDrivers"
 import { routes } from "../../../../routes/constant"
 
-const PageBreadcrumb: React.FC = () => (
-  <Breadcrumb>
-    <Breadcrumb.Item href={routes.DASHBOARD_OVERVIEW}>
-      <AreaChartOutlined />
-      <span>Dashboard</span>
-    </Breadcrumb.Item>
-    <Breadcrumb.Item href={routes.DASHBOARD_DRIVER}>
-      <UserOutlined />
-      <span>Driver</span>
-    </Breadcrumb.Item>
-  </Breadcrumb>
-)
-
 const DashboardDriverOverviewPage: React.FC = () => {
-  // FIXME: use real drivers data
   const { drivers } = useDrivers()
 
   const menu = (
     <Menu>
-      {drivers.map(({ id, firstName, lastName }) => (
+      {drivers.map(({ id, firstNameTH }) => (
         <Menu.Item key={id}>
           <Link to={id}>
-            {firstName} {lastName}
+            {firstNameTH} ({id})
           </Link>
         </Menu.Item>
       ))}
@@ -44,7 +31,20 @@ const DashboardDriverOverviewPage: React.FC = () => {
         <title>Drivers - Dashboard | 5G-V2X</title>
       </Helmet>
 
-      <PageBreadcrumb />
+      <PageBreadcrumb
+        items={[
+          {
+            label: "Dashboard",
+            icon: <AreaChartOutlined />,
+            href: routes.DASHBOARD_OVERVIEW,
+          },
+          {
+            label: "Driver",
+            icon: <UserOutlined />,
+            href: routes.DASHBOARD_DRIVER,
+          },
+        ]}
+      />
 
       <Typography.Title>Drivers Dashboard</Typography.Title>
 
