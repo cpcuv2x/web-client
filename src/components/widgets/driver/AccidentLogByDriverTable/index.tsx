@@ -36,10 +36,7 @@ const AccidentLogByDriverTable: React.FC<Props> = ({ driverId }) => {
     mutate()
   }
 
-  function onDateTimeChange(
-    dates: RangeValue<Moment>,
-    dateStrings: [string, string]
-  ) {
+  function onDateTimeChange(dates: RangeValue<Moment>) {
     setDateRange(dates)
   }
 
