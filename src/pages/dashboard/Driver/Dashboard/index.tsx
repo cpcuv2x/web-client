@@ -3,10 +3,11 @@ import { Col, Row, Typography } from "antd"
 import { Helmet } from "react-helmet"
 import { useParams } from "react-router-dom"
 import PageBreadcrumb from "../../../../components/PageBreadcrumb"
-import AccidentsLogByDriver from "../../../../components/widgets/AccidentsLogByDriver"
+import AccidentLogByDriverTable from "../../../../components/widgets/driver/AccidentLogByDriverTable"
 import DriverECRChart from "../../../../components/widgets/driver/DriverECRChart"
+import DriverImage from "../../../../components/widgets/driver/DriverImage"
 import DriverInformation from "../../../../components/widgets/driver/DriverInformation"
-import DrowsinessLog from "../../../../components/widgets/DrowsinessLog"
+import DrowsinessLogTable from "../../../../components/widgets/driver/DrowsinessLogTable"
 import useDriver from "../../../../hooks/useDriver"
 import { routes } from "../../../../routes/constant"
 
@@ -51,17 +52,20 @@ const DashboardDriverPage = () => {
         Driver: {driver.firstNameTH} {driver.lastNameTH}
       </Typography.Title>
       <Row gutter={[16, 16]}>
+        <Col span={7}>
+          <DriverImage driverId={driverId} />
+        </Col>
+        <Col span={17}>
+          <DriverECRChart driverId={driverId} />
+        </Col>
         <Col span={24}>
           <DriverInformation driverId={driverId} />
         </Col>
         <Col span={24}>
-          <DriverECRChart driverId={driverId} />
+          <DrowsinessLogTable driverId={driverId} />
         </Col>
         <Col span={24}>
-          <DrowsinessLog driverId={driverId} />
-        </Col>
-        <Col span={24}>
-          <AccidentsLogByDriver driverId={driverId} />
+          <AccidentLogByDriverTable driverId={driverId} />
         </Col>
       </Row>
     </>
