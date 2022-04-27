@@ -2,6 +2,7 @@ import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api"
 import appConfig from "../../../../configuration"
 import useCarsLocations from "../../../../hooks/socket/useCarsLocations"
 import useCars from "../../../../hooks/useCars"
+import CarPin from "../CarPin"
 
 // Chulalongkorn university location
 const center = {
@@ -21,9 +22,9 @@ const CarsLocationMap = () => {
 
   return (
     <LoadScript googleMapsApiKey={appConfig.googleMapAPIKey}>
-      <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={16}>
-        {Object.entries(locations).map(([carId, location]) => (
-          <Marker key={carId} position={location} />
+      <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={15}>
+        {Object.entries(locations).map(([carId, position]) => (
+          <CarPin key={carId} position={position} carId={carId} />
         ))}
       </GoogleMap>
     </LoadScript>
