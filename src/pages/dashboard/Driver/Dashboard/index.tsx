@@ -54,10 +54,6 @@ const DashboardDriverPage = () => {
       />
 
       <Typography.Title>
-        Driver: {driver.firstNameTH} {driver.lastNameTH}
-      </Typography.Title>
-
-      <Typography.Title>
         <Row justify="space-between">
           <Col>
             Driver: {driver.firstNameTH} {driver.lastNameTH}
