@@ -64,7 +64,7 @@ export interface DrowsinessLog {
   carId: string
   driverId: string
   lat: number
-  lng: number
+  long: number
   responseTime: number
   timestamp: string
 }
