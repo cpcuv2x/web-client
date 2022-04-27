@@ -1,11 +1,16 @@
-import { AreaChartOutlined, CarOutlined } from "@ant-design/icons"
-import { Col, Row, Typography } from "antd"
+import {
+  AreaChartOutlined,
+  CarOutlined,
+  ControlOutlined,
+} from "@ant-design/icons"
+import { Button, Col, Row, Typography } from "antd"
 import React from "react"
 import { Helmet } from "react-helmet"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import PageBreadcrumb from "../../../../components/PageBreadcrumb"
 import CameraStreams from "../../../../components/widgets/CameraStreams"
 import AccidentsLogByCar from "../../../../components/widgets/car/AccidentsLogByCar"
+import CarImage from "../../../../components/widgets/car/CarImage"
 import CarInformation from "../../../../components/widgets/car/CarInformation"
 import PassengersChart from "../../../../components/widgets/car/PassengersChart"
 import useCar from "../../../../hooks/useCar"
@@ -13,6 +18,7 @@ import { routes } from "../../../../routes/constant"
 
 const DashboardCarPage: React.FC = () => {
   const { carId } = useParams()
+  const navigate = useNavigate()
 
   if (!carId) return <div>Loading...</div>
 
@@ -46,16 +52,32 @@ const DashboardCarPage: React.FC = () => {
         ]}
       />
 
-      <Row align="middle">
-        <Typography.Title>Car: {car.licensePlate}</Typography.Title>
-      </Row>
+      <Typography.Title>
+        <Row justify="space-between">
+          <Col>Car: {car.licensePlate}</Col>
+          <Col>
+            <Button
+              type="primary"
+              icon={<ControlOutlined />}
+              onClick={() => {
+                navigate(`${routes.ENTITY_CAR}?id=${carId}`)
+              }}
+            >
+              Manage car
+            </Button>
+          </Col>
+        </Row>
+      </Typography.Title>
 
       <Row gutter={[16, 16]}>
         <Col span={6}>
-          <CarInformation carId={carId} />
+          <CarImage carId={carId} />
         </Col>
         <Col span={18}>
           <PassengersChart carId={carId} />
+        </Col>
+        <Col span={24}>
+          <CarInformation carId={carId} />
         </Col>
         <Col span={24}>
           <CameraStreams carId={carId} />
