@@ -1,12 +1,14 @@
 import { Col, Row, Space, Typography } from "antd"
 import moment from "moment"
 import React from "react"
+import { useNavigate } from "react-router-dom"
 import { driverGenderLabel, fieldLabel } from "../../../../constants/Driver"
 import useDriverInformation from "../../../../hooks/socket/useDriverInformation"
+import { routes } from "../../../../routes/constant"
 import DriverStatusTag from "../../../DriverStatusTag"
 import WidgetCard from "../../WidgetCard"
 
-const { Text } = Typography
+const { Text, Link } = Typography
 
 interface Props {
   driverId: string
@@ -14,7 +16,7 @@ interface Props {
 
 const DriverInformation: React.FC<Props> = ({ driverId }: Props) => {
   const driver = useDriverInformation(driverId)
-  // TODO: add driver status
+  const navigate = useNavigate()
   return (
     <WidgetCard
       title="Personal information"
@@ -95,6 +97,22 @@ const DriverInformation: React.FC<Props> = ({ driverId }: Props) => {
               <Text type="secondary">
                 <DriverStatusTag status={driver?.status} />
               </Text>
+            </Space>
+          </Col>
+          <Col span={4}>
+            <Space direction="vertical">
+              <Text strong>Now Driving</Text>
+              {driver?.Car ? (
+                <Link
+                  onClick={() =>
+                    navigate(`${routes.DASHBOARD_CAR}/${driver?.Car?.id}`)
+                  }
+                >
+                  {driver?.Car.licensePlate}
+                </Link>
+              ) : (
+                <Text type="secondary">-</Text>
+              )}
             </Space>
           </Col>
         </Row>
