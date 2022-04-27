@@ -1,7 +1,11 @@
-import { AreaChartOutlined, UserOutlined } from "@ant-design/icons"
-import { Col, Row, Typography } from "antd"
+import {
+  AreaChartOutlined,
+  ControlOutlined,
+  UserOutlined,
+} from "@ant-design/icons"
+import { Button, Col, Row, Typography } from "antd"
 import { Helmet } from "react-helmet"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import PageBreadcrumb from "../../../../components/PageBreadcrumb"
 import AccidentLogByDriverTable from "../../../../components/widgets/driver/AccidentLogByDriverTable"
 import DriverECRChart from "../../../../components/widgets/driver/DriverECRChart"
@@ -13,6 +17,7 @@ import { routes } from "../../../../routes/constant"
 
 const DashboardDriverPage = () => {
   const { driverId } = useParams()
+  const navigate = useNavigate()
 
   if (!driverId) return <div>Loading...</div>
 
@@ -51,6 +56,26 @@ const DashboardDriverPage = () => {
       <Typography.Title>
         Driver: {driver.firstNameTH} {driver.lastNameTH}
       </Typography.Title>
+
+      <Typography.Title>
+        <Row justify="space-between">
+          <Col>
+            Driver: {driver.firstNameTH} {driver.lastNameTH}
+          </Col>
+          <Col>
+            <Button
+              type="primary"
+              icon={<ControlOutlined />}
+              onClick={() => {
+                navigate(`${routes.ENTITY_DRIVER}?id=${driverId}`)
+              }}
+            >
+              Manage driver
+            </Button>
+          </Col>
+        </Row>
+      </Typography.Title>
+
       <Row gutter={[16, 16]}>
         <Col span={7}>
           <DriverImage driverId={driverId} />

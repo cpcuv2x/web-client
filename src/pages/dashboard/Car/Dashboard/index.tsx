@@ -1,62 +1,89 @@
-import { AreaChartOutlined, CarOutlined } from "@ant-design/icons"
-import { Breadcrumb, Col, Row, Typography } from "antd"
+import {
+  AreaChartOutlined,
+  CarOutlined,
+  ControlOutlined,
+} from "@ant-design/icons"
+import { Button, Col, Row, Typography } from "antd"
 import React from "react"
 import { Helmet } from "react-helmet"
-import { useParams } from "react-router-dom"
-import CopyToClipboardButton from "../../../../components/CopyToClipboardButton"
+import { useNavigate, useParams } from "react-router-dom"
+import PageBreadcrumb from "../../../../components/PageBreadcrumb"
 import CameraStreams from "../../../../components/widgets/CameraStreams"
-import AccidentsLogByCar from "../../../../components/widgets/car/AccidentsLogByCar"
+import AccidentsLogByCarTable from "../../../../components/widgets/car/AccidentsLogByCarTable"
+import CarImage from "../../../../components/widgets/car/CarImage"
 import CarInformation from "../../../../components/widgets/car/CarInformation"
 import PassengersChart from "../../../../components/widgets/car/PassengersChart"
+import useCar from "../../../../hooks/useCar"
 import { routes } from "../../../../routes/constant"
-
-const PageBreadcrumb: React.FC<{ carId: string }> = ({ carId }) => (
-  <Breadcrumb>
-    <Breadcrumb.Item href={routes.DASHBOARD_OVERVIEW}>
-      <AreaChartOutlined />
-      <span>Dashboard</span>
-    </Breadcrumb.Item>
-    <Breadcrumb.Item href={routes.DASHBOARD_CAR}>
-      <CarOutlined />
-      <span>Car</span>
-    </Breadcrumb.Item>
-    <Breadcrumb.Item>
-      <span>{carId}</span>
-    </Breadcrumb.Item>
-  </Breadcrumb>
-)
 
 const DashboardCarPage: React.FC = () => {
   const { carId } = useParams()
+  const navigate = useNavigate()
 
   if (!carId) return <div>Loading...</div>
+
+  const { car, loading, error } = useCar(carId)
+
+  if (loading) return <div>Loading...</div>
+
+  if (error || !car) return <div>An error occurred.</div>
 
   return (
     <>
       <Helmet>
-        <title>Car({carId}) - Dashboard | 5G-V2X</title>
+        <title>Car: {car.licensePlate} - Dashboard | 5G-V2X</title>
       </Helmet>
 
-      <PageBreadcrumb carId={carId} />
+      <PageBreadcrumb
+        items={[
+          {
+            label: "Dashboard",
+            icon: <AreaChartOutlined />,
+            href: routes.DASHBOARD_OVERVIEW,
+          },
+          {
+            label: "Car",
+            icon: <CarOutlined />,
+            href: routes.DASHBOARD_CAR,
+          },
+          {
+            label: carId,
+          },
+        ]}
+      />
 
-      <Row align="middle">
-        <Typography.Title>
-          Car: {carId} <CopyToClipboardButton text={carId} />
-        </Typography.Title>
-      </Row>
+      <Typography.Title>
+        <Row justify="space-between">
+          <Col>Car: {car.licensePlate}</Col>
+          <Col>
+            <Button
+              type="primary"
+              icon={<ControlOutlined />}
+              onClick={() => {
+                navigate(`${routes.ENTITY_CAR}?id=${carId}`)
+              }}
+            >
+              Manage car
+            </Button>
+          </Col>
+        </Row>
+      </Typography.Title>
 
       <Row gutter={[16, 16]}>
         <Col span={6}>
-          <CarInformation carId={carId} />
+          <CarImage carId={carId} />
         </Col>
         <Col span={18}>
           <PassengersChart carId={carId} />
         </Col>
         <Col span={24}>
+          <CarInformation carId={carId} />
+        </Col>
+        <Col span={24}>
           <CameraStreams carId={carId} />
         </Col>
         <Col span={24}>
-          <AccidentsLogByCar carId={carId} />
+          <AccidentsLogByCarTable carId={carId} />
         </Col>
       </Row>
     </>
