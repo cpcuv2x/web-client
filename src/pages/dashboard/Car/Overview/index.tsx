@@ -3,21 +3,9 @@ import { Breadcrumb, Button, Dropdown, Menu, Typography } from "antd"
 import React from "react"
 import { Helmet } from "react-helmet"
 import { Link } from "react-router-dom"
+import PageBreadcrumb from "../../../../components/PageBreadcrumb"
 import useCars from "../../../../hooks/useCars"
 import { routes } from "../../../../routes/constant"
-
-const PageBreadcrumb: React.FC = () => (
-  <Breadcrumb>
-    <Breadcrumb.Item href={routes.DASHBOARD_OVERVIEW}>
-      <AreaChartOutlined />
-      <span>Dashboard</span>
-    </Breadcrumb.Item>
-    <Breadcrumb.Item href={routes.DASHBOARD_CAR}>
-      <CarOutlined />
-      <span>Car</span>
-    </Breadcrumb.Item>
-  </Breadcrumb>
-)
 
 const DashboardOverviewPage: React.FC = () => {
   const { cars } = useCars()
@@ -26,7 +14,9 @@ const DashboardOverviewPage: React.FC = () => {
     <Menu>
       {cars.map(({ id, licensePlate }) => (
         <Menu.Item key={id}>
-          <Link to={id}>{licensePlate}</Link>
+          <Link to={id}>
+            {licensePlate} ({id})
+          </Link>
         </Menu.Item>
       ))}
     </Menu>
@@ -38,7 +28,20 @@ const DashboardOverviewPage: React.FC = () => {
         <title>Cars - Dashboard | 5G-V2X</title>
       </Helmet>
 
-      <PageBreadcrumb />
+      <PageBreadcrumb
+        items={[
+          {
+            label: "Dashboard",
+            icon: <AreaChartOutlined />,
+            href: routes.DASHBOARD_OVERVIEW,
+          },
+          {
+            label: "Car",
+            icon: <CarOutlined />,
+            href: routes.DASHBOARD_CAR,
+          },
+        ]}
+      />
 
       <Typography.Title>Cars Dashboard</Typography.Title>
 
