@@ -111,7 +111,7 @@ const DrowsinessLogTable: React.FC<Props> = ({ driverId }) => {
           </Col>
         </Row>
       }
-      helpText="Drowsiness history of this driver"
+      helpText="Drowsiness history of this driver."
       content={
         <Table
           dataSource={drowsiness}
