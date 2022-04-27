@@ -53,3 +53,8 @@ export interface AccidentLogByCar {
   long: number
   timestamp: string
 }
+
+export interface CarPosition {
+  lat: number
+  lng: number
+}
