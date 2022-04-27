@@ -12,23 +12,31 @@ interface Props {
   driverId: string
 }
 
+type EventValue<DateType> = DateType | null
+type RangeValue<DateType> = [EventValue<DateType>, EventValue<DateType>] | null
+
 const DrowsinessLogTable: React.FC<Props> = ({ driverId }) => {
-  const [dateRange, setDateRange] = useState([
+  const [dateRange, setDateRange] = useState<RangeValue<Moment>>([
     moment().subtract(1, "hours"),
     moment(),
   ])
 
+  const startTime =
+    dateRange?.length && dateRange[0] ? dateRange[0].toISOString() : ""
+  const endTime =
+    dateRange?.length && dateRange[1] ? dateRange[1].toISOString() : ""
+
   const { drowsiness, loading, mutate } = useDrowsinessLog(
     driverId,
-    dateRange[0].toISOString(),
-    dateRange[1].toISOString()
+    startTime,
+    endTime
   )
 
   function reload() {
     mutate()
   }
 
-  function onDateTimeChange(dates: [Moment, Moment]) {
+  function onDateTimeChange(dates: RangeValue<Moment>) {
     setDateRange(dates)
   }
 
@@ -106,7 +114,7 @@ const DrowsinessLogTable: React.FC<Props> = ({ driverId }) => {
               format="DD/MM/YYYY HH:mm:ss"
               showTime
               onChange={onDateTimeChange}
-              defaultValue={[moment().subtract(1, "hours"), moment()]}
+              value={dateRange}
             />
           </Col>
         </Row>
