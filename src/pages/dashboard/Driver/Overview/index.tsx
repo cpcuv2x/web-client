@@ -16,10 +16,10 @@ const DashboardDriverOverviewPage: React.FC = () => {
 
   const menu = (
     <Menu>
-      {drivers.map(({ id, firstName, lastName }) => (
+      {drivers.map(({ id, firstNameTH }) => (
         <Menu.Item key={id}>
           <Link to={id}>
-            {firstName} {lastName}
+            {firstNameTH} ({id})
           </Link>
         </Menu.Item>
       ))}
