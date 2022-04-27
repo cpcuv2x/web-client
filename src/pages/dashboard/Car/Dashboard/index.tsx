@@ -9,7 +9,7 @@ import { Helmet } from "react-helmet"
 import { useNavigate, useParams } from "react-router-dom"
 import PageBreadcrumb from "../../../../components/PageBreadcrumb"
 import CameraStreams from "../../../../components/widgets/CameraStreams"
-import AccidentsLogByCar from "../../../../components/widgets/car/AccidentsLogByCar"
+import AccidentsLogByCarTable from "../../../../components/widgets/car/AccidentsLogByCarTable"
 import CarImage from "../../../../components/widgets/car/CarImage"
 import CarInformation from "../../../../components/widgets/car/CarInformation"
 import PassengersChart from "../../../../components/widgets/car/PassengersChart"
@@ -83,7 +83,7 @@ const DashboardCarPage: React.FC = () => {
           <CameraStreams carId={carId} />
         </Col>
         <Col span={24}>
-          <AccidentsLogByCar carId={carId} />
+          <AccidentsLogByCarTable carId={carId} />
         </Col>
       </Row>
     </>
