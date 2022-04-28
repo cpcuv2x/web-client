@@ -6,9 +6,9 @@ import {
   ServerToClientEvents,
 } from "../../interfaces/socket"
 
-export const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
-  appConfig.webSocketURL
-)
+export const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io({
+  path: appConfig.webSocketURL,
+})
 const SocketContext = createContext(socket)
 
 export default SocketContext
