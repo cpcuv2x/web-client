@@ -98,7 +98,7 @@ const PassengersChart: React.FC<Props> = ({ carId, maxPoints = 10 }) => {
           <Typography.Title level={5}>Current: {current}</Typography.Title>
           <Chart
             type="line"
-            series={series}
+            series={series as any}
             options={options}
             width="100%"
             height={250}
