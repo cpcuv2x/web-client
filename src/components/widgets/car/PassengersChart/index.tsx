@@ -56,9 +56,9 @@ const PassengersChart: React.FC<Props> = ({ carId, maxPoints = 10 }) => {
     grid: {
       show: false,
     },
-    theme: {
-      mode: "dark",
-    },
+    // theme: {
+    //   mode: "dark",
+    // },
     dataLabels: {
       enabled: true,
     },

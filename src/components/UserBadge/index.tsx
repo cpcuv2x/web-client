@@ -35,7 +35,11 @@ const UserBadge = () => {
     <Dropdown overlay={menu} placement="bottomRight">
       <Space className={styles.container}>
         <Avatar icon={<UserOutlined />} />
-        {user && <Typography.Text strong>{user.username}</Typography.Text>}
+        {user && (
+          <Typography.Text strong style={{ color: "white" }}>
+            {user.username}
+          </Typography.Text>
+        )}
       </Space>
     </Dropdown>
   )
