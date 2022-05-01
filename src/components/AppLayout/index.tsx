@@ -37,6 +37,7 @@ const AppLayout = () => {
           collapsed={collapsed}
           onCollapse={onCollapse}
           width={250}
+          theme="light"
         >
           <Menu
             theme="light"

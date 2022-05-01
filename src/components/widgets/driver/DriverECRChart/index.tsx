@@ -68,9 +68,9 @@ const DriverECRChart: React.FC<Props> = ({
     grid: {
       show: false,
     },
-    theme: {
-      mode: "dark",
-    },
+    // theme: {
+    //   mode: "dark",
+    // },
     dataLabels: {
       enabled: true,
     },

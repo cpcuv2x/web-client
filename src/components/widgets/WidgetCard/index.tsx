@@ -1,6 +1,6 @@
-import React from "react"
-import { Card, Tooltip } from "antd"
 import { InfoCircleOutlined } from "@ant-design/icons"
+import { Card, Tooltip, Typography } from "antd"
+import React from "react"
 import styles from "./styles.module.less"
 
 interface Props {
@@ -18,7 +18,7 @@ const WidgetCard: React.FC<Props> = ({ content, title, helpText }) => {
         paddingBottom: 12,
         height: "100%",
       }}
-      title={<span className={styles["card-title"]}>{title}</span>}
+      title={<Typography.Text type="secondary">{title}</Typography.Text>}
       extra={
         <Tooltip title={helpText}>
           <InfoCircleOutlined style={{ color: "rgba(255, 255, 255, 0.45)" }} />
