@@ -1,4 +1,4 @@
-name: CI for dev
+name: CI
 on: workflow_dispatch
 jobs:
   build:
@@ -29,13 +29,13 @@ jobs:
             VITE_GOOGLE_MAPS_API_KEY=${{ secrets.VITE_GOOGLE_MAPS_API_KEY }}
             VITE_WEB_SERVICES_URL=${{ secrets.VITE_WEB_SERVICES_URL }}
             VITE_WEB_SOCKET_URL=${{ secrets.VITE_WEB_SOCKET_URL }}
-      - name: Build and push Docker image (latest-dev)
+      - name: Build and push Docker image (latest)
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: .
           file: ./Dockerfile
           push: true
-          tags: cpcuv2x/web-client:latest-dev
+          tags: cpcuv2x/web-client:latest
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             VITE_GOOGLE_MAPS_API_KEY=${{ secrets.VITE_GOOGLE_MAPS_API_KEY }}
