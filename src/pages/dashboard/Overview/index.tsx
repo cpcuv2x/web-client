@@ -1,26 +1,14 @@
 import { AreaChartOutlined, PieChartOutlined } from "@ant-design/icons"
-import { Breadcrumb, Col, Row, Typography } from "antd"
+import { Col, Row, Typography } from "antd"
 import React from "react"
 import { Helmet } from "react-helmet"
+import PageBreadcrumb from "../../../components/PageBreadcrumb"
 import AccidentCount from "../../../components/widgets/overview/AccidentCount"
 import ActiveCars from "../../../components/widgets/overview/ActiveCars"
 import ActiveDrivers from "../../../components/widgets/overview/ActiveDrivers"
 import CarsLocationMap from "../../../components/widgets/overview/CarsLocationMap"
 import TotalPassengers from "../../../components/widgets/overview/TotalPassengers"
 import { routes } from "../../../routes/constant"
-
-const PageBreadcrumb: React.FC = () => (
-  <Breadcrumb>
-    <Breadcrumb.Item href={routes.DASHBOARD_OVERVIEW}>
-      <AreaChartOutlined />
-      <span>Dashboard</span>
-    </Breadcrumb.Item>
-    <Breadcrumb.Item href={routes.DASHBOARD_OVERVIEW}>
-      <PieChartOutlined />
-      <span>Overview</span>
-    </Breadcrumb.Item>
-  </Breadcrumb>
-)
 
 const DashboardOverviewPage: React.FC = () => {
   return (
@@ -29,25 +17,41 @@ const DashboardOverviewPage: React.FC = () => {
         <title>Overview - Dashboard | 5G-V2X</title>
       </Helmet>
 
-      <PageBreadcrumb />
+      <PageBreadcrumb
+        items={[
+          {
+            label: "Dashboard",
+            icon: <AreaChartOutlined />,
+            href: routes.DASHBOARD_OVERVIEW,
+          },
+          {
+            label: "Overview",
+            icon: <PieChartOutlined />,
+            href: routes.DASHBOARD_OVERVIEW,
+          },
+        ]}
+      />
 
       <Typography.Title>Overview</Typography.Title>
 
-      <Row gutter={[16, 16]}>
-        <Col xs={24} sm={12} md={6}>
-          <ActiveCars />
+      <Row gutter={8}>
+        <Col span={5}>
+          <Row gutter={[8, 8]}>
+            <Col span={24}>
+              <ActiveCars />
+            </Col>
+            <Col span={24}>
+              <ActiveDrivers />
+            </Col>
+            <Col span={24}>
+              <TotalPassengers />
+            </Col>
+            <Col span={24}>
+              <AccidentCount />
+            </Col>
+          </Row>
         </Col>
-        <Col xs={24} sm={12} md={6}>
-          <ActiveDrivers />
-        </Col>
-        <Col xs={24} sm={12} md={6}>
-          <TotalPassengers />
-        </Col>
-        <Col xs={24} sm={12} md={6}>
-          <AccidentCount />
-        </Col>
-
-        <Col span={24}>
+        <Col span={19}>
           <CarsLocationMap />
         </Col>
       </Row>
