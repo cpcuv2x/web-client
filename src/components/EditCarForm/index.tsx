@@ -102,6 +102,7 @@ const EditCarForm: React.FC<Props> = ({ initialValues, mutate }) => {
           label={fieldLabel["image"]}
           valuePropName="fileList"
           getValueFromEvent={normFile}
+          rules={[{ required: true }]}
         >
           <Upload
             name="image"

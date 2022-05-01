@@ -2,7 +2,7 @@ import { Breadcrumb } from "antd"
 import React from "react"
 
 interface BreadcrumbItem {
-  label: string
+  label: string | React.ReactNode
   icon?: React.ReactNode
   href?: string
 }
