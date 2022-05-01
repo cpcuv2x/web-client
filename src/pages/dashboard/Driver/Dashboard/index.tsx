@@ -6,6 +6,7 @@ import {
 import { Button, Col, Row, Typography } from "antd"
 import { Helmet } from "react-helmet"
 import { useNavigate, useParams } from "react-router-dom"
+import CopyToClipboardButton from "../../../../components/CopyToClipboardButton"
 import PageBreadcrumb from "../../../../components/PageBreadcrumb"
 import AccidentLogByDriverTable from "../../../../components/widgets/driver/AccidentLogByDriverTable"
 import DriverECRChart from "../../../../components/widgets/driver/DriverECRChart"
@@ -48,7 +49,11 @@ const DashboardDriverPage = () => {
             href: routes.DASHBOARD_DRIVER,
           },
           {
-            label: driverId,
+            label: (
+              <>
+                {driverId} <CopyToClipboardButton text={driverId} />
+              </>
+            ),
           },
         ]}
       />
