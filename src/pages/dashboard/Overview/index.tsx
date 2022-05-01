@@ -35,6 +35,9 @@ const DashboardOverviewPage: React.FC = () => {
       <Typography.Title>Overview</Typography.Title>
 
       <Row gutter={8}>
+        <Col span={19}>
+          <CarsLocationMap />
+        </Col>
         <Col span={5}>
           <Row gutter={[8, 8]}>
             <Col span={24}>
@@ -50,9 +53,6 @@ const DashboardOverviewPage: React.FC = () => {
               <AccidentCount />
             </Col>
           </Row>
-        </Col>
-        <Col span={19}>
-          <CarsLocationMap />
         </Col>
       </Row>
     </>
