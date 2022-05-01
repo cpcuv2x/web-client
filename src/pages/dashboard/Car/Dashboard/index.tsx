@@ -7,6 +7,7 @@ import { Button, Col, Row, Typography } from "antd"
 import React from "react"
 import { Helmet } from "react-helmet"
 import { useNavigate, useParams } from "react-router-dom"
+import CopyToClipboardButton from "../../../../components/CopyToClipboardButton"
 import PageBreadcrumb from "../../../../components/PageBreadcrumb"
 import CameraStreams from "../../../../components/widgets/CameraStreams"
 import AccidentsLogByCarTable from "../../../../components/widgets/car/AccidentsLogByCarTable"
@@ -47,7 +48,11 @@ const DashboardCarPage: React.FC = () => {
             href: routes.DASHBOARD_CAR,
           },
           {
-            label: carId,
+            label: (
+              <>
+                {carId} <CopyToClipboardButton text={carId} />
+              </>
+            ),
           },
         ]}
       />
