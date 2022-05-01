@@ -9,6 +9,7 @@ import useSocket from "./useSocket"
 
 interface Ecr {
   ecr: number
+  ecrThreshold: number
   timestamp: string
 }
 
@@ -18,6 +19,7 @@ interface EcrResponse {
   carId: string
   driverId: string
   ecr: number
+  ecrThreshold: number
   lat: number
   lng: number
   timestamp: string
@@ -28,7 +30,7 @@ const useDriverECR = (driverId: string) => {
     useSocket()
   )
   const socketIdRef = useRef("")
-  const [ecr, setEcr] = useState<Ecr>()
+  const [ecrData, setEcrData] = useState<Ecr>()
 
   useEffect(() => {
     const { current: socket } = socketRef
@@ -40,8 +42,9 @@ const useDriverECR = (driverId: string) => {
         socket.on(sId, (res: EcrResponse) => {
           // FIXME: remove console
           console.log(SocketEventType.StartStreamDriverECR, res)
-          setEcr({
+          setEcrData({
             ecr: res.ecr,
+            ecrThreshold: res.ecrThreshold,
             timestamp: res.timestamp,
           })
         })
@@ -53,7 +56,7 @@ const useDriverECR = (driverId: string) => {
     }
   }, [driverId])
 
-  return ecr
+  return ecrData
 }
 
 export default useDriverECR

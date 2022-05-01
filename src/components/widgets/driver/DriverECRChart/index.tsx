@@ -20,9 +20,12 @@ const DriverECRChart: React.FC<Props> = ({
   driverId,
   maxPoints = 10,
 }: Props) => {
-  const TICKINTERVAL = 30000 // interval between datapoint
-  const XAXISRANGE = TICKINTERVAL * maxPoints
-  const [current, setCurrent] = useState(0)
+  const ecrData = useDriverECR(driverId)
+
+  const [currentEcr, setCurrentEcr] = useState(0)
+  const [currentEcrThreshold, setCurrentEcrThreshold] = useState(0)
+
+  const [data, setData] = useState<[string, number][]>([])
   const [series, setSeries] = useState<ChartData[]>([
     {
       name: "ECR",
@@ -30,16 +33,23 @@ const DriverECRChart: React.FC<Props> = ({
     },
   ])
 
-  const ecr = useDriverECR(driverId)
-
-  useEffect(() => {
-    if (ecr && ecr.timestamp && ecr.ecr) appendData(ecr.timestamp, ecr.ecr)
-  }, [JSON.stringify(ecr)])
-
-  const options: ApexOptions = {
+  const [options, setOptions] = useState<ApexOptions>({
+    annotations: {
+      yaxis: [
+        {
+          y: 0,
+          label: {
+            text: "ECR threshold",
+            style: {
+              background: "#00E396",
+            },
+          },
+        },
+      ],
+    },
     xaxis: {
       type: "datetime",
-      range: XAXISRANGE,
+      // range: XAXISRANGE,
       labels: {
         formatter: function (value, timestamp, opts) {
           return new Date(timestamp || "").toLocaleTimeString("en-US", {
@@ -79,17 +89,42 @@ const DriverECRChart: React.FC<Props> = ({
         enabled: false,
       },
     },
-  }
+  })
 
-  const appendData = (timestamp: string, ecr: number) => {
-    setSeries((prev) => {
-      const newSeries: ChartData[] = _.cloneDeep(prev)
-      const data = newSeries[0].data
-      setCurrent(ecr)
-      data.push([timestamp, ecr])
-      return newSeries
-    })
-  }
+  useEffect(() => {
+    if (ecrData && ecrData.timestamp && ecrData.ecr && ecrData.ecrThreshold) {
+      // Update current ECR value
+      setCurrentEcr(ecrData.ecr)
+      // Update current threshold value
+      setCurrentEcrThreshold(ecrData.ecrThreshold)
+      // Update threshold line
+      setOptions((prevOptions) => {
+        if (
+          Array.isArray(prevOptions.annotations?.yaxis) &&
+          prevOptions.annotations?.yaxis.length &&
+          prevOptions.annotations?.yaxis[0]?.y !== undefined
+        ) {
+          prevOptions.annotations.yaxis[0].y = ecrData.ecrThreshold
+        }
+        return prevOptions
+      })
+      // Update graph
+      if (data.length >= maxPoints) {
+        setData([...data.slice(1), [ecrData.timestamp, ecrData.ecr]])
+      } else {
+        setData([...data, [ecrData.timestamp, ecrData.ecr]])
+      }
+    }
+  }, [JSON.stringify(ecrData)])
+
+  useEffect(() => {
+    setSeries([
+      {
+        name: "ECR",
+        data,
+      },
+    ])
+  }, [JSON.stringify(data)])
 
   return (
     <WidgetCard
@@ -97,9 +132,11 @@ const DriverECRChart: React.FC<Props> = ({
       helpText="The graph between ECR value of this driver and time."
       content={
         <div>
-          <Typography.Title level={5}>Current: {current}</Typography.Title>
+          <Typography.Title level={5}>
+            Current ECR: {currentEcr}, Threshold: {currentEcrThreshold}
+          </Typography.Title>
           <Chart
-            type="line"
+            type="area"
             series={series as any}
             options={options}
             width="100%"
