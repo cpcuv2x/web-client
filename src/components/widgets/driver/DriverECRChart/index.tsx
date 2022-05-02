@@ -20,12 +20,12 @@ const DriverECRChart: React.FC<Props> = ({
   driverId,
   maxPoints = 10,
 }: Props) => {
+  const chartName = "ECR chart"
   const ecrData = useDriverECR(driverId)
 
   const [currentEcr, setCurrentEcr] = useState(0)
   const [currentEcrThreshold, setCurrentEcrThreshold] = useState(0)
 
-  const [data, setData] = useState<[string, number][]>([])
   const [series, setSeries] = useState<ChartData[]>([
     {
       name: "ECR",
@@ -40,7 +40,7 @@ const DriverECRChart: React.FC<Props> = ({
           y: 0,
           borderColor: "#00E396",
           label: {
-            text: "ECR threshold",
+            text: "ECR threshold: 0",
             style: {
               color: "#fff",
               background: "#00E396",
@@ -59,7 +59,7 @@ const DriverECRChart: React.FC<Props> = ({
     yaxis: {
       min: 0,
       max: 1,
-      tickAmount: 6,
+      tickAmount: 5,
       floating: false,
     },
     grid: {
@@ -95,42 +95,52 @@ const DriverECRChart: React.FC<Props> = ({
 
   useEffect(() => {
     if (ecrData && ecrData.timestamp && ecrData.ecr && ecrData.ecrThreshold) {
+      const { ecr, timestamp, ecrThreshold } = ecrData
       // Update current ECR value
-      setCurrentEcr(ecrData.ecr)
+      setCurrentEcr(ecr)
       // Update current threshold value
-      setCurrentEcrThreshold(ecrData.ecrThreshold)
+      setCurrentEcrThreshold(ecrThreshold)
       // Update threshold line
-      setOptions((prevOptions) => {
-        if (
-          Array.isArray(prevOptions.annotations?.yaxis) &&
-          prevOptions.annotations?.yaxis.length &&
-          prevOptions.annotations?.yaxis[0]?.y !== undefined
-        ) {
-          prevOptions.annotations.yaxis[0].y = ecrData.ecrThreshold
+      setOptions((options) => {
+        const newOptions = _.cloneDeep(options)
+        if (newOptions.annotations?.yaxis?.[0]) {
+          const isDanger = ecr >= ecrThreshold
+          const lineColor = isDanger ? "#FF4560" : "#2E93fA"
+          const annotationColor = isDanger ? "#FF4560" : "#00E396"
+          newOptions.colors = [lineColor]
+          newOptions.annotations.yaxis[0] = {
+            y: ecrThreshold,
+            borderColor: annotationColor,
+            label: {
+              text: `ECR threshold: ${ecrThreshold}`,
+              style: {
+                color: "#fff",
+                background: annotationColor,
+              },
+            },
+          }
         }
-        return prevOptions
+        return newOptions
       })
       // Update graph
-      if (data.length >= maxPoints) {
-        setData([...data.slice(1), [ecrData.timestamp, ecrData.ecr]])
-      } else {
-        setData([...data, [ecrData.timestamp, ecrData.ecr]])
-      }
+      setSeries((series) => {
+        const data = series[0].data
+        return [
+          {
+            name: chartName,
+            data: [
+              ...(data.length >= maxPoints ? data.slice(1) : data),
+              [timestamp, ecr],
+            ],
+          },
+        ]
+      })
     }
-  }, [JSON.stringify(ecrData)])
-
-  useEffect(() => {
-    setSeries([
-      {
-        name: "ECR",
-        data,
-      },
-    ])
-  }, [JSON.stringify(data)])
+  }, [ecrData?.timestamp])
 
   return (
     <WidgetCard
-      title="ECR"
+      title="Drowsiness Detection"
       helpText="The graph between ECR value of this driver and time."
       content={
         <div>
