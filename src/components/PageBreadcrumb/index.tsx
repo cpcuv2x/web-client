@@ -1,5 +1,6 @@
-import { Breadcrumb } from "antd"
+import { Breadcrumb, Space } from "antd"
 import React from "react"
+import { Link } from "react-router-dom"
 
 interface BreadcrumbItem {
   label: string | React.ReactNode
@@ -15,12 +16,16 @@ const PageBreadcrumb: React.FC<Props> = ({ items }: Props) => {
   return (
     <Breadcrumb>
       {items.map(({ label, icon, href }) => {
-        return (
-          <Breadcrumb.Item href={href} key={`pbi-${label}`}>
+        const text = (
+          <Space>
             {icon}
             <span>{label}</span>
-          </Breadcrumb.Item>
+          </Space>
         )
+
+        const item = href ? <Link to={href}>{text}</Link> : text
+
+        return <Breadcrumb.Item key={`pbi-${label}`}>{item}</Breadcrumb.Item>
       })}
     </Breadcrumb>
   )

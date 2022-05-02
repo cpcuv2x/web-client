@@ -27,6 +27,7 @@ import appConfig from "../../configuration"
 import { driverGenderLabel, fieldLabel } from "../../constants/Driver"
 import useDrivers from "../../hooks/useDrivers"
 import useDriversFilters from "../../hooks/useDriversFilters"
+import { Car } from "../../interfaces/Car"
 import {
   Driver,
   DriverGender,
@@ -36,9 +37,9 @@ import {
 import { User } from "../../interfaces/User"
 import { routes } from "../../routes/constant"
 import handleError from "../../utils/handleError"
-import CopyToClipboardButton from "../CopyToClipboardButton"
 import DeleteDriverButton from "../DeleteDriverButton"
 import EditDriverButton from "../EditDriverButton"
+import IDColumn from "../IDColumn"
 
 const DriversTable: React.FC = () => {
   const navigate = useNavigate()
@@ -93,18 +94,7 @@ const DriversTable: React.FC = () => {
       key: "id",
       sorter: true,
       ellipsis: true,
-      render: (id) => (
-        <Row justify="space-between" gutter={8} wrap={false}>
-          <Col>
-            <CopyToClipboardButton text={id} />
-          </Col>
-          <Col style={{ maxWidth: 100 }}>
-            <Tooltip title={id}>
-              <Typography.Text ellipsis>{id}</Typography.Text>
-            </Tooltip>
-          </Col>
-        </Row>
-      ),
+      render: (id) => <IDColumn id={id} />,
     },
     {
       title: fieldLabel["image"],
@@ -219,6 +209,24 @@ const DriversTable: React.FC = () => {
           </Tag>
         )
       },
+    },
+    {
+      title: "Now Driving",
+      dataIndex: "Car",
+      key: "car",
+      render: (car: Car) =>
+        car ? (
+          <Typography.Link
+            onClick={() => {
+              navigate(`${routes.ENTITY_CAR}?id=${car?.id}`)
+            }}
+            ellipsis
+          >
+            {car?.licensePlate}
+          </Typography.Link>
+        ) : (
+          "-"
+        ),
     },
     {
       title: "Actions",

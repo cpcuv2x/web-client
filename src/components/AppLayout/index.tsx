@@ -7,7 +7,7 @@ import {
   UserOutlined,
 } from "@ant-design/icons"
 import { Layout, Menu } from "antd"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Link, Outlet, useLocation } from "react-router-dom"
 import { routes } from "../../routes/constant"
 import AppHeader from "../AppHeader"
@@ -17,33 +17,28 @@ const { Sider, Content } = Layout
 const { SubMenu } = Menu
 
 const AppLayout = () => {
-  const [collapsed, setCollapsed] = useState(false)
-
-  const onCollapse = (collapsed: boolean) => {
-    setCollapsed(collapsed)
-  }
-
   const location = useLocation()
-  const pathSnippets = location.pathname.split("/").filter((i) => i)
-  const defaultOpenKeys = ["dashboard", "entity"]
-  const defaultSelectedKeys = [pathSnippets.join("-")]
+  const [selectedKeys, setSelectedKeys] = useState<string[]>([])
+
+  useEffect(() => {
+    const pathSnippets = location.pathname
+      .split("/")
+      .filter((i) => i)
+      .slice(0, 2)
+    setSelectedKeys([pathSnippets.join("-")])
+  }, [location.pathname])
+
   // TODO: refactor sider
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <AppHeader />
       <Layout>
-        <Sider
-          collapsible
-          collapsed={collapsed}
-          onCollapse={onCollapse}
-          width={250}
-          theme="light"
-        >
+        <Sider collapsible width={250} theme="light">
           <Menu
             theme="light"
             mode="inline"
-            defaultSelectedKeys={defaultSelectedKeys}
-            defaultOpenKeys={defaultOpenKeys}
+            defaultOpenKeys={["dashboard", "entity"]}
+            selectedKeys={selectedKeys}
           >
             <SubMenu
               key="dashboard"

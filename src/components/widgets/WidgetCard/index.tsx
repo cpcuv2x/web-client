@@ -20,8 +20,8 @@ const WidgetCard: React.FC<Props> = ({ content, title, helpText }) => {
       }}
       title={<Typography.Text type="secondary">{title}</Typography.Text>}
       extra={
-        <Tooltip title={helpText}>
-          <InfoCircleOutlined style={{ color: "rgba(255, 255, 255, 0.45)" }} />
+        <Tooltip title={helpText} placement="topRight">
+          <InfoCircleOutlined />
         </Tooltip>
       }
     >
