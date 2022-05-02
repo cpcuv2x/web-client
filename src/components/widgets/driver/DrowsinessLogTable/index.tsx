@@ -127,7 +127,6 @@ const DrowsinessLogTable: React.FC<Props> = ({ driverId }) => {
           rowKey="id"
           loading={loading}
           tableLayout="fixed"
-          pagination={false}
           title={() => (
             <Row justify="space-between">
               <Col>

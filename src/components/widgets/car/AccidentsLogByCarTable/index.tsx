@@ -119,7 +119,6 @@ const AccidentsLogByCarTable: React.FC<Props> = ({ carId }) => {
           columns={columns}
           rowKey="id"
           loading={loading}
-          pagination={false}
           title={() => (
             <Row justify="space-between">
               <Col>
