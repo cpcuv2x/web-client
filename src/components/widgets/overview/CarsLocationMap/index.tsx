@@ -1,4 +1,4 @@
-import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api"
+import { GoogleMap, LoadScript } from "@react-google-maps/api"
 import appConfig from "../../../../configuration"
 import useCarsLocations from "../../../../hooks/socket/useCarsLocations"
 import useCars from "../../../../hooks/useCars"
