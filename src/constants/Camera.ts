@@ -13,7 +13,7 @@ export const fieldLabel = {
 
 export const cameraPositionLabel = {
   [CameraRole.DOOR]: "Door",
-  [CameraRole.SEATS_FRONT]: "Front Seats",
-  [CameraRole.SEATS_BACK]: "Back Seats",
+  [CameraRole.SEATS_FRONT]: "Front",
+  [CameraRole.SEATS_BACK]: "Back",
   [CameraRole.DRIVER]: "Driver",
 }
