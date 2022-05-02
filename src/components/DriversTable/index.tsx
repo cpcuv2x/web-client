@@ -27,6 +27,7 @@ import appConfig from "../../configuration"
 import { driverGenderLabel, fieldLabel } from "../../constants/Driver"
 import useDrivers from "../../hooks/useDrivers"
 import useDriversFilters from "../../hooks/useDriversFilters"
+import { Car } from "../../interfaces/Car"
 import {
   Driver,
   DriverGender,
@@ -219,6 +220,24 @@ const DriversTable: React.FC = () => {
           </Tag>
         )
       },
+    },
+    {
+      title: "Now Driving",
+      dataIndex: "Car",
+      key: "car",
+      render: (car: Car) =>
+        car ? (
+          <Typography.Link
+            onClick={() => {
+              navigate(`${routes.ENTITY_CAR}?id=${car?.id}`)
+            }}
+            ellipsis
+          >
+            {car?.licensePlate}
+          </Typography.Link>
+        ) : (
+          "-"
+        ),
     },
     {
       title: "Actions",
