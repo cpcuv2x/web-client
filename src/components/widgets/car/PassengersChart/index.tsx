@@ -17,40 +17,30 @@ interface ChartData {
 }
 
 const PassengersChart: React.FC<Props> = ({ carId, maxPoints = 10 }) => {
-  const TICKINTERVAL = 60000 // interval between datapoint
-  const XAXISRANGE = TICKINTERVAL * maxPoints
-  const [current, setCurrent] = useState(0)
+  const chartName = "No. of passenger(s)"
+  const passengersData = useCarPassengers(carId)
+
+  const [currentPassengers, setCurrentPassengers] = useState(0)
+
+  const [data, setData] = useState<[string, number][]>([])
   const [series, setSeries] = useState<ChartData[]>([
     {
-      name: "No. of passengers",
+      name: chartName,
       data: [],
     },
   ])
-
-  const passenger = useCarPassengers(carId)
-
-  useEffect(() => {
-    if (passenger && passenger.timestamp && passenger.passengers)
-      appendData(passenger.timestamp, passenger.passengers)
-  }, [JSON.stringify(passenger)])
-
-  const options: ApexOptions = {
+  const [options, setOptions] = useState<ApexOptions>({
     xaxis: {
       type: "datetime",
-      range: XAXISRANGE,
       labels: {
-        formatter: function (value, timestamp, opts) {
-          return new Date(timestamp || "").toLocaleTimeString("en-US", {
-            hour12: false,
-          })
-        },
+        datetimeUTC: false,
       },
       tickPlacement: "on",
     },
     yaxis: {
       min: 0,
-      max: 12,
-      tickAmount: 6,
+      max: 10,
+      tickAmount: 5,
       floating: false,
     },
     grid: {
@@ -77,17 +67,44 @@ const PassengersChart: React.FC<Props> = ({ carId, maxPoints = 10 }) => {
         enabled: false,
       },
     },
-  }
+    tooltip: {
+      x: {
+        format: "dd MMM HH:mm:ss",
+      },
+    },
+  })
 
-  const appendData = (timestamp: string, passenger: number) => {
-    setSeries((prev) => {
-      const newSeries: ChartData[] = _.cloneDeep(prev)
-      const data = newSeries[0].data
-      setCurrent(passenger)
-      data.push([timestamp, passenger])
-      return newSeries
-    })
-  }
+  useEffect(() => {
+    if (
+      passengersData &&
+      passengersData.passengers &&
+      passengersData.timestamp
+    ) {
+      // Update current passengers value
+      setCurrentPassengers(passengersData.passengers)
+      // Update graph
+      if (data.length >= maxPoints) {
+        setData([
+          ...data.slice(1),
+          [passengersData.timestamp, passengersData.passengers],
+        ])
+      } else {
+        setData([
+          ...data,
+          [passengersData.timestamp, passengersData.passengers],
+        ])
+      }
+    }
+  }, [JSON.stringify(passengersData)])
+
+  useEffect(() => {
+    setSeries([
+      {
+        name: chartName,
+        data,
+      },
+    ])
+  }, [JSON.stringify(data)])
 
   return (
     <WidgetCard
@@ -95,9 +112,11 @@ const PassengersChart: React.FC<Props> = ({ carId, maxPoints = 10 }) => {
       helpText="The graph between total number of passengers in this car and time."
       content={
         <div>
-          <Typography.Title level={5}>Current: {current}</Typography.Title>
+          <Typography.Title level={5}>
+            Current Passenger(s): {currentPassengers}
+          </Typography.Title>
           <Chart
-            type="line"
+            type="area"
             series={series as any}
             options={options}
             width="100%"

@@ -38,9 +38,11 @@ const DriverECRChart: React.FC<Props> = ({
       yaxis: [
         {
           y: 0,
+          borderColor: "#00E396",
           label: {
             text: "ECR threshold",
             style: {
+              color: "#fff",
               background: "#00E396",
             },
           },
@@ -49,13 +51,8 @@ const DriverECRChart: React.FC<Props> = ({
     },
     xaxis: {
       type: "datetime",
-      // range: XAXISRANGE,
       labels: {
-        formatter: function (value, timestamp, opts) {
-          return new Date(timestamp || "").toLocaleTimeString("en-US", {
-            hour12: false,
-          })
-        },
+        datetimeUTC: false,
       },
       tickPlacement: "on",
     },
@@ -87,6 +84,11 @@ const DriverECRChart: React.FC<Props> = ({
       },
       animations: {
         enabled: false,
+      },
+    },
+    tooltip: {
+      x: {
+        format: "dd MMM HH:mm:ss",
       },
     },
   })
