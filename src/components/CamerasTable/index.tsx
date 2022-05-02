@@ -19,9 +19,9 @@ import {
 } from "../../interfaces/Camera"
 import { routes } from "../../routes/constant"
 import handleError from "../../utils/handleError"
-import CopyToClipboardButton from "../CopyToClipboardButton"
 import DeleteCameraButton from "../DeleteCameraButton"
 import EditCameraButton from "../EditCameraButton"
+import IDColumn from "../IDColumn"
 
 const CamerasTable: React.FC = () => {
   const navigate = useNavigate()
@@ -73,16 +73,7 @@ const CamerasTable: React.FC = () => {
       key: "id",
       sorter: true,
       ellipsis: true,
-      render: (id) => (
-        <Row justify="space-between" gutter={8} wrap={false}>
-          <Col>
-            <CopyToClipboardButton text={id} />
-          </Col>
-          <Col>
-            <Tooltip title={id}>{id}</Tooltip>
-          </Col>
-        </Row>
-      ),
+      render: (id) => <IDColumn id={id} />,
     },
     {
       title: fieldLabel["name"],

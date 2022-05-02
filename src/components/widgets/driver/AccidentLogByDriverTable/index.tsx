@@ -1,11 +1,11 @@
 import { ReloadOutlined } from "@ant-design/icons"
-import { Button, Col, DatePicker, Row, Table, Tooltip, Typography } from "antd"
+import { Button, Col, DatePicker, Row, Table, Typography } from "antd"
 import { ColumnsType } from "antd/lib/table"
 import moment, { Moment } from "moment"
 import React, { useState } from "react"
 import useAccidentLogByDriver from "../../../../hooks/useAccidentLogByDriver"
 import { AccidentLogByDriver } from "../../../../interfaces/Driver"
-import CopyToClipboardButton from "../../../CopyToClipboardButton"
+import IDColumn from "../../../IDColumn"
 import WidgetCard from "../../WidgetCard"
 
 interface Props {
@@ -47,16 +47,15 @@ const AccidentLogByDriverTable: React.FC<Props> = ({ driverId }) => {
       key: "id",
       // sorter: true,
       ellipsis: true,
-      render: (id) => (
-        <Row justify="space-between" gutter={8} wrap={false}>
-          <Col>
-            <CopyToClipboardButton text={id} />
-          </Col>
-          <Col>
-            <Tooltip title={id}>{id}</Tooltip>
-          </Col>
-        </Row>
-      ),
+      render: (id) => <IDColumn id={id} />,
+    },
+    {
+      title: "Car",
+      dataIndex: "carId",
+      key: "carId",
+      // sorter: true,
+      ellipsis: true,
+      render: (id) => <IDColumn id={id} />,
     },
     {
       title: "Time Occurred",
@@ -66,24 +65,6 @@ const AccidentLogByDriverTable: React.FC<Props> = ({ driverId }) => {
       render: (timestamp: string) =>
         moment(timestamp).format("DD/MM/YYYY HH:mm:ss"),
     },
-    {
-      title: "Car",
-      dataIndex: "carId",
-      key: "carId",
-      // sorter: true,
-      ellipsis: true,
-      render: (id) => (
-        <Row justify="space-between" gutter={8} wrap={false}>
-          <Col>
-            <CopyToClipboardButton text={id} />
-          </Col>
-          <Col>
-            <Tooltip title={id}>{id}</Tooltip>
-          </Col>
-        </Row>
-      ),
-    },
-
     {
       title: "Latitude",
       dataIndex: "lat",

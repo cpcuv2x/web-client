@@ -31,9 +31,9 @@ import { Car, CarStatus, OrderDir } from "../../interfaces/Car"
 import { Driver } from "../../interfaces/Driver"
 import { routes } from "../../routes/constant"
 import handleError from "../../utils/handleError"
-import CopyToClipboardButton from "../CopyToClipboardButton"
 import DeleteCarButton from "../DeleteCarButton"
 import EditCarButton from "../EditCarButton"
+import IDColumn from "../IDColumn"
 
 const CarsTable: React.FC = () => {
   const navigate = useNavigate()
@@ -89,16 +89,7 @@ const CarsTable: React.FC = () => {
       key: "id",
       sorter: true,
       ellipsis: true,
-      render: (id) => (
-        <Row justify="space-between" gutter={8} wrap={false}>
-          <Col>
-            <CopyToClipboardButton text={id} />
-          </Col>
-          <Col>
-            <Tooltip title={id}>{id}</Tooltip>
-          </Col>
-        </Row>
-      ),
+      render: (id) => <IDColumn id={id} />,
     },
     {
       title: fieldLabel["image"],

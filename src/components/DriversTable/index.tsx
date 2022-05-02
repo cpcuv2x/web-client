@@ -37,9 +37,9 @@ import {
 import { User } from "../../interfaces/User"
 import { routes } from "../../routes/constant"
 import handleError from "../../utils/handleError"
-import CopyToClipboardButton from "../CopyToClipboardButton"
 import DeleteDriverButton from "../DeleteDriverButton"
 import EditDriverButton from "../EditDriverButton"
+import IDColumn from "../IDColumn"
 
 const DriversTable: React.FC = () => {
   const navigate = useNavigate()
@@ -94,18 +94,7 @@ const DriversTable: React.FC = () => {
       key: "id",
       sorter: true,
       ellipsis: true,
-      render: (id) => (
-        <Row justify="space-between" gutter={8} wrap={false}>
-          <Col>
-            <CopyToClipboardButton text={id} />
-          </Col>
-          <Col style={{ maxWidth: 100 }}>
-            <Tooltip title={id}>
-              <Typography.Text ellipsis>{id}</Typography.Text>
-            </Tooltip>
-          </Col>
-        </Row>
-      ),
+      render: (id) => <IDColumn id={id} />,
     },
     {
       title: fieldLabel["image"],

@@ -5,7 +5,7 @@ import moment, { Moment } from "moment"
 import React, { useState } from "react"
 import useAccidentsLogByCar from "../../../../hooks/useAccidentsLogByCar"
 import { AccidentLogByCar } from "../../../../interfaces/Car"
-import CopyToClipboardButton from "../../../CopyToClipboardButton"
+import IDColumn from "../../../IDColumn"
 import WidgetCard from "../../WidgetCard"
 
 interface Props {
@@ -47,16 +47,15 @@ const AccidentsLogByCarTable: React.FC<Props> = ({ carId }) => {
       key: "id",
       // sorter: true,
       ellipsis: true,
-      render: (id) => (
-        <Row justify="space-between" gutter={8} wrap={false}>
-          <Col>
-            <CopyToClipboardButton text={id} />
-          </Col>
-          <Col>
-            <Tooltip title={id}>{id}</Tooltip>
-          </Col>
-        </Row>
-      ),
+      render: (id) => <IDColumn id={id} />,
+    },
+    {
+      title: "Driver",
+      dataIndex: "driverId",
+      key: "driverId",
+      // sorter: true,
+      ellipsis: true,
+      render: (id) => <IDColumn id={id} />,
     },
     {
       title: "Time Occurred",
@@ -65,23 +64,6 @@ const AccidentsLogByCarTable: React.FC<Props> = ({ carId }) => {
       // sorter: true,
       render: (timestamp: string) =>
         moment(timestamp).format("DD/MM/YYYY HH:mm:ss"),
-    },
-    {
-      title: "Driver",
-      dataIndex: "driverId",
-      key: "driverId",
-      // sorter: true,
-      ellipsis: true,
-      render: (id) => (
-        <Row justify="space-between" gutter={8} wrap={false}>
-          <Col>
-            <CopyToClipboardButton text={id} />
-          </Col>
-          <Col>
-            <Tooltip title={id}>{id}</Tooltip>
-          </Col>
-        </Row>
-      ),
     },
     {
       title: "Latitude",
