@@ -22,7 +22,6 @@ const PassengersChart: React.FC<Props> = ({ carId, maxPoints = 10 }) => {
 
   const [currentPassengers, setCurrentPassengers] = useState(0)
 
-  const [data, setData] = useState<[string, number][]>([])
   const [series, setSeries] = useState<ChartData[]>([
     {
       name: chartName,
@@ -80,31 +79,24 @@ const PassengersChart: React.FC<Props> = ({ carId, maxPoints = 10 }) => {
       passengersData.passengers &&
       passengersData.timestamp
     ) {
+      const { passengers, timestamp } = passengersData
       // Update current passengers value
-      setCurrentPassengers(passengersData.passengers)
+      setCurrentPassengers(passengers)
       // Update graph
-      if (data.length >= maxPoints) {
-        setData([
-          ...data.slice(1),
-          [passengersData.timestamp, passengersData.passengers],
-        ])
-      } else {
-        setData([
-          ...data,
-          [passengersData.timestamp, passengersData.passengers],
-        ])
-      }
+      setSeries((series) => {
+        const data = series[0].data
+        return [
+          {
+            name: chartName,
+            data: [
+              ...(data.length >= maxPoints ? data.slice(1) : data),
+              [timestamp, passengers],
+            ],
+          },
+        ]
+      })
     }
-  }, [JSON.stringify(passengersData)])
-
-  useEffect(() => {
-    setSeries([
-      {
-        name: chartName,
-        data,
-      },
-    ])
-  }, [JSON.stringify(data)])
+  }, [passengersData?.timestamp])
 
   return (
     <WidgetCard
