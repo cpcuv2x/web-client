@@ -26,6 +26,7 @@ const NotificationButton = () => {
         message: getNotificationTitle(notification?.type),
         description: notification?.message,
       })
+      mutate()
     }
   }, [notification?.timestamp])
 

@@ -21,6 +21,7 @@ const CarPin: React.FC<Props> = ({ position, carId }) => {
       title: "Car information",
       content: (
         <Space direction="vertical" style={{ width: "100%" }}>
+          <Typography.Text>License Plate: {car?.licensePlate}</Typography.Text>
           <Typography.Text>Passengers: {car?.passengers}</Typography.Text>
           <Row gutter={12}>
             <Col span={12}>

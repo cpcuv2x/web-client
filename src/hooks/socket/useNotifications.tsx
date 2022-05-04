@@ -20,8 +20,8 @@ const useNotifications = () => {
 
   return {
     notifications: data ?? [],
-    unread: allUnread.slice(0, 20).sort(compare),
-    read: allRead.slice(0, 20).sort(compare),
+    unread: allUnread.sort(compare).slice(0, 20),
+    read: allRead.sort(compare).slice(0, 20),
     totalUnread: allUnread.length,
     totalRead: allRead.length,
     mutate,

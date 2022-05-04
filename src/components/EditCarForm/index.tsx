@@ -27,6 +27,15 @@ interface EditCarFormValues {
 const EditCarForm: React.FC<Props> = ({ initialValues, mutate }) => {
   const formInitialValues = {
     ...initialValues,
+    image: initialValues.imageFilename
+      ? [
+          {
+            uid: "1",
+            name: initialValues.imageFilename,
+            url: `${appConfig.webServicesURL}api/cars/${initialValues.id}/image`,
+          },
+        ]
+      : [],
     cameras: initialValues.Camera.map(({ id }) => id),
   }
 
@@ -110,17 +119,6 @@ const EditCarForm: React.FC<Props> = ({ initialValues, mutate }) => {
             listType="picture"
             accept="image/png, image/jpeg"
             maxCount={1}
-            defaultFileList={
-              formInitialValues.imageFilename
-                ? [
-                    {
-                      uid: "1",
-                      name: formInitialValues.imageFilename,
-                      url: `${appConfig.webServicesURL}api/cars/${formInitialValues.id}/image`,
-                    },
-                  ]
-                : []
-            }
           >
             <Button icon={<UploadOutlined />}>Click to upload</Button>
           </Upload>
