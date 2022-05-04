@@ -1,12 +1,33 @@
 import { BellOutlined } from "@ant-design/icons"
-import { Avatar, Badge, List, Popover, Tabs } from "antd"
+import {
+  Avatar,
+  Badge,
+  List,
+  notification as antdNotification,
+  Popover,
+  Tabs,
+} from "antd"
+import { useEffect } from "react"
 import useNotifications from "../../hooks/socket/useNotifications"
+import useRealTimeNotification from "../../hooks/socket/useRealTimeNotification"
+import { getNotificationTitle } from "../../utils/notification"
 import MarkAsReadIcon from "../Notification/MarkAsReadIcon"
 import NotificationItem from "../Notification/NotificationItem"
 import styles from "./styles.module.less"
 
 const NotificationButton = () => {
   const { unread, read, totalUnread, totalRead, mutate } = useNotifications()
+
+  const notification = useRealTimeNotification()
+
+  useEffect(() => {
+    if (notification) {
+      antdNotification.warning({
+        message: getNotificationTitle(notification?.type),
+        description: notification?.message,
+      })
+    }
+  }, [notification?.timestamp])
 
   return (
     <Popover
