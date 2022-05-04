@@ -23,7 +23,7 @@ const AppHeader = () => (
       </Col>
       <Col>
         <Space>
-          {/* <NotificationButton /> */}
+          <NotificationButton />
           <UserBadge />
         </Space>
       </Col>
