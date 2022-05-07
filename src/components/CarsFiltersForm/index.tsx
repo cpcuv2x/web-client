@@ -21,8 +21,8 @@ interface CarsFiltersFormValues {
   licensePlate?: string
   model?: string
   status?: CarStatus
-  minPassengers?: number
-  maxPassengers?: number
+  // minPassengers?: number
+  // maxPassengers?: number
 }
 
 const CarsFiltersForm: React.FC = () => {
@@ -74,7 +74,7 @@ const CarsFiltersForm: React.FC = () => {
                 />
               </Form.Item>
             </Col>
-            <Col span={4}>
+            {/* <Col span={4}>
               <Form.Item
                 label={fieldLabel["minPassengers"]}
                 name="minPassengers"
@@ -89,7 +89,7 @@ const CarsFiltersForm: React.FC = () => {
               >
                 <InputNumber style={{ width: "100%" }} min={0} />
               </Form.Item>
-            </Col>
+            </Col> */}
           </Row>
           <Row justify="end">
             <Col>

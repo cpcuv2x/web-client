@@ -34,12 +34,12 @@ const CarInformation: React.FC<Props> = ({ carId }: Props) => {
               <Text type="secondary">{car?.model}</Text>
             </Space>
           </Col>
-          <Col span={4}>
+          {/* <Col span={4}>
             <Space direction="vertical">
               <Text strong>{fieldLabel["passengers"]}</Text>
               <Text type="secondary">{car?.passengers}</Text>
             </Space>
-          </Col>
+          </Col> */}
           <Col span={4}>
             <Space direction="vertical">
               <Text strong>{fieldLabel["status"]}</Text>
