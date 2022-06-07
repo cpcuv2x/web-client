@@ -10,3 +10,8 @@ export const fieldLabel = {
   minPassengers: "Min. Passengers",
   maxPassengers: "Max. Passengers",
 }
+
+export const fieldStatusTable = {
+  id: "ID",
+  status: "Status"
+} 
