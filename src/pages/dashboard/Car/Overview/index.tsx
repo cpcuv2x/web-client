@@ -13,7 +13,6 @@ import DashboardCarComponent from "../../../../components/StatusDashboard/CarDas
 const DashboardOverviewPage: React.FC = () => {
 
   const { cars } = useCars()
-
   const [ statusFullSize, setStatusFullSize ] = useState<boolean>(true)
   const [ id, setID ] = useState<string>("")
 
@@ -44,18 +43,18 @@ const DashboardOverviewPage: React.FC = () => {
 
       <Typography.Title>Cars Dashboard</Typography.Title>
       <Row>
-        <Col span = {5}>
-          <StatusTableComponent data = {cars} idSetter = {setID} size = {statusFullSize}/>
+        <Col span = {statusFullSize ? 5 : 2}>
+          <StatusTableComponent data = {cars} idSetter = {setID} statusFullSize = {statusFullSize}/>
         </Col>
-        <Col span = {19}>
+        <Col span = {statusFullSize ? 19 : 22}>
           <Card size="small">
-            <DashboardCarComponent carId={id}/>
+           <DashboardCarComponent carId={id} setStatusFullsize = {setStatusFullSize} statusFullSize = {statusFullSize}/>
           </Card>
         </Col>
       </Row>
     </>
   )
-
+  
 }
 
 export default DashboardOverviewPage

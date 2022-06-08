@@ -1,13 +1,11 @@
 import {
-  AreaChartOutlined,
-  CarOutlined,
   ControlOutlined,
+  LeftOutlined,
+  RightOutlined,
 } from "@ant-design/icons"
-import { Button, Col, Row, Typography } from "antd"
+import { Button, Col, Row, Space, Typography } from "antd"
 import React from "react"
-import { Helmet } from "react-helmet"
 import { useNavigate } from "react-router-dom"
-import CopyToClipboardButton from "../../CopyToClipboardButton"
 import PageBreadcrumb from "../../PageBreadcrumb"
 import CameraStreams from "../../widgets/CameraStreams"
 import AccidentsLogByCarTable from "../../widgets/car/AccidentsLogByCarTable"
@@ -17,14 +15,13 @@ import PassengersChart from "../../widgets/car/PassengersChart"
 import useCar from "../../../hooks/useCar"
 import { routes } from "../../../routes/constant"
 
-// Change this to recieve data from its parent 
-const DashboardCarComponent: React.FC<{carId:string}> = ({carId}) => {
+const DashboardCarComponent: React.FC<{ carId:string , setStatusFullsize:any, statusFullSize:boolean}> = ({carId, setStatusFullsize, statusFullSize}) => {
 
   const navigate = useNavigate()
 
-  if (!carId) return <div>Loading...</div>
-
   const { car, loading, error } = useCar(carId)
+
+  if (car === undefined) return <div>Loading...</div>
 
   if (loading) return <div>Loading...</div>
 
@@ -32,28 +29,13 @@ const DashboardCarComponent: React.FC<{carId:string}> = ({carId}) => {
 
   return (
     <>
-
-      <PageBreadcrumb
-        items={[
-          {
-            label: "Dashboard",
-            icon: <AreaChartOutlined />,
-            href: routes.DASHBOARD_OVERVIEW,
-          },
-          {
-            label: "Car",
-            icon: <CarOutlined />,
-            href: routes.DASHBOARD_CAR,
-          },
-          {
-            label: (
-              <>
-                {carId}
-              </>
-            ),
-          },
-        ]}
-      />
+      <Space size={10}>
+        <Button onClick={()=>{setStatusFullsize(!statusFullSize)}}>
+          {statusFullSize&&<LeftOutlined/>}
+          {!statusFullSize&&<RightOutlined/>}
+        </Button>
+        <PageBreadcrumb items={[{ label: (<>{carId}</>)}]}/>
+      </Space>
 
       <Typography.Title>
         <Row justify="space-between">

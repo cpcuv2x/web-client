@@ -6,7 +6,7 @@ import { CarStatusTable as StatusTable  } from "../../../interfaces/Car";
 import StatusCircle from "../StatusCircle";
 
 
-const StatusTableComponent : React.FC<{ data: StatusTable[], size: boolean, idSetter: any }> = ({data, size, idSetter}) => {
+const StatusTableComponent : React.FC<{ data: StatusTable[], statusFullSize: boolean, idSetter: any }> = ({data, statusFullSize, idSetter}) => {
     
   const columns : ColumnsType<StatusTable> =[
       {
@@ -14,7 +14,7 @@ const StatusTableComponent : React.FC<{ data: StatusTable[], size: boolean, idSe
         dataIndex: "id",
         key: "id",
         ellipsis: true,
-        width: "75%",
+        width: statusFullSize ? "75%": "0%",
         render: (id) => <div>{id}</div>,
       },
       {
@@ -23,36 +23,36 @@ const StatusTableComponent : React.FC<{ data: StatusTable[], size: boolean, idSe
         key: "status",
         sorter: true,
         ellipsis: true,
-        width: "25%",
+        width: statusFullSize ? "25%" : "100%",
         render: (status) => <StatusCircle status={status}/>,
       }
   ]
 
   return(
-      <Table
-          style={{width: "95%"}}
-          dataSource={data}
-          columns={columns}
-          rowKey="id"
-          loading={false}
-          tableLayout="fixed"
-          onRow={(record, _) => {
-            return {
-              onClick: () => { idSetter(record.id) },
-            };
-          }}
-          title={() => (
-            <Row justify="space-between">
-              <Col>
-                <Typography.Text>Total: {0} item(s)</Typography.Text>
-              </Col>
-              <Col>
-                <Button onClick={()=>{}} icon={<ReloadOutlined />}/>
-              </Col>
-            </Row>
-          )}
-          pagination={false}
-        />
+    <Table
+        style={{width: "95%"}}
+        dataSource={data}
+        columns={columns}
+        rowKey="id"
+        loading={false}
+        tableLayout="fixed"
+        onRow={(record, _) => {
+          return {
+            onClick: () => { idSetter(record.id) },
+          };
+        }}
+        title={() => (
+          <Row justify="space-between">
+            <Col>
+              {statusFullSize&&<Typography.Text>Total: {data.length} item(s)</Typography.Text>}
+            </Col>
+            <Col>
+              <Button onClick={()=>{}} icon={<ReloadOutlined />}/>
+            </Col>
+          </Row>
+        )}
+        pagination={false}
+      />
   )
 }
 
