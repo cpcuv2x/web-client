@@ -37,16 +37,16 @@ const DashboardOverviewPage: React.FC = () => {
             label: "Car",
             icon: <CarOutlined />,
             href: routes.DASHBOARD_CAR,
-          },
+          }
         ]}
       />
 
       <Typography.Title>Cars Dashboard</Typography.Title>
       <Row>
-        <Col span = {statusFullSize ? 5 : 2}>
+        <Col span = {statusFullSize ? 5 : 0}>
           <StatusTableComponent data = {cars} idSetter = {setID} statusFullSize = {statusFullSize}/>
         </Col>
-        <Col span = {statusFullSize ? 19 : 22}>
+        <Col span = {statusFullSize ? 19 : 24}>
           <Card size="small">
            <DashboardCarComponent carId={id} setStatusFullsize = {setStatusFullSize} statusFullSize = {statusFullSize}/>
           </Card>
