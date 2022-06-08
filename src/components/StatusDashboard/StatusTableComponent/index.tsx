@@ -1,10 +1,9 @@
-import { ReloadOutlined } from "@ant-design/icons";
-import { Button, Col, Row, Table, Typography } from "antd";
+import { Table } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import { fieldStatusTable } from "../../../constants/Car";
 import { CarStatusTable as StatusTable  } from "../../../interfaces/Car";
 import StatusCircle from "../StatusCircle";
-import { centerAbsolute } from "../CenterAbsolute";
+import { CarStatus as Status } from "../../../interfaces/Car";
 
 const StatusTableComponent : React.FC<{ data: StatusTable[], statusFullSize: boolean, idSetter: any }> = ({data, statusFullSize, idSetter}) => {
 
@@ -15,18 +14,33 @@ const StatusTableComponent : React.FC<{ data: StatusTable[], statusFullSize: boo
         key: "id",
         ellipsis: true,
         width: statusFullSize ? "75%": "0%",
-        render: (id) => <div>{id}</div>,
+        sorter: (a, b) => a.id.localeCompare(b.id),
+        //filterSearch: true, Did not work
+        //onFilter: (value, record) => record.id.indexOf(value.toString()) === 0, Did not work
+        render: (id) => <div style={{cursor:"pointer"}}>{id}</div>,
       },
       {
         dataIndex: "status",
         key: "status",
-        sorter: true,
         ellipsis: true,
         width: statusFullSize ? "25%" : "0%",
+        filters: [
+          {
+            text: Status.ACTIVE,
+            value: Status.ACTIVE,
+          },
+          {
+            text: Status.INACTIVE,
+            value: Status.INACTIVE,
+          },
+        ],
+        defaultFilteredValue : [Status.ACTIVE],
+        onFilter: (value, record) => record.status.indexOf(value.toString()) === 0,
         render: (status) => 
-        <div style = {centerAbsolute}>
+        <div style = {{cursor:"pointer", position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)"}}>
           <StatusCircle status={status}/>
         </div>
+        
       }
   ]
 
@@ -42,7 +56,7 @@ const StatusTableComponent : React.FC<{ data: StatusTable[], statusFullSize: boo
         sticky={true}
         onRow={(record, _) => {
           return {
-            onClick: () => { idSetter(record.id) },
+            onClick: () => { idSetter(record.id) }
           };
         }}
         pagination={false}
