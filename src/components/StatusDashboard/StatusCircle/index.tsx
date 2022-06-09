@@ -1,6 +1,6 @@
 import { Avatar } from "antd"
 import React, {useState, useEffect} from "react"
-import { CarStatus as Status } from "../../../interfaces/Car";
+import { Status } from "../../../interfaces/Status";
 
 const StatusCircle: React.FC<{status:Status}> = ({status}) =>{
     const [color, setColor] = useState("red");

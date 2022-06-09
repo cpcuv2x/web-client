@@ -3,28 +3,25 @@ import {
   DownOutlined,
   UserOutlined,
 } from "@ant-design/icons"
-import { Button, Dropdown, Menu, Typography } from "antd"
-import React from "react"
+import { Button, Card, Col, Dropdown, Menu, Row, Typography } from "antd"
+import React, { useEffect, useState } from "react"
 import { Helmet } from "react-helmet"
 import { Link } from "react-router-dom"
 import PageBreadcrumb from "../../../../components/PageBreadcrumb"
+import DashboardDriverComponent from "../../../../components/StatusDashboard/DriverDashboard"
+import StatusTableComponent from "../../../../components/StatusDashboard/StatusTableComponent"
 import useDrivers from "../../../../hooks/useDrivers"
 import { routes } from "../../../../routes/constant"
 
 const DashboardDriverOverviewPage: React.FC = () => {
   const { drivers } = useDrivers()
+  const [ statusFullSize, setStatusFullSize ] = useState<boolean>(true)
+  const [ id, setID ] = useState<string>("")
 
-  const menu = (
-    <Menu>
-      {drivers.map(({ id, firstNameTH }) => (
-        <Menu.Item key={id}>
-          <Link to={id}>
-            {firstNameTH} ({id})
-          </Link>
-        </Menu.Item>
-      ))}
-    </Menu>
-  )
+  useEffect(()=>{
+    if(drivers) setID(drivers.length>0 ? drivers[0].id : "")
+  }, [drivers])
+
   return (
     <>
       <Helmet>
@@ -48,11 +45,16 @@ const DashboardDriverOverviewPage: React.FC = () => {
 
       <Typography.Title>Drivers Dashboard</Typography.Title>
 
-      <Dropdown overlay={menu} trigger={["click"]}>
-        <Button>
-          Select a driver <DownOutlined />
-        </Button>
-      </Dropdown>
+      <Row>
+        <Col span = {statusFullSize ? 5 : 0}>
+          <StatusTableComponent data = {drivers} idSetter = {setID} statusFullSize = {statusFullSize}/>
+        </Col>
+        <Col span = {statusFullSize ? 19 : 24}>
+          <Card size="small">
+           <DashboardDriverComponent driverId={id} setStatusFullSize = {setStatusFullSize} statusFullSize = {statusFullSize}/>
+          </Card>
+        </Col>
+      </Row>
     </>
   )
 }

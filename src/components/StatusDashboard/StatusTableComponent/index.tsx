@@ -1,13 +1,13 @@
 import { Table } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import { fieldStatusTable } from "../../../constants/Car";
-import { CarStatusTable as StatusTable  } from "../../../interfaces/Car";
+import { StatusTableElement  } from "../../../interfaces/Status";
 import StatusCircle from "../StatusCircle";
 import { CarStatus as Status } from "../../../interfaces/Car";
 
-const StatusTableComponent : React.FC<{ data: StatusTable[], statusFullSize: boolean, idSetter: any }> = ({data, statusFullSize, idSetter}) => {
+const StatusTableComponent : React.FC<{ data: StatusTableElement[], statusFullSize: boolean, idSetter: any }> = ({data, statusFullSize, idSetter}) => {
 
-  const columns : ColumnsType<StatusTable> =[
+  const columns : ColumnsType<StatusTableElement> =[
       {
         title: fieldStatusTable["id"],
         dataIndex: "id",
@@ -15,8 +15,8 @@ const StatusTableComponent : React.FC<{ data: StatusTable[], statusFullSize: boo
         ellipsis: true,
         width: statusFullSize ? "75%": "0%",
         sorter: (a, b) => a.id.localeCompare(b.id),
-        //filterSearch: true, Did not work
-        //onFilter: (value, record) => record.id.indexOf(value.toString()) === 0, Did not work
+        //filterSearch: true,
+        //onFilter: (value, record) => record.id.indexOf(value.toString()) === 0,
         render: (id) => <div style={{cursor:"pointer"}}>{id}</div>,
       },
       {
@@ -34,7 +34,6 @@ const StatusTableComponent : React.FC<{ data: StatusTable[], statusFullSize: boo
             value: Status.INACTIVE,
           },
         ],
-        defaultFilteredValue : [Status.ACTIVE],
         onFilter: (value, record) => record.status.indexOf(value.toString()) === 0,
         render: (status) => 
         <div style = {{cursor:"pointer", position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)"}}>
@@ -46,21 +45,22 @@ const StatusTableComponent : React.FC<{ data: StatusTable[], statusFullSize: boo
 
   return(
     <Table
-        style={{width: "95%"}}
-        dataSource={data}
-        columns={columns}
-        rowKey="id"
-        loading={false}
-        tableLayout="fixed"
-        scroll={{ y: 240 }}
-        sticky={true}
-        onRow={(record, _) => {
-          return {
-            onClick: () => { idSetter(record.id) }
-          };
-        }}
-        pagination={false}
-      />
+      style={{width: "95%"}}
+      dataSource={data}
+      columns={columns}
+      rowKey="id"
+      loading={false}
+      pagination={false}
+      sticky={true}
+      tableLayout="fixed"
+      scroll={{ y: 240 }}
+      size="small"
+      onRow={(record, _) => {
+        return {
+          onClick: () => { idSetter(record.id) }
+        };
+      }}
+    />
   )
 }
 

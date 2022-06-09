@@ -8,6 +8,7 @@ import DashboardCarPage from "./pages/dashboard/Car/Dashboard"
 import DashboardCarOverviewPage from "./pages/dashboard/Car/Overview"
 import DashboardDriverPage from "./pages/dashboard/Driver/Dashboard"
 import DashboardDriverOverviewPage from "./pages/dashboard/Driver/Overview"
+import DashboardHeartbeatOverviewPage from "./pages/dashboard/Heartbeat/Overview"
 import DashboardOverviewPage from "./pages/dashboard/Overview"
 import EntityCameraEditPage from "./pages/entity/Camera/Edit"
 import EntityCameraNewPage from "./pages/entity/Camera/New"
@@ -51,7 +52,10 @@ function App() {
                   </Route>
                   <Route path="driver">
                     <Route index element={<DashboardDriverOverviewPage />} />
-                    <Route path=":driverId" element={<DashboardDriverPage />} />
+                    <Route path=":driverId" element={<DashboardDriverPage />} /> 
+                  </Route>
+                  <Route path="heartbeat">
+                    <Route index element={<DashboardHeartbeatOverviewPage />} />
                   </Route>
                 </Route>
                 <Route path="entity">

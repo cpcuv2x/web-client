@@ -23,7 +23,7 @@ const DashboardOverviewPage: React.FC = () => {
   return (
     <>
       <Helmet>
-        <title>Cars - Dashboard | 5G-V2X</title>
+        <title>Cars - Dashboard | 5G-V2X1234</title>
       </Helmet>
 
       <PageBreadcrumb

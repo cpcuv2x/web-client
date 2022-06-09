@@ -58,8 +58,3 @@ export interface CarPosition {
   lat: number
   lng: number
 }
-
-export interface CarStatusTable {
-  id: string,
-  status: CarStatus
-}
