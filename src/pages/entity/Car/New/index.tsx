@@ -14,7 +14,7 @@ const EntityCarNewPage: React.FC = () => {
   return (
     <>
       <Helmet>
-        <title>New car - Entity | 5G-V2X</title>
+        <title>New vehicle - Entity | 5G-V2X</title>
       </Helmet>
 
       <PageBreadcrumb
@@ -25,7 +25,7 @@ const EntityCarNewPage: React.FC = () => {
         ]}
       />
 
-      <Typography.Title>Register a new car</Typography.Title>
+      <Typography.Title>Register a new vehicle</Typography.Title>
 
       <CreateCarForm />
     </>

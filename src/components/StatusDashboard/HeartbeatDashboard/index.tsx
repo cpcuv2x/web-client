@@ -30,13 +30,13 @@ const HeartbeatTableComponent:React.FC<{ data : HeartbeatTableElement[] }>  = ({
     return(
         <Table loading={ data ? false:true}  dataSource={data} bordered = {true} sticky = {true} size="small"> 
             <Column title="ID" dataIndex="id" key="id" align = "center"/>
-            {getStatusColumn("Car status", "carStatus")}
+            {getStatusColumn("Vehicle status", "carStatus")}
             <ColumnGroup title="Device status" align = "center">
                 {getStatusColumn("Font Camera", "fontCamStatus")}
                 {getStatusColumn("Back Camera", "backCamStatus")}
                 {getStatusColumn("Door Camera", "doorCamStatus")}
                 {getStatusColumn("Driver Camera", "driverCamStatus")}
-                {getStatusColumn("Drowsiness Modul", "drowsinessModuleStatus")}
+                {getStatusColumn("Drowsiness Module", "drowsinessModuleStatus")}
                 {getStatusColumn("Accident Module", "accidentModuleStatus")}
             </ColumnGroup>     
             <Column title="Inspect" key="inspect" align = "center" 

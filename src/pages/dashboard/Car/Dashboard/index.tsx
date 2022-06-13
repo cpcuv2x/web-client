@@ -32,7 +32,7 @@ const DashboardCarPage: React.FC = () => {
   return (
     <>
       <Helmet>
-        <title>Car: {car.licensePlate} - Dashboard | 5G-V2X</title>
+        <title>Vehicle: {car.id} - Dashboard | 5G-V2X</title>
       </Helmet>
 
       <PageBreadcrumb
@@ -43,7 +43,7 @@ const DashboardCarPage: React.FC = () => {
             href: routes.DASHBOARD_OVERVIEW,
           },
           {
-            label: "Car",
+            label: "Vehicle",
             icon: <CarOutlined />,
             href: routes.DASHBOARD_CAR,
           },
@@ -59,7 +59,7 @@ const DashboardCarPage: React.FC = () => {
 
       <Typography.Title>
         <Row justify="space-between">
-          <Col>Car: {car.licensePlate}</Col>
+          <Col>Vehicle: {car.id}</Col>
           <Col>
             <Button
               type="primary"
@@ -68,7 +68,7 @@ const DashboardCarPage: React.FC = () => {
                 navigate(`${routes.ENTITY_CAR}?id=${carId}`)
               }}
             >
-              Manage car
+              Manage vehicle
             </Button>
           </Col>
         </Row>

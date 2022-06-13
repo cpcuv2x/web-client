@@ -49,8 +49,8 @@ const AppLayout = () => {
               <Menu.Item key="dashboard-overview" icon={<PieChartOutlined />}>
                 <Link to={routes.DASHBOARD_OVERVIEW}>Overview</Link>
               </Menu.Item>
-              <Menu.Item key="dashboard-car" icon={<CarOutlined />}>
-                <Link to={routes.DASHBOARD_CAR}>Car</Link>
+              <Menu.Item key="dashboard-vehicle" icon={<CarOutlined />}>
+                <Link to={routes.DASHBOARD_CAR}>Vehicle</Link>
               </Menu.Item>
               <Menu.Item key="dashboard-driver" icon={<UserOutlined />}>
                 <Link to={routes.DASHBOARD_DRIVER}>Driver</Link>
@@ -68,7 +68,7 @@ const AppLayout = () => {
                 <Link to={routes.ENTITY_CAMERA}>Camera</Link>
               </Menu.Item>
               <Menu.Item key="entity-car" icon={<CarOutlined />}>
-                <Link to={routes.ENTITY_CAR}>Car</Link>
+                <Link to={routes.ENTITY_CAR}>Vehicle</Link>
               </Menu.Item>
               <Menu.Item key="entity-driver" icon={<UserOutlined />}>
                 <Link to={routes.ENTITY_DRIVER}>Driver</Link>

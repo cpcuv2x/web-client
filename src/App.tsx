@@ -46,9 +46,9 @@ function App() {
               >
                 <Route path="dashboard">
                   <Route path="overview" element={<DashboardOverviewPage />} />
-                  <Route path="car">
+                  <Route path="vehicle">
                     <Route index element={<DashboardCarOverviewPage />} />
-                    <Route path=":carId" element={<DashboardCarPage />} />
+                    <Route path=":vehicleId" element={<DashboardCarPage />} />
                   </Route>
                   <Route path="driver">
                     <Route index element={<DashboardDriverOverviewPage />} />
@@ -59,10 +59,10 @@ function App() {
                   </Route>
                 </Route>
                 <Route path="entity">
-                  <Route path="car">
+                  <Route path="vehicle">
                     <Route index element={<EntityCarOverviewPage />} />
                     <Route path="new" element={<EntityCarNewPage />} />
-                    <Route path="edit/:carId" element={<EntityCarEditPage />} />
+                    <Route path="edit/:vehicleId" element={<EntityCarEditPage />} />
                   </Route>
                   <Route path="driver">
                     <Route index element={<EntityDriverOverviewPage />} />

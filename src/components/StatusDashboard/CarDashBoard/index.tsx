@@ -38,7 +38,7 @@ const DashboardCarComponent: React.FC<{ carId:string , setStatusFullsize:any, st
               icon = {statusFullSize ? <LeftOutlined/>: <RightOutlined/>}
               style = {{width:30, height: 30}}>
             </Button>
-            <Typography.Title level={3} style = {{transform:"translate(0%, 10%)"}}>Car: {car.licensePlate}</Typography.Title>
+            <Typography.Title level={3} style = {{transform:"translate(0%, 10%)"}}>Vehicle: {car.licensePlate}</Typography.Title>
           </Space>
         </Col>
         <Col>
@@ -49,7 +49,7 @@ const DashboardCarComponent: React.FC<{ carId:string , setStatusFullsize:any, st
             onClick={() => {
               navigate(`${routes.ENTITY_CAR}?id=${carId}`)
             }}>
-            Manage car
+            Manage vehicle
           </Button>
         </Col>
       </Row>

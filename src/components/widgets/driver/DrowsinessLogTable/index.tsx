@@ -50,7 +50,7 @@ const DrowsinessLogTable: React.FC<Props> = ({ driverId }) => {
       render: (id) => <IDColumn id={id} />,
     },
     {
-      title: "Car",
+      title: "Vehicle",
       dataIndex: "carId",
       key: "carId",
       // sorter: true,

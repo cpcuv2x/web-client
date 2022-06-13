@@ -9,7 +9,7 @@ export const fieldLabel = {
   gender: "Gender",
   birthDate: "Birth Date",
   nationalId: "National ID",
-  carDrivingLicenseId: "Car Driving License No.",
+  carDrivingLicenseId: "Vehicle No.",
   image: "Image",
   username: "Username",
   password: "Password",

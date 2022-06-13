@@ -52,7 +52,7 @@ const DashboardHeartbeatOverviewPage: React.FC = () => {
           ]}
         />
 
-        <Typography.Title>Heartbeat of cars and devices Dashboard</Typography.Title>
+        <Typography.Title>Heartbeat of vehicles and devices Dashboard</Typography.Title>
         <HeartbeatTableComponent data = {mockUpData}/>
       </>
     )

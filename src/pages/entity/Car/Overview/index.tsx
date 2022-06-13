@@ -20,26 +20,26 @@ const EntityCarOverviewPage: React.FC = () => {
   return (
     <>
       <Helmet>
-        <title>Cars - Entity | 5G-V2X</title>
+        <title>Vehicles - Entity | 5G-V2X</title>
       </Helmet>
 
       <PageBreadcrumb
         items={[
           { label: "Entity", icon: <ControlOutlined /> },
-          { label: "Car", icon: <CarOutlined />, href: routes.ENTITY_CAR },
+          { label: "Vehicle", icon: <CarOutlined />, href: routes.ENTITY_CAR },
         ]}
       />
 
       <Typography.Title>
         <Row justify="space-between">
-          <Col>Cars Management</Col>
+          <Col>Vehicles Management</Col>
           <Col>
             <Button
               type="primary"
               icon={<PlusCircleOutlined />}
               onClick={onClickRegister}
             >
-              Register a new car
+              Register a new vehicle
             </Button>
           </Col>
         </Row>

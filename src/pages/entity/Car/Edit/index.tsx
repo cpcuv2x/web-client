@@ -20,7 +20,7 @@ const EntityCarEditPage: React.FC = () => {
   return (
     <>
       <Helmet>
-        <title>Edit Car: {car.licensePlate} | 5G-V2X</title>
+        <title>Edit Vehicle: {car.id} | 5G-V2X</title>
       </Helmet>
 
       <PageBreadcrumb
@@ -28,11 +28,11 @@ const EntityCarEditPage: React.FC = () => {
           { label: "Entity", icon: <ControlOutlined /> },
           { label: "Car", icon: <CarOutlined />, href: routes.ENTITY_CAR },
           { label: "Edit", icon: <EditOutlined /> },
-          { label: car.licensePlate },
+          { label: car.id },
         ]}
       />
 
-      <Typography.Title>Edit car: {car.licensePlate}</Typography.Title>
+      <Typography.Title>Edit car: {car.id}</Typography.Title>
 
       <EditCarForm initialValues={car} mutate={mutate} />
     </>

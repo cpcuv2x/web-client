@@ -23,7 +23,7 @@ const DashboardOverviewPage: React.FC = () => {
   return (
     <>
       <Helmet>
-        <title>Cars - Dashboard | 5G-V2X1234</title>
+        <title>Vehicles - Dashboard | 5G-V2X1234</title>
       </Helmet>
 
       <PageBreadcrumb
@@ -34,14 +34,14 @@ const DashboardOverviewPage: React.FC = () => {
             href: routes.DASHBOARD_OVERVIEW,
           },
           {
-            label: "Car",
+            label: "Vehicle",
             icon: <CarOutlined />,
             href: routes.DASHBOARD_CAR,
           }
         ]}
       />
 
-      <Typography.Title>Cars Dashboard</Typography.Title>
+      <Typography.Title>Vehicle Dashboard</Typography.Title>
       <Row>
         <Col span = {statusFullSize ? 5 : 0}>
           <StatusTableComponent data = {cars} idSetter = {setID} statusFullSize = {statusFullSize}/>

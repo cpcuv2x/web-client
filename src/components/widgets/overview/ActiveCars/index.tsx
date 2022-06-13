@@ -5,8 +5,8 @@ const ActiveCars = () => {
   const { active, total } = useActiveCars()
   return (
     <BigNumber
-      title="Active Car(s)"
-      helpText="Total number of cars that are operating."
+      title="Active Vehicle(s)"
+      helpText="Total number of vehicles that are operating."
       value={`${active} / ${total}`}
     />
   )
