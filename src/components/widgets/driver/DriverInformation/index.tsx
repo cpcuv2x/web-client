@@ -108,7 +108,7 @@ const DriverInformation: React.FC<Props> = ({ driverId }: Props) => {
                     navigate(`${routes.DASHBOARD_CAR}/${driver?.Car?.id}`)
                   }
                 >
-                  {driver?.Car.licensePlate}
+                  {driver?.Car.id}
                 </Link>
               ) : (
                 <Text type="secondary">-</Text>

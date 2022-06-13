@@ -129,7 +129,7 @@ const CamerasTable: React.FC = () => {
             }}
             ellipsis
           >
-            {car.licensePlate}
+            {car.id}
           </Typography.Link>
         ) : (
           "-"
