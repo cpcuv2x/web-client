@@ -66,6 +66,12 @@ const AccidentsLogByCarTable: React.FC<Props> = ({ carId }) => {
         moment(timestamp).format("DD/MM/YYYY HH:mm:ss"),
     },
     {
+      title: "Detail",
+      dataIndex : ["lat", 'long'],
+      key: "detail",
+      render: (_, record) => <IDColumn id={record.lat+record.long+""} />,
+    },
+    {
       title: "Latitude",
       dataIndex: "lat",
       key: "lat",
