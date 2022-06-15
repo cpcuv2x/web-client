@@ -1,12 +1,15 @@
 import { ReloadOutlined } from "@ant-design/icons"
-import { Button, Col, DatePicker, Row, Table, Tooltip, Typography } from "antd"
+import { LoadScript } from "@react-google-maps/api"
+import { Button, Col, DatePicker, Row, Table, Typography } from "antd"
 import { ColumnsType } from "antd/lib/table"
 import moment, { Moment } from "moment"
 import React, { useState } from "react"
+import appConfig from "../../../../configuration"
 import useAccidentsLogByCar from "../../../../hooks/useAccidentsLogByCar"
 import { AccidentLogByCar } from "../../../../interfaces/Car"
 import IDColumn from "../../../IDColumn"
 import WidgetCard from "../../WidgetCard"
+import AccidentDetailMapComponent from "../AccidentDetailMapComponent/AccidentDetailMapComponent"
 
 interface Props {
   carId: string
@@ -68,62 +71,52 @@ const AccidentsLogByCarTable: React.FC<Props> = ({ carId }) => {
     {
       title: "Detail",
       dataIndex : ["lat", 'long'],
-      key: "detail",
-      render: (_, record) => <IDColumn id={record.lat+record.long+""} />,
-    },
-    {
-      title: "Latitude",
-      dataIndex: "lat",
-      key: "lat",
-      // sorter: true,
-    },
-    {
-      title: "Longitude",
-      dataIndex: "long",
-      key: "long",
-      // sorter: true,
+      key: "id",
+      render: (_, record) => <AccidentDetailMapComponent data={record}/>,
     },
   ]
 
   return (
-    <WidgetCard
-      title={
-        <Row justify="space-between">
-          <Col>Accidents Log</Col>
-          <Col style={{ marginRight: 8 }}>
-            <DatePicker.RangePicker
-              format="DD/MM/YYYY HH:mm:ss"
-              showTime
-              onChange={onDateTimeChange}
-              value={dateRange}
-            />
-          </Col>
-        </Row>
-      }
-      helpText="Accidents occurred with this car."
-      content={
-        <Table
-          dataSource={accidents}
-          columns={columns}
-          rowKey="id"
-          loading={loading}
-          title={() => (
-            <Row justify="space-between">
-              <Col>
-                <Typography.Text>
-                  Total: {accidents.length} item(s)
-                </Typography.Text>
-              </Col>
-              <Col>
-                <Button onClick={reload} icon={<ReloadOutlined />}>
-                  Reload
-                </Button>
-              </Col>
-            </Row>
-          )}
-        />
-      }
-    />
+    <LoadScript googleMapsApiKey={appConfig.googleMapAPIKey}>
+      <WidgetCard
+        title={
+          <Row justify="space-between">
+            <Col>Accidents Log</Col>
+            <Col style={{ marginRight: 8 }}>
+              <DatePicker.RangePicker
+                format="DD/MM/YYYY HH:mm:ss"
+                showTime
+                onChange={onDateTimeChange}
+                value={dateRange}
+              />
+            </Col>
+          </Row>
+        }
+        helpText="Accidents occurred with this car."
+        content={
+          <Table
+            dataSource={accidents}
+            columns={columns}
+            rowKey="id"
+            loading={loading}
+            title={() => (
+              <Row justify="space-between">
+                <Col>
+                  <Typography.Text>
+                    Total: {accidents.length} item(s)
+                  </Typography.Text>
+                </Col>
+                <Col>
+                  <Button onClick={reload} icon={<ReloadOutlined />}>
+                    Reload
+                  </Button>
+                </Col>
+              </Row>
+            )}
+          />
+        }
+      />
+    </LoadScript>
   )
 }
 
