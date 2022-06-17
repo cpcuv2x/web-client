@@ -11,6 +11,7 @@ export enum SocketEventType {
   StartStreamDriverInformation = "START_STREAM_DRIVER_INFORMATION",
   StartStreamDriverECR = "START_STREAM_DRIVER_ECR",
   StartStreamNotification = "START_STREAM_NOTIFICATION",
+  StartStreamHeartbeatsStatus = "START_STREAM_HEARTBEATSSTATUS",
   StopStream = "STOP_STREAM",
 }
 
@@ -48,6 +49,9 @@ export interface ClientToServerEvents {
     callback: (sId: string) => void
   ) => void
   [SocketEventType.StartStreamNotification]: (
+    callback: (sId: string) => void
+  ) => void
+  [SocketEventType.StartStreamHeartbeatsStatus]: (
     callback: (sId: string) => void
   ) => void
   [SocketEventType.StopStream]: (sId: string) => void

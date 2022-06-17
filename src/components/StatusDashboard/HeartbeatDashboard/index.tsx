@@ -21,23 +21,28 @@ const HeartbeatTableComponent:React.FC<{ data : HeartbeatTableElement[] }>  = ({
                         },
                     ]}
                     onFilter = {
-                        (value, record:HeartbeatTableElement) => record[keyAndIndex as keyof HeartbeatTableElement].indexOf(value.toString()) === 0
+                        (value, record:HeartbeatTableElement) => (record[keyAndIndex as keyof HeartbeatTableElement] as Status).indexOf(value.toString()) === 0
                     }
 
                 />
     }
 
     return(
-        <Table loading={ data ? false:true}  dataSource={data} bordered = {true} sticky = {true} size="small"> 
+        <Table loading={ data ? false:true}  dataSource={[...data]} bordered = {true} sticky = {true} size="small"
+            onRow={(record, rowIndex) => {
+                return {
+                    onMouseEnter: event => {console.log(record);}
+                }
+            }}> 
             <Column title="ID" dataIndex="id" key="id" align = "center"/>
             {getStatusColumn("Vehicle status", "carStatus")}
             <ColumnGroup title="Device status" align = "center">
-                {getStatusColumn("Font Camera", "fontCamStatus")}
-                {getStatusColumn("Back Camera", "backCamStatus")}
-                {getStatusColumn("Door Camera", "doorCamStatus")}
-                {getStatusColumn("Driver Camera", "driverCamStatus")}
-                {getStatusColumn("Drowsiness Module", "drowsinessModuleStatus")}
-                {getStatusColumn("Accident Module", "accidentModuleStatus")}
+                {getStatusColumn("Font Camera", "cameraSeatsFront")}
+                {getStatusColumn("Back Camera", "cameraSeatsBack")}
+                {getStatusColumn("Door Camera", "cameraDoor")}
+                {getStatusColumn("Driver Camera", "cameraDriver")}
+                {getStatusColumn("Drowsiness Module", "drowsinessModule")}
+                {getStatusColumn("Accident Module", "accidentModule")}
             </ColumnGroup>     
             <Column title="Inspect" key="inspect" align = "center" 
                     render={(_: any, record: HeartbeatTableElement) => (
