@@ -14,7 +14,7 @@ const useHeartbeatStatus = () => {
     useSocket()
   )
   const socketIdRef = useRef("")
-  const [heartbeatOfACar, setHeartbeatOfACar] = useState<HeartbeatStatus>()
+  const [heartbeatOfACar, setHeartbeatOfACar] = useState<HeartbeatStatus[]>()
 
   useEffect(() => {
     const { current: socket } = socketRef
@@ -22,7 +22,7 @@ const useHeartbeatStatus = () => {
       SocketEventType.StartStreamHeartbeatsStatus,
       (sId: string) => {
         socketIdRef.current = sId
-        socket.on(sId, (res: HeartbeatStatus) => {
+        socket.on(sId, (res: HeartbeatStatus[]) => {
           // FIXME: remove console
           console.log(SocketEventType.StartStreamHeartbeatsStatus, res)
           setHeartbeatOfACar(res)

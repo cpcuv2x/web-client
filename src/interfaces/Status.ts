@@ -10,9 +10,9 @@ export enum Status {
  
 export interface HeartbeatTableElement {
     id : string,
-    carStatus : Status,
+    carStatus? : Status,
     cameraDriver?: Status,
-    cameraDoor: Status,
+    cameraDoor?: Status,
     cameraSeatsBack?: Status,
     cameraSeatsFront?: Status,
     drowsinessModule?: Status,

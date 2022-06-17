@@ -25,15 +25,29 @@ const DashboardHeartbeatOverviewPage: React.FC = () => {
   let heartbeatOfACar = useHeartbeatStatus();
   useEffect(() => {
     if(heartbeatOfACar){
-      const index = carsID.get(heartbeatOfACar?.carId as string) as number;
-      const deviceStatus = heartbeatOfACar.deviceStatus;
-      carsDataTable[index].carStatus = heartbeatOfACar?.carId !== undefined ? Status.ACTIVE : Status.INACTIVE;
-      carsDataTable[index].cameraSeatsFront = deviceStatus?.cameraSeatsFront?.status as Status;
-      carsDataTable[index].cameraSeatsBack = deviceStatus?.cameraSeatsBack?.status as Status;
-      carsDataTable[index].cameraDriver = deviceStatus?.cameraDriver?.status as Status;
-      carsDataTable[index].cameraDoor = deviceStatus?.cameraDoor?.status as Status;
-      carsDataTable[index].accidentModule = deviceStatus?.accidentModule?.status as Status;
-      carsDataTable[index].drowsinessModule = deviceStatus?.drowsinessModule?.status as Status;
+      heartbeatOfACar.forEach((element) => {
+        if(element){
+
+          const index = carsID.get(element.id)!;
+          carsDataTable[index].carStatus = element.status;
+
+          const camera = element.Camera!;
+          if(camera){
+            carsDataTable[index].cameraDriver = camera[0].status;
+            carsDataTable[index].cameraDoor = camera[1].status;
+            carsDataTable[index].cameraSeatsFront = camera[2].status;
+            carsDataTable[index].cameraSeatsBack = camera[3].status;
+          }
+
+          const module = element.Module!;
+          if(module){
+            if(module.length>0 && module[0].status!==undefined){
+              carsDataTable[index].drowsinessModule = module[0].status;
+              carsDataTable[index].accidentModule = module[1].status;
+            }
+          }
+        }
+      });
     }
   }, [heartbeatOfACar]);
 
