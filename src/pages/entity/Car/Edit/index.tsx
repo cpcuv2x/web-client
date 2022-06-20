@@ -10,11 +10,11 @@ import { routes } from "../../../../routes/constant"
 
 const EntityCarEditPage: React.FC = () => {
   const { vehicleId } = useParams()
-  console.log(vehicleId);
+
   if (!vehicleId) return <div>Loading...</div>
 
   const { car, loading, error, mutate } = useCar(vehicleId)
-  console.log(car, loading)
+  
   if (loading) return <div>Loading...</div>
 
   if (error || !car) return <div>An error occurred.</div>

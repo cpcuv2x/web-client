@@ -19,7 +19,9 @@ const DashboardDriverOverviewPage: React.FC = () => {
   const [ id, setID ] = useState<string>("")
 
   useEffect(()=>{
-    if(drivers) setID(drivers.length>0 ? drivers[0].id : "")
+    if(drivers) {
+      setID(drivers.length>0 ? drivers[0].id : "")
+    }
   }, [drivers])
 
   return (
