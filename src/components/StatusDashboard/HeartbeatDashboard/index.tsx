@@ -28,7 +28,7 @@ const HeartbeatTableComponent:React.FC<{ data : HeartbeatTableElement[], lastUpd
     }
 
     const getMinuteDiffer = (a: Date, b: Date) => {
-        return Math.round((a.getTime() - b.getTime())/(60*1000));
+        return Math.floor((a.getTime() - b.getTime())/(60*1000));
     }
 
     const getTooltipTitle = (record:HeartbeatTableElement) => {
@@ -40,17 +40,17 @@ const HeartbeatTableComponent:React.FC<{ data : HeartbeatTableElement[], lastUpd
 
         //Using a juggling-check, you can test both null and undefined in one hit:
         if(carTimestamp != null){
-            output = "Car connected : " + getMinuteDiffer(lastUpdateDatetime, new Date(carTimestamp!)).toString() + " m(s).\n"
+            output  = "Car connected    : " + getMinuteDiffer(lastUpdateDatetime, new Date(carTimestamp!)).toString() + " m(s).\n"
         }
         
         const cameraTimestamp = record.cameraTimestamp;
         if(carTimestamp != null){
-            output += "Cam connected : " + getMinuteDiffer(lastUpdateDatetime, new Date(cameraTimestamp!)).toString() + " m(s).\n"
+            output += "Camera connected : " + getMinuteDiffer(lastUpdateDatetime, new Date(cameraTimestamp!)).toString() + " m(s).\n"
         }
 
         const modeuleTimestamp = record.moduleTimestamp;
         if(modeuleTimestamp != null){
-            output += "Mod connected : " + getMinuteDiffer(lastUpdateDatetime, new Date(modeuleTimestamp!)).toString() + " m(s).\n"
+            output += "Module connected : " + getMinuteDiffer(lastUpdateDatetime, new Date(modeuleTimestamp!)).toString() + " m(s).\n"
         }
 
         return output;
