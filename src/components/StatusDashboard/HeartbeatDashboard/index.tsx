@@ -1,11 +1,11 @@
 import { ApiOutlined } from "@ant-design/icons"
-import { Table } from "antd"
+import { Table, Tooltip, Typography } from "antd"
 import Column from "antd/lib/table/Column"
 import ColumnGroup from "antd/lib/table/ColumnGroup"
 import { HeartbeatTableElement, Status } from "../../../interfaces/Status"
 import StatusCircle from "../StatusCircle"
 
-const HeartbeatTableComponent:React.FC<{ data : HeartbeatTableElement[] }>  = ({data}) => {
+const HeartbeatTableComponent:React.FC<{ data : HeartbeatTableElement[], lastUpdate:string }>  = ({data, lastUpdate}) => {
 
     const getStatusColumn = (title : string , keyAndIndex : string) => {
         return <Column title={title} dataIndex={keyAndIndex} key={keyAndIndex} align = "center"
@@ -27,13 +27,38 @@ const HeartbeatTableComponent:React.FC<{ data : HeartbeatTableElement[] }>  = ({
                 />
     }
 
+    const getMinuteDiffer = (a: Date, b: Date) => {
+        return Math.round((a.getTime() - b.getTime())/(60*1000));
+    }
+
+    const getTooltipTitle = (record:HeartbeatTableElement) => {
+
+        let output = "";
+
+        const lastUpdateDatetime = new Date(lastUpdate);
+        const carTimestamp = record.carTimestamp;
+
+        //Using a juggling-check, you can test both null and undefined in one hit:
+        if(carTimestamp != null){
+            output = "Car connected : " + getMinuteDiffer(lastUpdateDatetime, new Date(carTimestamp!)).toString() + " m(s).\n"
+        }
+        
+        const cameraTimestamp = record.cameraTimestamp;
+        if(carTimestamp != null){
+            output += "Cam connected : " + getMinuteDiffer(lastUpdateDatetime, new Date(cameraTimestamp!)).toString() + " m(s).\n"
+        }
+
+        const modeuleTimestamp = record.moduleTimestamp;
+        if(modeuleTimestamp != null){
+            output += "Mod connected : " + getMinuteDiffer(lastUpdateDatetime, new Date(modeuleTimestamp!)).toString() + " m(s).\n"
+        }
+
+        return output;
+    }
+
     return(
-        <Table loading={ data ? false:true}  dataSource={[...data]} bordered = {true} sticky = {true} size="small"
-            onRow={(record, rowIndex) => {
-                return {
-                    onMouseEnter: event => {console.log(record);}
-                }
-            }}> 
+        <Table loading={ data ? false:true}  dataSource={[...data]} bordered = {true} sticky = {true} size="small" 
+            title={() => (<Typography.Text>Last update : {lastUpdate}</Typography.Text>)}> 
             <Column title="ID" dataIndex="id" key="id" align = "center"/>
             {getStatusColumn("Vehicle status", "carStatus")}
             <ColumnGroup title="Device status" align = "center">
@@ -46,9 +71,9 @@ const HeartbeatTableComponent:React.FC<{ data : HeartbeatTableElement[] }>  = ({
             </ColumnGroup>     
             <Column title="Inspect" key="inspect" align = "center" 
                     render={(_: any, record: HeartbeatTableElement) => (
-                        <a onClick={() => {console.log(record.id)}}>
+                        <Tooltip placement="topLeft" title={getTooltipTitle(record)} overlayStyle={{ whiteSpace: 'pre-line' }}>
                             <ApiOutlined />
-                        </a>
+                        </Tooltip>
                       )}/>
         </Table>
     )

@@ -3,53 +3,63 @@ import { Typography } from "antd"
 import { Helmet } from "react-helmet"
 import PageBreadcrumb from "../../../../components/PageBreadcrumb"
 import { routes } from "../../../../routes/constant"
-import { HeartbeatTableElement, MadeFromHeartbeatTableElement, Status } from "../../../../interfaces/Status"
+import { HeartbeatTableElement } from "../../../../interfaces/Status"
 import HeartbeatTableComponent from "../../../../components/StatusDashboard/HeartbeatDashboard"
-import useCars from "../../../../hooks/useCars"
 import useHeartbeatStatus from "../../../../hooks/socket/useHeartbeatStatus"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
 const DashboardHeartbeatOverviewPage: React.FC = () => {
+  
+  const [ heartbeatData, setHeartbeatData ] = useState<HeartbeatTableElement[]>([]);
+  const [ lastUpdate, setLastUpdate ] = useState<string>(new Date().toLocaleString());
+ 
+  let heartbeatOfCars = useHeartbeatStatus();
 
-  // Do not forget for loading and notfound
-  const { cars, count } = useCars();
-  let carsID:Map<string,number> = new Map();
-  const carsDataTable:HeartbeatTableElement[] = [];
-
-  cars.forEach((element, index) => {
-    carsID.set(element.id, index)
-    const temp = new MadeFromHeartbeatTableElement(element.id);
-    carsDataTable.push(temp);
-  });
-
-  let heartbeatOfACar = useHeartbeatStatus();
   useEffect(() => {
-    if(heartbeatOfACar){
-      heartbeatOfACar.forEach((element) => {
+    if(heartbeatOfCars){
+
+      const tempHeartbeatData:HeartbeatTableElement[] = [];
+
+      setLastUpdate(new Date().toLocaleString());
+
+      heartbeatOfCars.forEach((element) => {
         if(element){
 
-          const index = carsID.get(element.id)!;
-          carsDataTable[index].carStatus = element.status;
-
+          let heartbeat:HeartbeatTableElement = {
+            id: element.id,
+            carStatus: element.status,
+            carTimestamp: element.timestamp
+          }
+          
           const camera = element.Camera!;
-          if(camera){
-            carsDataTable[index].cameraDriver = camera[0].status;
-            carsDataTable[index].cameraDoor = camera[1].status;
-            carsDataTable[index].cameraSeatsFront = camera[2].status;
-            carsDataTable[index].cameraSeatsBack = camera[3].status;
+          if(camera && camera.length >= 4){
+            const cameraStatus = {
+              cameraDriver: camera[0].status,
+              cameraDoor: camera[1].status,
+              cameraSeatsFront: camera[2].status,
+              cameraSeatsBack: camera[3].status,
+              cameraTimestamp: camera[0].timestamp
+            }
+            heartbeat = { ...heartbeat, ...cameraStatus }
+          }
+          
+          const module = element.Module!;
+          if(module && module.length >= 2){
+            const moduleStatus = {
+              drowsinessModule : module[0].status,
+              accidentModule : module[1].status,
+              moduleTimestamp : module[0].timestamp
+            }
+            heartbeat = { ...heartbeat, ...moduleStatus }
           }
 
-          const module = element.Module!;
-          if(module){
-            if(module.length>0 && module[0].status!==undefined){
-              carsDataTable[index].drowsinessModule = module[0].status;
-              carsDataTable[index].accidentModule = module[1].status;
-            }
-          }
+          tempHeartbeatData.push(heartbeat)
         }
       });
+
+      setHeartbeatData(tempHeartbeatData);
     }
-  }, [heartbeatOfACar]);
+  }, [heartbeatOfCars]);
 
   return (
     <>
@@ -73,7 +83,7 @@ const DashboardHeartbeatOverviewPage: React.FC = () => {
       />
 
       <Typography.Title>Heartbeat of vehicles and devices Dashboard</Typography.Title>
-      <HeartbeatTableComponent data = {carsDataTable}/>
+      <HeartbeatTableComponent data = {heartbeatData} lastUpdate = {lastUpdate}/>
     </>
   )
 }
