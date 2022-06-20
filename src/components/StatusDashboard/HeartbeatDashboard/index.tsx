@@ -18,10 +18,10 @@ const HeartbeatTableComponent:React.FC<{ data : HeartbeatTableElement[], lastUpd
                         {
                             text: Status.INACTIVE,
                             value: Status.INACTIVE,
-                        },
+                        }
                     ]}
                     onFilter = {
-                        (value, record:HeartbeatTableElement) => (record[keyAndIndex as keyof HeartbeatTableElement] as Status).indexOf(value.toString()) === 0
+                        (value, record:HeartbeatTableElement) => record[keyAndIndex as keyof HeartbeatTableElement] !== undefined && (record[keyAndIndex as keyof HeartbeatTableElement] as Status).indexOf(value.toString()) === 0 
                     }
 
                 />
