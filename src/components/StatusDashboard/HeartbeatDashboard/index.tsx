@@ -1,12 +1,15 @@
 import { ApiOutlined, InfoCircleOutlined } from "@ant-design/icons"
-import { PageHeader, Table, Tooltip, Typography } from "antd"
+import { Table, Tooltip, Typography } from "antd"
 import Column from "antd/lib/table/Column"
 import ColumnGroup from "antd/lib/table/ColumnGroup"
-import { HeartbeatTableElement, Status } from "../../../interfaces/Status"
+import { HeartbeatStatus } from "../../../interfaces/HeartbeatStatus"
+import { Status } from "../../../interfaces/Status"
 import StatusCircle from "../StatusCircle"
 
 
-const HeartbeatTableComponent:React.FC<{ data : HeartbeatTableElement[], lastUpdate:string }>  = ({data, lastUpdate}) => {
+const HeartbeatTableComponent:React.FC<{ data : HeartbeatStatus[], lastUpdate:string }>  = ({data, lastUpdate}) => {
+
+    if(!data) return <>downloading</>
 
     const getStatusColumn = (title : string , keyAndIndex : string) => {
         return <Column title={title} dataIndex={keyAndIndex} key={keyAndIndex} align = "center"
@@ -22,7 +25,49 @@ const HeartbeatTableComponent:React.FC<{ data : HeartbeatTableElement[], lastUpd
                         }
                     ]}
                     onFilter = {
-                        (value, record:HeartbeatTableElement) => record[keyAndIndex as keyof HeartbeatTableElement] !== undefined && (record[keyAndIndex as keyof HeartbeatTableElement] as Status).indexOf(value.toString()) === 0 
+                        (value, record:HeartbeatStatus) => record["status"] !== undefined 
+                                                            && (record["status"]).indexOf(value.toString()) === 0 
+                    }
+
+                />
+    }
+    
+    const getCameraStatusColumn = (title : string , index : number) => {
+        return <Column title={title} key={"camera_status_"+index.toString()} align = "center"
+                    render={(value, record:HeartbeatStatus, _) => (<StatusCircle status={record.Camera![index] ? record.Camera![index]["status"] : undefined}/>)}
+                    filters = {[
+                        {
+                            text: Status.ACTIVE,
+                            value: Status.ACTIVE,
+                        },
+                        {
+                            text: Status.INACTIVE,
+                            value: Status.INACTIVE,
+                        }
+                    ]}
+                    onFilter = {
+                        (value, record:HeartbeatStatus) => record.Camera![index]["status"] !== undefined 
+                                                            && (record.Camera![index]["status"]).indexOf(value.toString()) === 0 
+                    }
+
+                />
+    }
+    const getModuleStatusColumn = (title : string , index : number) => {
+        return <Column title={title} key={"module_status_"+index.toString()} align = "center"
+                    render={(value, record:HeartbeatStatus, _) => (<StatusCircle status={record.Module![index] ? record.Module![index]["status"] : undefined}/>)}
+                    filters = {[
+                        {
+                            text: Status.ACTIVE,
+                            value: Status.ACTIVE,
+                        },
+                        {
+                            text: Status.INACTIVE,
+                            value: Status.INACTIVE,
+                        }
+                    ]}
+                    onFilter = {
+                        (value, record:HeartbeatStatus) => record.Module![index]["status"] !== undefined 
+                                                            && (record.Module![index]["status"]).indexOf(value.toString()) === 0 
                     }
 
                 />
@@ -32,35 +77,39 @@ const HeartbeatTableComponent:React.FC<{ data : HeartbeatTableElement[], lastUpd
         return Math.floor((a.getTime() - b.getTime())/(60*1000));
     }
 
-    const getTooltipTitle = (record:HeartbeatTableElement) => {
+    const getTooltipTitle = (record:HeartbeatStatus) => {
 
         let output = "";
 
         const lastUpdateDatetime = new Date(lastUpdate);
-        const carTimestamp = record.carTimestamp;
+        const carTimestamp = record.timestamp;
 
         //Using a juggling-check, you can test both null and undefined in one hit:
         if(carTimestamp != null){
             output  = "Car    : " + getMinuteDiffer(lastUpdateDatetime, new Date(carTimestamp!)).toString() + " m(s) ago.\n"
         }
         
-        const cameraTimestamp = record.cameraTimestamp;
-        if(carTimestamp != null){
-            output += "Camera : " + getMinuteDiffer(lastUpdateDatetime, new Date(cameraTimestamp!)).toString() + " m(s) ago.\n"
+        const camera = record.Camera;
+        if(camera != null &&  camera[0] != undefined){
+            const cameraTimestamp = camera[0].timestamp;
+            if(carTimestamp != null){
+                output += "Camera : " + getMinuteDiffer(lastUpdateDatetime, new Date(cameraTimestamp!)).toString() + " m(s) ago.\n"
+            }
         }
 
-        const modeuleTimestamp = record.moduleTimestamp;
-        if(modeuleTimestamp != null){
-            output += "Module : " + getMinuteDiffer(lastUpdateDatetime, new Date(modeuleTimestamp!)).toString() + " m(s) ago.\n"
+        const module = record.Module;
+        if(module != null && module[0] != undefined){
+            const modeuleTimestamp = module[0].timestamp;
+            if(modeuleTimestamp != null){
+                output += "Module : " + getMinuteDiffer(lastUpdateDatetime, new Date(modeuleTimestamp!)).toString() + " m(s) ago.\n"
+            }
         }
 
         return output;
     }
 
-    return(
-        <Table loading={ data ? false:true}  dataSource={[...data]} bordered = {true} sticky = {true} size="small" 
-            title={() => (
-            <div>
+    const getTitle = () => {
+        return <div>
                 <Typography.Text>Last update : {lastUpdate}</Typography.Text>
                 <div style={{float:"right"}}>
                     <Tooltip 
@@ -72,19 +121,28 @@ const HeartbeatTableComponent:React.FC<{ data : HeartbeatTableElement[], lastUpd
                     </Tooltip>
                 </div>
             </div>
-            )}> 
+    }
+
+    return(
+        <Table loading={ data ? false:true}  dataSource={[...data]} bordered = {true} sticky = {true} size="small" 
+            title={() => (getTitle())}
+            onRow={(record, rowIndex) => {
+                return {
+                onMouseEnter: event => {console.log(record)}, // mouse enter row
+                };
+            }}> 
             <Column title="ID" dataIndex="id" key="id" align = "center"/>
-            {getStatusColumn("Vehicle status", "carStatus")}
+            {getStatusColumn("Vehicle status", "status")}
             <ColumnGroup title="Device status" align = "center">
-                {getStatusColumn("Font Camera", "cameraSeatsFront")}
-                {getStatusColumn("Back Camera", "cameraSeatsBack")}
-                {getStatusColumn("Door Camera", "cameraDoor")}
-                {getStatusColumn("Driver Camera", "cameraDriver")}
-                {getStatusColumn("Drowsiness Module", "drowsinessModule")}
-                {getStatusColumn("Accident Module", "accidentModule")}
+                {getCameraStatusColumn("Font Camera", 2)}
+                {getCameraStatusColumn("Back Camera", 3)}
+                {getCameraStatusColumn("Door Camera", 0)}
+                {getCameraStatusColumn("Driver Camera", 1)}
+                {getModuleStatusColumn("Drowsiness Module", 0)}
+                {getModuleStatusColumn("Accident Module", 1)}
             </ColumnGroup>     
             <Column title="Inspect" key="inspect" align = "center" 
-                    render={(_: any, record: HeartbeatTableElement) => (
+                    render={(_: any, record: HeartbeatStatus) => (
                         <Tooltip placement="topLeft" title={getTooltipTitle(record)} overlayStyle={{ whiteSpace: 'pre-line' }}>
                             <ApiOutlined />
                         </Tooltip>

@@ -6,7 +6,6 @@ import {
 import { Button, Col, Row, Space, Typography } from "antd"
 import React from "react"
 import { useNavigate } from "react-router-dom"
-import PageBreadcrumb from "../../PageBreadcrumb"
 import CameraStreams from "../../widgets/CameraStreams"
 import AccidentsLogByCarTable from "../../widgets/car/AccidentsLogByCarTable"
 import CarImage from "../../widgets/car/CarImage"
@@ -14,7 +13,6 @@ import CarInformation from "../../widgets/car/CarInformation"
 import PassengersChart from "../../widgets/car/PassengersChart"
 import useCar from "../../../hooks/useCar"
 import { routes } from "../../../routes/constant"
-import { transform } from "lodash"
 
 const DashboardCarComponent: React.FC<{ carId:string , setStatusFullsize:any, statusFullSize:boolean}> = ({carId, setStatusFullsize, statusFullSize}) => {
 
