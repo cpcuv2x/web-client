@@ -1,23 +1,22 @@
 import { AreaChartOutlined, CarOutlined } from "@ant-design/icons"
-import { Card, Col, Menu, Row, Typography } from "antd"
+import { Card, Col, Empty, Row, Skeleton, Typography } from "antd"
 import React, { useEffect, useState } from "react"
 import { Helmet } from "react-helmet"
-import { Link } from "react-router-dom"
 import PageBreadcrumb from "../../../../components/PageBreadcrumb"
 import useCars from "../../../../hooks/useCars"
 import { routes } from "../../../../routes/constant"
 
 import StatusTableComponent from "../../../../components/StatusDashboard/StatusTableComponent/index"
-import DashboardCarComponent from "../../../../components/StatusDashboard/CarDashBoard"
+import { useNavigate } from "react-router-dom"
 
 const DashboardOverviewPage: React.FC = () => {
 
   const { cars } = useCars()
-  const [ statusFullSize, setStatusFullSize ] = useState<boolean>(true)
-  const [ id, setID ] = useState<string>("")
+  const [ statusFullSize ] = useState<boolean>(true)
+  const navigate = useNavigate();
 
   useEffect(()=>{
-    if(cars) setID(cars.length>0 ? cars[0].id : "")
+    if(cars) navigate(`${routes.DASHBOARD_CAR}/`+(cars.length>0 ? cars[0].id : ""))
   }, [cars])
 
   return (
@@ -44,11 +43,11 @@ const DashboardOverviewPage: React.FC = () => {
       <Typography.Title>Vehicle Dashboard</Typography.Title>
       <Row>
         <Col span = {statusFullSize ? 5 : 0}>
-          <StatusTableComponent data = {cars} idSetter = {setID} statusFullSize = {statusFullSize}/>
+          <StatusTableComponent data = {cars} statusFullSize = {statusFullSize} route = {routes.DASHBOARD_CAR}/>
         </Col>
         <Col span = {statusFullSize ? 19 : 24}>
-          <Card size="small">
-           <DashboardCarComponent carId={id} setStatusFullsize = {setStatusFullSize} statusFullSize = {statusFullSize}/>
+          <Card>
+            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE}/>
           </Card>
         </Col>
       </Row>

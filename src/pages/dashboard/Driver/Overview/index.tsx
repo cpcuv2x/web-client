@@ -1,27 +1,23 @@
 import {
   AreaChartOutlined,
-  DownOutlined,
   UserOutlined,
 } from "@ant-design/icons"
-import { Button, Card, Col, Dropdown, Menu, Row, Typography } from "antd"
+import { Card, Col, Empty, Row, Typography } from "antd"
 import React, { useEffect, useState } from "react"
 import { Helmet } from "react-helmet"
-import { Link } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import PageBreadcrumb from "../../../../components/PageBreadcrumb"
-import DashboardDriverComponent from "../../../../components/StatusDashboard/DriverDashboard"
 import StatusTableComponent from "../../../../components/StatusDashboard/StatusTableComponent"
 import useDrivers from "../../../../hooks/useDrivers"
 import { routes } from "../../../../routes/constant"
 
 const DashboardDriverOverviewPage: React.FC = () => {
   const { drivers } = useDrivers()
-  const [ statusFullSize, setStatusFullSize ] = useState<boolean>(true)
-  const [ id, setID ] = useState<string>("")
+  const [ statusFullSize ] = useState<boolean>(true)
+  const navigate = useNavigate();
 
   useEffect(()=>{
-    if(drivers) {
-      setID(drivers.length>0 ? drivers[0].id : "")
-    }
+    if(drivers) navigate(`${routes.DASHBOARD_DRIVER}/`+(drivers.length>0 ? drivers[0].id : ""))
   }, [drivers])
 
   return (
@@ -49,11 +45,11 @@ const DashboardDriverOverviewPage: React.FC = () => {
 
       <Row>
         <Col span = {statusFullSize ? 5 : 0}>
-          <StatusTableComponent data = {drivers} idSetter = {setID} statusFullSize = {statusFullSize}/>
+          <StatusTableComponent data = {drivers} statusFullSize = {statusFullSize} route = {routes.DASHBOARD_DRIVER}/>
         </Col>
         <Col span = {statusFullSize ? 19 : 24}>
-          <Card size="small">
-           <DashboardDriverComponent driverId={id} setStatusFullSize = {setStatusFullSize} statusFullSize = {statusFullSize}/>
+          <Card>
+            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE}/>
           </Card>
         </Col>
       </Row>
