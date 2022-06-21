@@ -1,15 +1,10 @@
 import {
-    AreaChartOutlined,
     ControlOutlined,
     LeftOutlined,
     RightOutlined,
-    UserOutlined,
   } from "@ant-design/icons"
   import { Button, Col, Row, Space, Typography } from "antd"
-  import { Helmet } from "react-helmet"
-  import { useNavigate, useParams } from "react-router-dom"
-  import CopyToClipboardButton from "../../CopyToClipboardButton"
-  import PageBreadcrumb from "../../PageBreadcrumb"
+  import { useNavigate } from "react-router-dom"
   import AccidentLogByDriverTable from "../../widgets/driver/AccidentLogByDriverTable"
   import DriverECRChart from "../../widgets/driver/DriverECRChart"
   import DriverImage from "../../widgets/driver/DriverImage"
