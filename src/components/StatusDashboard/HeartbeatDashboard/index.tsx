@@ -125,12 +125,7 @@ const HeartbeatTableComponent:React.FC<{ data : HeartbeatStatus[], lastUpdate:st
 
     return(
         <Table loading={ data ? false:true}  dataSource={[...data]} bordered = {true} sticky = {true} size="small" 
-            title={() => (getTitle())}
-            onRow={(record, rowIndex) => {
-                return {
-                onMouseEnter: event => {console.log(record)}, // mouse enter row
-                };
-            }}> 
+            title={() => (getTitle())}> 
             <Column title="ID" dataIndex="id" key="id" align = "center"/>
             {getStatusColumn("Vehicle status", "status")}
             <ColumnGroup title="Device status" align = "center">
