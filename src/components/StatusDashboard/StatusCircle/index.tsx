@@ -2,7 +2,8 @@ import { Avatar } from "antd"
 import React, {useState, useEffect} from "react"
 import { Status } from "../../../interfaces/Status";
 
-const StatusCircle: React.FC<{status:Status}> = ({status}) =>{
+const StatusCircle: React.FC<{status:Status|undefined}> = ({status}) =>{
+    console.log(status);
     const [color, setColor] = useState("red");
     useEffect(() => {
         if(status!==undefined) setColor(status===Status.ACTIVE ? "green": "red");
