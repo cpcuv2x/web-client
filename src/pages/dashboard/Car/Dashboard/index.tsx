@@ -1,7 +1,6 @@
 import {
   AreaChartOutlined,
   CarOutlined,
-  ControlOutlined,
 } from "@ant-design/icons"
 import { Card, Col, Row, Typography } from "antd"
 import React, { useState } from "react"

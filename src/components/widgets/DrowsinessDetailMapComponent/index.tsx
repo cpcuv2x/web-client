@@ -1,12 +1,12 @@
 import { ReadOutlined } from "@ant-design/icons";
 import { GoogleMap, Marker } from "@react-google-maps/api";
-import { Button, Col, Divider, Modal, Row, Typography } from "antd";
+import { Button, Col, Divider, Modal, Row, Space, Typography } from "antd";
 import moment from "moment";
 import { useState } from "react";
-import { AccidentLogByCar } from "../../../../interfaces/Car";
-import busPin from "../../../../assets/bus_pin.svg"
+import busPin from "../../../assets/bus_pin.svg"
+import { DrowsinessLog } from "../../../interfaces/Driver";
 
-const AccidentDetailMapComponent: React.FC<{ data:AccidentLogByCar }> = ({ data }) => {
+const DrowsinessDetailMapComponent: React.FC<{ data: DrowsinessLog }> = ({ data }) => {
     const zoom = 17;
     const [visible, setVisible] = useState<boolean>(false);
   
@@ -40,7 +40,13 @@ const AccidentDetailMapComponent: React.FC<{ data:AccidentLogByCar }> = ({ data 
         <Modal 
           visible = {visible} 
           onCancel = {closeModal}
-          title = {<Typography.Title level={4}>Detail of accident</Typography.Title>}
+          title = {
+          <Space>
+            <Typography.Title level={5}>Detail of</Typography.Title>
+            <Typography.Title level={4}> {data.id} </Typography.Title>
+            <Typography.Title level={5}>drowsiness</Typography.Title>
+          </Space>
+          }
           footer = {<Button onClick={closeModal}>Ok</Button>}>
           <Row>
             <Col span={8}>
@@ -66,6 +72,11 @@ const AccidentDetailMapComponent: React.FC<{ data:AccidentLogByCar }> = ({ data 
               {getCaptionText("Longitude: ")}{data.long}
             </Col>
           </Row>
+          <Row>
+            <Col span={8}>
+              {getCaptionText("Response Time: ")}{data.responseTime} s
+            </Col>
+          </Row>
           <Divider>Map</Divider>
           <div>
             <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={zoom}>
@@ -78,4 +89,4 @@ const AccidentDetailMapComponent: React.FC<{ data:AccidentLogByCar }> = ({ data 
     )
 }
 
-export default AccidentDetailMapComponent;
+export default DrowsinessDetailMapComponent;

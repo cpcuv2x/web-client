@@ -12,6 +12,8 @@ import {
   import DrowsinessLogTable from "../../widgets/driver/DrowsinessLogTable"
   import useDriver from "../../../hooks/useDriver"
   import { routes } from "../../../routes/constant"
+import { LoadScript } from "@react-google-maps/api"
+import appConfig from "../../../configuration"
   
   const DashboardDriverComponent:React.FC<{ driverId : string, setStatusFullSize : any, statusFullSize : boolean}> 
     = ({ driverId, setStatusFullSize, statusFullSize }) => {
@@ -25,7 +27,7 @@ import {
     if (error || !driver) return <div>An error occurred.</div>
   
     return (
-      <>
+      <LoadScript googleMapsApiKey={appConfig.googleMapAPIKey}>
         <Row justify="space-between" style={{margin:10}}>
             <Col>
             <Space>
@@ -34,7 +36,7 @@ import {
                 icon = {statusFullSize ? <LeftOutlined/>: <RightOutlined/>}
                 style = {{width:30, height: 30}}>
                 </Button>
-                <Typography.Title level={3} style = {{transform:"translate(0%, 10%)"}}>Driver: {driver.id}</Typography.Title>
+                <Typography.Title level={3} style = {{transform:"translate(0%, 10%)"}}>Driver: {driver.id} - {driver.firstNameTH} {driver.lastNameTH}</Typography.Title>
             </Space>
             </Col>
             <Col>
@@ -67,7 +69,7 @@ import {
             <AccidentLogByDriverTable driverId={driverId} />
           </Col>
         </Row>
-      </>
+      </LoadScript>
     )
   }
   
