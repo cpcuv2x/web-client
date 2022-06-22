@@ -9,7 +9,7 @@ import useAccidentsLogByCar from "../../../../hooks/useAccidentsLogByCar"
 import { AccidentLogByCar } from "../../../../interfaces/Car"
 import IDColumn from "../../../IDColumn"
 import WidgetCard from "../../WidgetCard"
-import AccidentDetailMapComponent from "../AccidentDetailMapComponent/AccidentDetailMapComponent"
+import AccidentDetailMapComponent from "../../AccidentDetailMapComponent"
 
 interface Props {
   carId: string
@@ -75,6 +75,7 @@ const AccidentsLogByCarTable: React.FC<Props> = ({ carId }) => {
       render: (_, record) => <AccidentDetailMapComponent data={record}/>,
     },
   ]
+  //FIXME : Mock up data
   const mockUpDate = [
   {
     id: "A0001",
@@ -85,7 +86,7 @@ const AccidentsLogByCarTable: React.FC<Props> = ({ carId }) => {
     timestamp: "1655699278"
   },
   {
-    id: "A0001",
+    id: "A0002",
     carId: "C0001",
     driverId: "D0001",
     lat: 13.739839,

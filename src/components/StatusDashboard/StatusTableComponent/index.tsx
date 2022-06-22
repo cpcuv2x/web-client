@@ -4,8 +4,12 @@ import { fieldStatusTable } from "../../../constants/Car";
 import { StatusTableElement  } from "../../../interfaces/Status";
 import StatusCircle from "../StatusCircle";
 import { CarStatus as Status } from "../../../interfaces/Car";
+import { useNavigate } from "react-router-dom";
 
-const StatusTableComponent : React.FC<{ data: StatusTableElement[], statusFullSize: boolean, idSetter: any }> = ({data, statusFullSize, idSetter}) => {
+const StatusTableComponent : React.FC<{ data: StatusTableElement[], statusFullSize: boolean, route : string}> 
+= ({data, statusFullSize, route}) => {
+
+  const navigate = useNavigate();
 
   const columns : ColumnsType<StatusTableElement> =[
       {
@@ -15,8 +19,6 @@ const StatusTableComponent : React.FC<{ data: StatusTableElement[], statusFullSi
         ellipsis: true,
         width: statusFullSize ? "75%": "0%",
         sorter: (a, b) => a.id.localeCompare(b.id),
-        //filterSearch: true,
-        //onFilter: (value, record) => record.id.indexOf(value.toString()) === 0,
         render: (id) => <div style={{cursor:"pointer"}}>{id}</div>,
       },
       {
@@ -57,7 +59,7 @@ const StatusTableComponent : React.FC<{ data: StatusTableElement[], statusFullSi
       size="small"
       onRow={(record, _) => {
         return {
-          onClick: () => { idSetter(record.id) }
+          onClick: () => { navigate(`${route}/${record.id}`); }
         };
       }}
     />

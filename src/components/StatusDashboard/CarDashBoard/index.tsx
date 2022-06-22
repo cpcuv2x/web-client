@@ -38,7 +38,7 @@ const DashboardCarComponent: React.FC<{ carId:string , setStatusFullsize:any, st
               icon = {statusFullSize ? <LeftOutlined/>: <RightOutlined/>}
               style = {{width:30, height: 30}}>
             </Button>
-            <Typography.Title level={3} style = {{transform:"translate(0%, 10%)"}}>Vehicle: {car.id}</Typography.Title>
+            <Typography.Title level={3} style = {{transform:"translate(0%, 10%)"}}>Vehicle: {car.id} - {car.licensePlate}</Typography.Title>
           </Space>
         </Col>
         <Col>
