@@ -16,6 +16,13 @@ interface ChartData {
   data: [string, number][]
 }
 
+const emptySeries = [
+  {
+    name: "ECR",
+    data: [],
+  },
+]
+
 const DriverECRChart: React.FC<Props> = ({
   driverId,
   maxPoints = 10,
@@ -26,13 +33,12 @@ const DriverECRChart: React.FC<Props> = ({
   const [currentEcr, setCurrentEcr] = useState(0)
   const [currentEcrThreshold, setCurrentEcrThreshold] = useState(0)
 
-  const [series, setSeries] = useState<ChartData[]>([
-    {
-      name: "ECR",
-      data: [],
-    },
-  ])
+  const [series, setSeries] = useState<ChartData[]>(emptySeries)
 
+  useEffect(()=>{
+    setSeries(emptySeries);
+  }, [driverId])
+  
   const [options, setOptions] = useState<ApexOptions>({
     annotations: {
       yaxis: [

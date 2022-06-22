@@ -16,18 +16,27 @@ interface ChartData {
   data: [string, number][]
 }
 
+const chartName = "No. of passenger(s)"
+
+const emptySeries = [
+  {
+    name: chartName,
+    data: [],
+  },
+];
+
 const PassengersChart: React.FC<Props> = ({ carId, maxPoints = 10 }) => {
-  const chartName = "No. of passenger(s)"
+
   const passengersData = useCarPassengers(carId)
 
   const [currentPassengers, setCurrentPassengers] = useState(0)
 
-  const [series, setSeries] = useState<ChartData[]>([
-    {
-      name: chartName,
-      data: [],
-    },
-  ])
+  const [series, setSeries] = useState<ChartData[]>(emptySeries)
+
+  useEffect(()=>{
+    setSeries(emptySeries);
+  }, [carId])
+
   const [options, setOptions] = useState<ApexOptions>({
     xaxis: {
       type: "datetime",
