@@ -4,6 +4,7 @@ import _ from "lodash"
 import React, { useEffect, useState } from "react"
 import Chart from "react-apexcharts"
 import useDriverECR from "../../../../hooks/socket/useDriverECR"
+import axiosClient from "../../../../utils/axiosClient"
 import WidgetCard from "../../WidgetCard"
 
 interface Props {
@@ -16,18 +17,19 @@ interface ChartData {
   data: [string, number][]
 }
 
-const emptySeries = [
-  {
-    name: "ECR",
-    data: [],
-  },
-]
-
 const DriverECRChart: React.FC<Props> = ({
   driverId,
   maxPoints = 10,
 }: Props) => {
   const chartName = "ECR chart"
+
+  const emptySeries = [
+    {
+      name: chartName,
+      data: [],
+    },
+  ]
+
   const ecrData = useDriverECR(driverId)
 
   const [currentEcr, setCurrentEcr] = useState(0)
@@ -36,8 +38,35 @@ const DriverECRChart: React.FC<Props> = ({
   const [series, setSeries] = useState<ChartData[]>(emptySeries)
 
   useEffect(()=>{
+    if(driverId){
+
+      const date = new Date();
+      const startDate = new Date(date);
+      startDate.setMinutes(startDate.getMinutes()-5);
+      const endDate = new Date(date);
+      endDate.setMinutes(endDate.getMinutes());
+  
+      const url = `/api/drivers/${driverId}/ecr?startTime=${startDate.toISOString()}&endTime=${endDate.toISOString()}`
+  
+      axiosClient
+        .get(url)
+        .then((res) => {
+          setSeries(() => {
+            return [
+              {
+                name: chartName,
+                data: [
+                  ...(res.data)
+                ],
+              },
+            ]
+          })
+        })
+    }
     setSeries(emptySeries);
   }, [driverId])
+
+  useEffect(()=>{}, [])
   
   const [options, setOptions] = useState<ApexOptions>({
     annotations: {
