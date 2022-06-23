@@ -36,7 +36,7 @@ import appConfig from "../../../configuration"
                 icon = {statusFullSize ? <LeftOutlined/>: <RightOutlined/>}
                 style = {{width:30, height: 30}}>
                 </Button>
-                <Typography.Title level={3} style = {{transform:"translate(0%, 10%)"}}>Driver: {driver.id} - {driver.firstNameTH} {driver.lastNameTH}</Typography.Title>
+                <Typography.Title level={3} style = {{transform:"translate(0%, 10%)"}}>Driver: {driverId}</Typography.Title>
             </Space>
             </Col>
             <Col>
