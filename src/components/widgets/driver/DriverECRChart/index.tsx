@@ -51,16 +51,23 @@ const DriverECRChart: React.FC<Props> = ({
       axiosClient
         .get(url)
         .then((res) => {
-          setSeries(() => {
-            return [
-              {
-                name: chartName,
-                data: [
-                  ...(res.data)
-                ],
-              },
-            ]
-          })
+          const beginTime = res.data.length > 0 ? new Date(res.data[0][0]) : new Date();
+          const length = res.data.length ? res.data.length : 0;
+          let temp = [];
+          for(let i=0; i<maxPoints-length; i++){
+            beginTime.setMinutes(beginTime.getMinutes()-1)
+            temp.unshift([new Date(beginTime), 0])
+          }
+          console.log(temp, res.data.length)
+          setSeries([
+            {
+              name: chartName,
+              data: [
+                ...temp,
+                ...(res.data)
+              ],
+            },
+          ])
         })
     }
     setSeries(emptySeries);
