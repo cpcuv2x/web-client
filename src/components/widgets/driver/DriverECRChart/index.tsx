@@ -76,6 +76,8 @@ const DriverECRChart: React.FC<Props> = ({
     }
     setSeries(emptySeries);
   }, [driverId])
+
+  useEffect(()=>{}, [])
   
   const [options, setOptions] = useState<ApexOptions>({
     annotations: {
