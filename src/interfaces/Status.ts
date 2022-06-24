@@ -6,6 +6,7 @@ export interface StatusTableElement {
 export enum Status {
     ACTIVE = "ACTIVE",
     INACTIVE = "INACTIVE",
+    INVALID = "INVALID"
 }
  
 export interface HeartbeatTableElement {
