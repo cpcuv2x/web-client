@@ -43,9 +43,9 @@ const DriverECRChart: React.FC<Props> = ({
 
       const date = new Date();
       const startDate = new Date(date);
-      startDate.setMinutes(startDate.getMinutes()-6);
+      startDate.setMinutes(startDate.getMinutes()-15);
       const endDate = new Date(date);
-      endDate.setMinutes(endDate.getMinutes());
+      endDate.setMinutes(endDate.getMinutes()+5);
       
       const url = `/api/drivers/${driverId}/ecr?startTime=${startDate.toISOString()}&endTime=${endDate.toISOString()}`
 

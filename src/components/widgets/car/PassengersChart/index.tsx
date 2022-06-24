@@ -39,9 +39,9 @@ const PassengersChart: React.FC<Props> = ({ carId, maxPoints = 10 }) => {
 
       const date = new Date();
       const startDate = new Date(date);
-      startDate.setMinutes(startDate.getMinutes()-6);
+      startDate.setMinutes(startDate.getMinutes()-15);
       const endDate = new Date(date);
-      endDate.setMinutes(endDate.getMinutes());
+      endDate.setMinutes(endDate.getMinutes()+5);
       
       const url = `/api/cars/${carId}/passengers?startTime=${startDate.toISOString()}&endTime=${endDate.toISOString()}`
 
@@ -49,12 +49,11 @@ const PassengersChart: React.FC<Props> = ({ carId, maxPoints = 10 }) => {
         .get(url)
         .then((res) => {
 
-          console.log(res)
-
           const beginTime = res.data.length > 0 ? new Date(res.data[0][0]) : new Date();
           const length = res.data.length ? res.data.length : 0;
           const data = res.data;
           let temp = [];
+          console.log(data);
       
           for(let i=0; i<maxPoints-length; i++){
             beginTime.setSeconds(beginTime.getSeconds()-30)
