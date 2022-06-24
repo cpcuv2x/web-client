@@ -45,7 +45,6 @@ const useHeartbeatStatus = () => {
                 x.Module.push(invlidDevice)
               }
             }
-            console.log(res)
             return res
           })
           console.log(SocketEventType.StartStreamHeartbeatsStatus, res)

@@ -5,8 +5,8 @@ import { Status } from "../../../interfaces/Status";
 const StatusCircle: React.FC<{status:Status|undefined}> = ({status}) =>{
     const [color, setColor] = useState("red");
     useEffect(() => {
-        if(status===Status.ACTIVE) setColor("#03a905");
-        else if (status===Status.INACTIVE ) setColor("#f95656");
+        if(status===Status.ACTIVE) setColor("green");
+        else if (status===Status.INACTIVE ) setColor("red");
         else setColor("silver");
     }, [status])
     return(

@@ -63,6 +63,8 @@ const DriverECRChart: React.FC<Props> = ({
             temp.unshift([new Date(beginTime), 0])
           }
 
+          if(data.length > 0) setCurrentEcr(data.at(-1)[1])
+
           setSeries([
             {
               name: chartName,

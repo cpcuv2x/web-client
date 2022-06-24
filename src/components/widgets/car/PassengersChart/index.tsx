@@ -60,6 +60,8 @@ const PassengersChart: React.FC<Props> = ({ carId, maxPoints = 10 }) => {
             temp.unshift([new Date(beginTime), 0])
           }
 
+          if(data.length > 0) setCurrentPassengers(data.at(-1)[1])
+
           setSeries([
             {
               name: chartName,
