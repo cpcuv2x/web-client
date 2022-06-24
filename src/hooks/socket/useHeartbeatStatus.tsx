@@ -1,18 +1,19 @@
 import { useEffect, useRef, useState } from "react"
 import { Socket } from "socket.io-client"
-import { Car } from "../../interfaces/Car"
 import { HeartbeatStatus } from "../../interfaces/HeartbeatStatus"
 import {
   ClientToServerEvents,
   ServerToClientEvents,
   SocketEventType,
 } from "../../interfaces/socket"
+import { Status } from "../../interfaces/Status"
 import useSocket from "./useSocket"
 
 const useHeartbeatStatus = () => {
   const socketRef = useRef<Socket<ServerToClientEvents, ClientToServerEvents>>(
     useSocket()
   )
+  const INVALID = "INVALID";
   const socketIdRef = useRef("")
   const [heartbeatOfACar, setHeartbeatOfACar] = useState<HeartbeatStatus[]>()
 
@@ -24,8 +25,30 @@ const useHeartbeatStatus = () => {
         socketIdRef.current = sId
         socket.on(sId, (res: HeartbeatStatus[]) => {
           // FIXME: remove console
+          setHeartbeatOfACar(() => {
+            for(const x of res){
+              if(x.status===undefined){
+                x.status = Status.INVALID;
+              }
+              const date = (new Date()).toISOString();
+
+              const invlidDevice = { 
+                timestamp : date,
+                status : Status.INVALID
+              }
+
+              while(x.Camera.length < 4){ 
+                x.Camera.push(invlidDevice)
+              }
+
+              while(x.Module.length < 2){ 
+                x.Module.push(invlidDevice)
+              }
+            }
+            console.log(res)
+            return res
+          })
           console.log(SocketEventType.StartStreamHeartbeatsStatus, res)
-          setHeartbeatOfACar(res)
         })
       }
     )

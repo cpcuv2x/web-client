@@ -19,6 +19,7 @@ const StatusTableComponent : React.FC<{ data: StatusTableElement[], statusFullSi
         ellipsis: true,
         width: statusFullSize ? "75%": "0%",
         sorter: (a, b) => a.id.localeCompare(b.id),
+        defaultSortOrder: "ascend",
         render: (id) => <div style={{cursor:"pointer"}}>{id}</div>,
       },
       {

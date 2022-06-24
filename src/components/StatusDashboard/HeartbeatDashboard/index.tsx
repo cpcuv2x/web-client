@@ -22,6 +22,10 @@ const HeartbeatTableComponent:React.FC<{ data : HeartbeatStatus[], lastUpdate:st
                         {
                             text: Status.INACTIVE,
                             value: Status.INACTIVE,
+                        },
+                        {
+                            text: Status.INVALID,
+                            value: Status.INVALID,
                         }
                     ]}
                     onFilter = {
@@ -43,6 +47,10 @@ const HeartbeatTableComponent:React.FC<{ data : HeartbeatStatus[], lastUpdate:st
                         {
                             text: Status.INACTIVE,
                             value: Status.INACTIVE,
+                        },
+                        {
+                            text: Status.INVALID,
+                            value: Status.INVALID,
                         }
                     ]}
                     onFilter = {
@@ -63,6 +71,10 @@ const HeartbeatTableComponent:React.FC<{ data : HeartbeatStatus[], lastUpdate:st
                         {
                             text: Status.INACTIVE,
                             value: Status.INACTIVE,
+                        },
+                        {
+                            text: Status.INVALID,
+                            value: Status.INVALID,
                         }
                     ]}
                     onFilter = {
@@ -143,7 +155,8 @@ const HeartbeatTableComponent:React.FC<{ data : HeartbeatStatus[], lastUpdate:st
                 title="ID" 
                 dataIndex="id" 
                 key="id" 
-                align = "center" 
+                align = "center"
+                defaultSortOrder={"ascend"}
                 sorter = { 
                     (a:HeartbeatStatus,b:HeartbeatStatus) => a.id.localeCompare(b.id)
                 }/>

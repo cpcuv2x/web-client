@@ -1,20 +1,20 @@
 import { Status } from "./Status"
 export interface HeartbeatStatus {
     id: string,
-    status: Status
-    timestamp?: string,
-    Camera?: CameraHeartbeatStatus[],
-    Module?: ModuleHeartbeatStatus[]
+    status: Status 
+    timestamp: string,
+    Camera: CameraHeartbeatStatus[],
+    Module: ModuleHeartbeatStatus[]
 }
 
 interface CameraHeartbeatStatus {
-    role : CameraRole,
+    role? : CameraRole,
     status : Status,
     timestamp : string
 }
 
 interface ModuleHeartbeatStatus {
-    role : ModuleRole,
+    role? : ModuleRole,
     status : Status,
     timestamp : string
 }
