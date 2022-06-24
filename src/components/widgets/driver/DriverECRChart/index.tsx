@@ -3,6 +3,7 @@ import { ApexOptions } from "apexcharts"
 import _ from "lodash"
 import React, { useEffect, useState } from "react"
 import Chart from "react-apexcharts"
+import useSWR from "swr"
 import useDriverECR from "../../../../hooks/socket/useDriverECR"
 import axiosClient from "../../../../utils/axiosClient"
 import WidgetCard from "../../WidgetCard"
@@ -42,29 +43,32 @@ const DriverECRChart: React.FC<Props> = ({
 
       const date = new Date();
       const startDate = new Date(date);
-      startDate.setMinutes(startDate.getMinutes()-5);
+      startDate.setMinutes(startDate.getMinutes()-6);
       const endDate = new Date(date);
       endDate.setMinutes(endDate.getMinutes());
-  
+      
       const url = `/api/drivers/${driverId}/ecr?startTime=${startDate.toISOString()}&endTime=${endDate.toISOString()}`
-  
+
       axiosClient
         .get(url)
         .then((res) => {
+
           const beginTime = res.data.length > 0 ? new Date(res.data[0][0]) : new Date();
           const length = res.data.length ? res.data.length : 0;
+          const data = res.data;
           let temp = [];
+      
           for(let i=0; i<maxPoints-length; i++){
-            beginTime.setMinutes(beginTime.getMinutes()-1)
+            beginTime.setSeconds(beginTime.getSeconds()-30)
             temp.unshift([new Date(beginTime), 0])
           }
-          console.log(temp, res.data.length)
+
           setSeries([
             {
               name: chartName,
               data: [
                 ...temp,
-                ...(res.data)
+                ...(data.length >= maxPoints ? data.slice(data.length-maxPoints) : data),
               ],
             },
           ])
@@ -72,8 +76,6 @@ const DriverECRChart: React.FC<Props> = ({
     }
     setSeries(emptySeries);
   }, [driverId])
-
-  useEffect(()=>{}, [])
   
   const [options, setOptions] = useState<ApexOptions>({
     annotations: {
@@ -171,7 +173,7 @@ const DriverECRChart: React.FC<Props> = ({
           {
             name: chartName,
             data: [
-              ...(data.length >= maxPoints ? data.slice(1) : data),
+              ...(data.length >= maxPoints ? data.slice(data.length-maxPoints+1) : data),
               [timestamp, ecr],
             ],
           },
