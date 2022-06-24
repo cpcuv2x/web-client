@@ -4,6 +4,7 @@ import _ from "lodash"
 import React, { useEffect, useState } from "react"
 import Chart from "react-apexcharts"
 import useCarPassengers from "../../../../hooks/socket/useCarPassengers"
+import axiosClient from "../../../../utils/axiosClient"
 import WidgetCard from "../../WidgetCard"
 
 interface Props {
@@ -34,7 +35,45 @@ const PassengersChart: React.FC<Props> = ({ carId, maxPoints = 10 }) => {
   const [series, setSeries] = useState<ChartData[]>(emptySeries)
 
   useEffect(()=>{
-    setSeries(emptySeries);
+    if(carId){
+
+      const date = new Date();
+      const startDate = new Date(date);
+      startDate.setMinutes(startDate.getMinutes()-6);
+      const endDate = new Date(date);
+      endDate.setMinutes(endDate.getMinutes());
+      
+      const url = `/api/cars/${carId}/passengers?startTime=${startDate.toISOString()}&endTime=${endDate.toISOString()}`
+
+      axiosClient
+        .get(url)
+        .then((res) => {
+
+          console.log(res)
+
+          const beginTime = res.data.length > 0 ? new Date(res.data[0][0]) : new Date();
+          const length = res.data.length ? res.data.length : 0;
+          const data = res.data;
+          let temp = [];
+      
+          for(let i=0; i<maxPoints-length; i++){
+            beginTime.setSeconds(beginTime.getSeconds()-30)
+            temp.unshift([new Date(beginTime), 0])
+          }
+
+          setSeries([
+            {
+              name: chartName,
+              data: [
+                ...temp,
+                ...(data.length >= maxPoints ? data.slice(data.length-maxPoints) : data),
+              ],
+            },
+          ])
+        })
+
+      setSeries(emptySeries);
+    }
   }, [carId])
 
   const [options, setOptions] = useState<ApexOptions>({
