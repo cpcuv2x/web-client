@@ -1,5 +1,5 @@
 import { ApiOutlined, InfoCircleOutlined } from "@ant-design/icons"
-import { Table, Tooltip, Typography } from "antd"
+import { Space, Table, Tooltip, Typography } from "antd"
 import Column from "antd/lib/table/Column"
 import ColumnGroup from "antd/lib/table/ColumnGroup"
 import { HeartbeatStatus } from "../../../interfaces/HeartbeatStatus"
@@ -109,8 +109,15 @@ const HeartbeatTableComponent:React.FC<{ data : HeartbeatStatus[], lastUpdate:st
     }
 
     const getTitle = () => {
-        return <div>
-                <Typography.Text>Last update : {lastUpdate}</Typography.Text>
+        return(
+            <div>
+                <Space>
+                    <Typography.Text>Last updated : {lastUpdate}</Typography.Text>
+                    <Typography.Text> : </Typography.Text>
+                    <StatusCircle status={Status.ACTIVE}/><Typography.Text strong> - {Status.ACTIVE} </Typography.Text>| 
+                    <StatusCircle status={Status.INACTIVE}/><Typography.Text strong> - {Status.INACTIVE} </Typography.Text>| 
+                    <StatusCircle status={undefined}/><Typography.Text strong> - INVALID</Typography.Text>
+                </Space>
                 <div style={{float:"right"}}>
                     <Tooltip 
                         title={"The table shows the heatbeat status of cars and their devices which are sent in every 60 seconds.\n If the last heartbeat message of a car was send longer than 80 seconds ago, the car will be treated as an INACTIVE car."} 
@@ -121,27 +128,43 @@ const HeartbeatTableComponent:React.FC<{ data : HeartbeatStatus[], lastUpdate:st
                     </Tooltip>
                 </div>
             </div>
+        )
     }
 
     return(
-        <Table loading={ data ? false:true}  dataSource={[...data]} bordered = {true} sticky = {true} size="small" 
+        <Table 
+            loading={ data ? false:true}  
+            dataSource={[...data]} 
+            bordered = {true} 
+            sticky = {true} 
+            size="small" 
             title={() => (getTitle())}> 
-            <Column title="ID" dataIndex="id" key="id" align = "center"/>
+            <Column 
+                title="ID" 
+                dataIndex="id" 
+                key="id" 
+                align = "center" 
+                sorter = { 
+                    (a:HeartbeatStatus,b:HeartbeatStatus) => a.id.localeCompare(b.id)
+                }/>
             {getStatusColumn("Vehicle status", "status")}
             <ColumnGroup title="Device status" align = "center">
                 {getCameraStatusColumn("Font Camera", 2)}
                 {getCameraStatusColumn("Back Camera", 3)}
-                {getCameraStatusColumn("Door Camera", 0)}
-                {getCameraStatusColumn("Driver Camera", 1)}
+                {getCameraStatusColumn("Door Camera", 1)}
+                {getCameraStatusColumn("Driver Camera", 0)}
                 {getModuleStatusColumn("Drowsiness Module", 0)}
                 {getModuleStatusColumn("Accident Module", 1)}
             </ColumnGroup>     
-            <Column title="Inspect" key="inspect" align = "center" 
-                    render={(_: any, record: HeartbeatStatus) => (
-                        <Tooltip placement="topLeft" title={getTooltipTitle(record)} overlayStyle={{ whiteSpace: 'pre-line' }}>
-                            <ApiOutlined />
-                        </Tooltip>
-                    )}/>
+            <Column 
+                title="Inspect" 
+                key="inspect" 
+                align = "center" 
+                render = {(_: any, record: HeartbeatStatus) => (
+                    <Tooltip placement="topLeft" title={getTooltipTitle(record)} overlayStyle={{ whiteSpace: 'pre-line' }}>
+                        <ApiOutlined />
+                    </Tooltip>
+                )}/>
         </Table>
     )
 }

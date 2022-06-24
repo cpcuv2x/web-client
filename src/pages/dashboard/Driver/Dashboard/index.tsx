@@ -9,7 +9,6 @@ import { useParams } from "react-router-dom"
 import PageBreadcrumb from "../../../../components/PageBreadcrumb"
 import DashboardDriverComponent from "../../../../components/StatusDashboard/DriverDashboard"
 import StatusTableComponent from "../../../../components/StatusDashboard/StatusTableComponent"
-import useDriver from "../../../../hooks/useDriver"
 import useDrivers from "../../../../hooks/useDrivers"
 import { routes } from "../../../../routes/constant"
 
@@ -18,13 +17,7 @@ const DashboardDriverPage = () => {
   const { drivers } = useDrivers();
   const [ statusFullSize, setStatusFullSize ] = useState<boolean>(true);
 
-  if (!driverId) return <div>Loading...</div>
-
-  const { driver, loading, error } = useDriver(driverId)
-
-  if (loading) return <div>Loading...</div>
-
-  if (error || !driver) return <div>An error occurred.</div>
+  if (!driverId) return <div>An error occurred.</div>
 
   return (
     <>

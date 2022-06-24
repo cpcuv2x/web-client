@@ -11,7 +11,6 @@ const DashboardHeartbeatOverviewPage: React.FC = () => {
 
   const [ lastUpdate, setLastUpdate ] = useState<string>(new Date().toLocaleString());
   const heartbeatData = useHeartbeatStatus();
-  console.log(heartbeatData);
 
   useEffect(() => {
     if(heartbeatData) setLastUpdate(new Date().toLocaleString());
@@ -38,7 +37,7 @@ const DashboardHeartbeatOverviewPage: React.FC = () => {
         ]}
       />
 
-      <Typography.Title>Heartbeat of vehicles and devices Dashboard</Typography.Title>
+      <Typography.Title>Heartbeat of vehicles and devices</Typography.Title>
       <HeartbeatTableComponent data = {heartbeatData!} lastUpdate = {lastUpdate}/>
     </>
   )
