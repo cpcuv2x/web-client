@@ -60,7 +60,7 @@ const DriverECRChart: React.FC<Props> = ({
       
           for(let i=0; i<maxPoints-length; i++){
             beginTime.setSeconds(beginTime.getSeconds()-30)
-            temp.unshift([new Date(beginTime), 0])
+            temp.unshift([(new Date(beginTime)).toISOString(), 0])
           }
 
           if(data.length > 0) setCurrentEcr(data.at(-1)[1])
@@ -78,8 +78,6 @@ const DriverECRChart: React.FC<Props> = ({
     }
     setSeries(emptySeries);
   }, [driverId])
-
-  useEffect(()=>{}, [])
   
   const [options, setOptions] = useState<ApexOptions>({
     annotations: {
@@ -142,7 +140,7 @@ const DriverECRChart: React.FC<Props> = ({
   })
 
   useEffect(() => {
-    if (ecrData && ecrData.timestamp && ecrData.ecr && ecrData.ecrThreshold) {
+    if (ecrData !=null && ecrData.timestamp !=null && ecrData.ecr !=null && ecrData.ecrThreshold !=null) {
       const { ecr, timestamp, ecrThreshold } = ecrData
       // Update current ECR value
       setCurrentEcr(ecr)

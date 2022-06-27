@@ -33,7 +33,6 @@ const useHeartbeatStatus = () => {
               const date = (new Date()).toISOString();
 
               const invlidDevice = { 
-                timestamp : date,
                 status : Status.INVALID
               }
 
