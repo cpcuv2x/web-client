@@ -3,7 +3,6 @@ import { ApexOptions } from "apexcharts"
 import _ from "lodash"
 import React, { useEffect, useState } from "react"
 import Chart from "react-apexcharts"
-import useSWR from "swr"
 import useDriverECR from "../../../../hooks/socket/useDriverECR"
 import axiosClient from "../../../../utils/axiosClient"
 import WidgetCard from "../../WidgetCard"
@@ -11,6 +10,7 @@ import WidgetCard from "../../WidgetCard"
 interface Props {
   driverId: string
   maxPoints?: number
+  ecrThreshold?: number
 }
 
 interface ChartData {
@@ -20,6 +20,7 @@ interface ChartData {
 
 const DriverECRChart: React.FC<Props> = ({
   driverId,
+  ecrThreshold = 0,
   maxPoints = 10,
 }: Props) => {
   const chartName = "ECR chart"
@@ -34,7 +35,7 @@ const DriverECRChart: React.FC<Props> = ({
   const ecrData = useDriverECR(driverId)
 
   const [currentEcr, setCurrentEcr] = useState(0)
-  const [currentEcrThreshold, setCurrentEcrThreshold] = useState(0)
+  const [currentEcrThreshold, setCurrentEcrThreshold] = useState(ecrThreshold)
 
   const [series, setSeries] = useState<ChartData[]>(emptySeries)
 
@@ -53,7 +54,9 @@ const DriverECRChart: React.FC<Props> = ({
         .get(url)
         .then((res) => {
           const data = res.data;
-          if(data.length > 0) setCurrentEcr(data.at(-1)[1])
+
+          if(data.length > 0) setCurrentEcr(data.at(-1)[1]);
+
           setSeries([
             {
               name: chartName,
@@ -71,10 +74,10 @@ const DriverECRChart: React.FC<Props> = ({
     annotations: {
       yaxis: [
         {
-          y: 0,
+          y: currentEcrThreshold,
           borderColor: "#00E396",
           label: {
-            text: "ECR threshold: 0",
+            text: `ECR threshold: ${currentEcrThreshold}`,
             style: {
               color: "#fff",
               background: "#00E396",
@@ -160,7 +163,13 @@ const DriverECRChart: React.FC<Props> = ({
       setSeries((series) => {
 
         const data : [string, number][] = series[0].data
-        while(data.at(-1)![0] >= ecrData.timestamp) data.pop()
+        const current = new Date(timestamp);
+        let lastDatetime = new Date(data.at(-1)![0]); 
+
+        while(current.getTime()<=lastDatetime.getTime() && data.length>0) {
+          data.pop();
+          lastDatetime = new Date(data.at(-1)![0]); 
+        }
 
         return [
           {

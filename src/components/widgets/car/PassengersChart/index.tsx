@@ -121,8 +121,15 @@ const PassengersChart: React.FC<Props> = ({ carId, maxPoints = 10 }) => {
       setCurrentPassengers(passengers)
       // Update graph
       setSeries((series) => {
+
         const data : [string, number][] = series[0].data
-        while(data.at(-1)![0] >= timestamp) data.pop()
+        const current = new Date(timestamp);
+        let lastDatetime = new Date(data.at(-1)![0]); 
+
+        while(current.getTime()<=lastDatetime.getTime() && data.length>0) {
+          data.pop();
+          lastDatetime = new Date(data.at(-1)![0]); 
+        }
 
         return [
           {
@@ -135,7 +142,7 @@ const PassengersChart: React.FC<Props> = ({ carId, maxPoints = 10 }) => {
         ]
       })
     }
-  }, [passengersData])
+  }, [passengersData?.timestamp])
 
   return (
     <WidgetCard
