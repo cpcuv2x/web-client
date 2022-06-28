@@ -43,7 +43,7 @@ const DriverECRChart: React.FC<Props> = ({
 
       const date = new Date();
       const startDate = new Date(date);
-      startDate.setMinutes(startDate.getMinutes()-6);
+      startDate.setMinutes(startDate.getMinutes()-11);
       const endDate = new Date(date);
       endDate.setMinutes(endDate.getMinutes());
       

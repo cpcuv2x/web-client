@@ -43,7 +43,7 @@ const PassengersChart: React.FC<Props> = ({ carId, maxPoints = 10 }) => {
       const endDate = new Date(date);
       endDate.setMinutes(endDate.getMinutes());
       
-      const url = `/api/cars/${carId}/passengers?startTime=${startDate.toISOString()}&endTime=${endDate.toISOString()}`
+      const url = `/api/cars/${carId}/passengers?startTime=${startDate.toISOString()}&endTime=${endDate.toISOString()}&maxPoints=${maxPoints.toString()}`
 
       axiosClient
         .get(url)
@@ -112,9 +112,9 @@ const PassengersChart: React.FC<Props> = ({ carId, maxPoints = 10 }) => {
 
   useEffect(() => {
     if (
-      passengersData &&
-      passengersData.passengers &&
-      passengersData.timestamp
+      passengersData != null &&
+      passengersData.passengers != null&&
+      passengersData.timestamp != null
     ) {
       const { passengers, timestamp } = passengersData
       // Update current passengers value
@@ -135,7 +135,7 @@ const PassengersChart: React.FC<Props> = ({ carId, maxPoints = 10 }) => {
         ]
       })
     }
-  }, [passengersData?.timestamp])
+  }, [passengersData])
 
   return (
     <WidgetCard
