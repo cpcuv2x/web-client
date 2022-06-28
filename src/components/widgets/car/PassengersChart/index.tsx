@@ -39,34 +39,22 @@ const PassengersChart: React.FC<Props> = ({ carId, maxPoints = 10 }) => {
 
       const date = new Date();
       const startDate = new Date(date);
-      startDate.setMinutes(startDate.getMinutes()-15);
+      startDate.setMinutes(startDate.getMinutes()-11);
       const endDate = new Date(date);
-      endDate.setMinutes(endDate.getMinutes()+5);
+      endDate.setMinutes(endDate.getMinutes());
       
       const url = `/api/cars/${carId}/passengers?startTime=${startDate.toISOString()}&endTime=${endDate.toISOString()}`
 
       axiosClient
         .get(url)
         .then((res) => {
-
-          const beginTime = res.data.length > 0 ? new Date(res.data[0][0]) : new Date();
-          const length = res.data.length ? res.data.length : 0;
           const data = res.data;
-          let temp = [];
-          console.log(data);
-      
-          for(let i=0; i<maxPoints-length; i++){
-            beginTime.setSeconds(beginTime.getSeconds()-30)
-            temp.unshift([new Date(beginTime), 0])
-          }
-
           if(data.length > 0) setCurrentPassengers(data.at(-1)[1])
 
           setSeries([
             {
               name: chartName,
               data: [
-                ...temp,
                 ...(data.length >= maxPoints ? data.slice(data.length-maxPoints) : data),
               ],
             },
@@ -133,12 +121,14 @@ const PassengersChart: React.FC<Props> = ({ carId, maxPoints = 10 }) => {
       setCurrentPassengers(passengers)
       // Update graph
       setSeries((series) => {
-        const data = series[0].data
+        const data : [string, number][] = series[0].data
+        while(data.at(-1)![0] >= timestamp) data.pop()
+
         return [
           {
             name: chartName,
             data: [
-              ...(data.length >= maxPoints ? data.slice(1) : data),
+              ...(data.length >= maxPoints ? data.slice(data.length-maxPoints+1) : data),
               [timestamp, passengers],
             ],
           },
