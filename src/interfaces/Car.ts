@@ -58,3 +58,13 @@ export interface CarPosition {
   lat: number
   lng: number
 }
+
+export interface TotalPassenger {
+  totalPassengers : number,
+  eachCarPassengers : EachCarPassengers[]
+}
+
+interface EachCarPassengers{
+  id : string, 
+  passengers : number
+}

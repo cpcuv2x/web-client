@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import { Socket } from "socket.io-client"
+import { TotalPassenger } from "../../interfaces/Car"
 import {
   ClientToServerEvents,
   ServerToClientEvents,
@@ -12,13 +13,16 @@ const useTotalPassengers = () => {
     useSocket()
   )
   const socketIdRef = useRef("")
-  const [total, setTotal] = useState(0)
+  const [total, setTotal] = useState<TotalPassenger>({
+    totalPassengers: 0,
+    eachCarPassengers: [],
+  })
 
   useEffect(() => {
     const { current: socket } = socketRef
     socket.emit(SocketEventType.StartStreamTotalPassengers, (sId: string) => {
       socketIdRef.current = sId
-      socket.on(sId, (res: number) => {
+      socket.on(sId, (res: TotalPassenger) => {
         // FIXME: remove console
         console.log(SocketEventType.StartStreamTotalPassengers, res)
         setTotal(res)
