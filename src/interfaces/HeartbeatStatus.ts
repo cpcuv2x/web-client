@@ -10,13 +10,13 @@ export interface HeartbeatStatus {
 interface CameraHeartbeatStatus {
     role? : CameraRole,
     status : Status,
-    timestamp : string
+    timestamp? : string
 }
 
 interface ModuleHeartbeatStatus {
     role? : ModuleRole,
     status : Status,
-    timestamp : string
+    timestamp? : string
 }
 
 enum CameraRole {

@@ -4,6 +4,7 @@ import _ from "lodash"
 import React, { useEffect, useState } from "react"
 import Chart from "react-apexcharts"
 import useCarPassengers from "../../../../hooks/socket/useCarPassengers"
+import axiosClient from "../../../../utils/axiosClient"
 import WidgetCard from "../../WidgetCard"
 
 interface Props {
@@ -34,7 +35,34 @@ const PassengersChart: React.FC<Props> = ({ carId, maxPoints = 10 }) => {
   const [series, setSeries] = useState<ChartData[]>(emptySeries)
 
   useEffect(()=>{
-    setSeries(emptySeries);
+    if(carId){
+
+      const date = new Date();
+      const startDate = new Date(date);
+      startDate.setMinutes(startDate.getMinutes()-11);
+      const endDate = new Date(date);
+      endDate.setMinutes(endDate.getMinutes());
+      
+      const url = `/api/cars/${carId}/passengers?startTime=${startDate.toISOString()}&endTime=${endDate.toISOString()}&maxPoints=${maxPoints.toString()}`
+
+      axiosClient
+        .get(url)
+        .then((res) => {
+          const data = res.data;
+          if(data.length > 0) setCurrentPassengers(data.at(-1)[1])
+
+          setSeries([
+            {
+              name: chartName,
+              data: [
+                ...(data.length >= maxPoints ? data.slice(data.length-maxPoints) : data),
+              ],
+            },
+          ])
+        })
+
+      setSeries(emptySeries);
+    }
   }, [carId])
 
   const [options, setOptions] = useState<ApexOptions>({
@@ -84,21 +112,30 @@ const PassengersChart: React.FC<Props> = ({ carId, maxPoints = 10 }) => {
 
   useEffect(() => {
     if (
-      passengersData &&
-      passengersData.passengers &&
-      passengersData.timestamp
+      passengersData != null &&
+      passengersData.passengers != null&&
+      passengersData.timestamp != null
     ) {
       const { passengers, timestamp } = passengersData
       // Update current passengers value
       setCurrentPassengers(passengers)
       // Update graph
       setSeries((series) => {
-        const data = series[0].data
+
+        const data : [string, number][] = series[0].data
+        const current = new Date(timestamp);
+        let lastDatetime = new Date(data.at(-1)![0]); 
+
+        while(current.getTime()<=lastDatetime.getTime() && data.length>0) {
+          data.pop();
+          lastDatetime = new Date(data.at(-1)![0]); 
+        }
+
         return [
           {
             name: chartName,
             data: [
-              ...(data.length >= maxPoints ? data.slice(1) : data),
+              ...(data.length >= maxPoints ? data.slice(data.length-maxPoints+1) : data),
               [timestamp, passengers],
             ],
           },

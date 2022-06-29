@@ -33,7 +33,6 @@ const useHeartbeatStatus = () => {
               const date = (new Date()).toISOString();
 
               const invlidDevice = { 
-                timestamp : date,
                 status : Status.INVALID
               }
 
@@ -45,7 +44,6 @@ const useHeartbeatStatus = () => {
                 x.Module.push(invlidDevice)
               }
             }
-            console.log(res)
             return res
           })
           console.log(SocketEventType.StartStreamHeartbeatsStatus, res)

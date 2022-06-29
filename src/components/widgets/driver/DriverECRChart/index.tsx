@@ -3,7 +3,6 @@ import { ApexOptions } from "apexcharts"
 import _ from "lodash"
 import React, { useEffect, useState } from "react"
 import Chart from "react-apexcharts"
-import useSWR from "swr"
 import useDriverECR from "../../../../hooks/socket/useDriverECR"
 import axiosClient from "../../../../utils/axiosClient"
 import WidgetCard from "../../WidgetCard"
@@ -11,6 +10,7 @@ import WidgetCard from "../../WidgetCard"
 interface Props {
   driverId: string
   maxPoints?: number
+  ecrThreshold?: number
 }
 
 interface ChartData {
@@ -20,6 +20,7 @@ interface ChartData {
 
 const DriverECRChart: React.FC<Props> = ({
   driverId,
+  ecrThreshold = 0,
   maxPoints = 10,
 }: Props) => {
   const chartName = "ECR chart"
@@ -34,7 +35,7 @@ const DriverECRChart: React.FC<Props> = ({
   const ecrData = useDriverECR(driverId)
 
   const [currentEcr, setCurrentEcr] = useState(0)
-  const [currentEcrThreshold, setCurrentEcrThreshold] = useState(0)
+  const [currentEcrThreshold, setCurrentEcrThreshold] = useState(ecrThreshold)
 
   const [series, setSeries] = useState<ChartData[]>(emptySeries)
 
@@ -43,31 +44,23 @@ const DriverECRChart: React.FC<Props> = ({
 
       const date = new Date();
       const startDate = new Date(date);
-      startDate.setMinutes(startDate.getMinutes()-6);
+      startDate.setMinutes(startDate.getMinutes()-11);
       const endDate = new Date(date);
       endDate.setMinutes(endDate.getMinutes());
       
-      const url = `/api/drivers/${driverId}/ecr?startTime=${startDate.toISOString()}&endTime=${endDate.toISOString()}`
+      const url = `/api/drivers/${driverId}/ecr?startTime=${startDate.toISOString()}&endTime=${endDate.toISOString()}&maxPoints=${maxPoints.toString()}`
 
       axiosClient
         .get(url)
         .then((res) => {
-
-          const beginTime = res.data.length > 0 ? new Date(res.data[0][0]) : new Date();
-          const length = res.data.length ? res.data.length : 0;
           const data = res.data;
-          let temp = [];
-      
-          for(let i=0; i<maxPoints-length; i++){
-            beginTime.setSeconds(beginTime.getSeconds()-30)
-            temp.unshift([new Date(beginTime), 0])
-          }
+
+          if(data.length > 0) setCurrentEcr(data.at(-1)[1]);
 
           setSeries([
             {
               name: chartName,
               data: [
-                ...temp,
                 ...(data.length >= maxPoints ? data.slice(data.length-maxPoints) : data),
               ],
             },
@@ -81,10 +74,10 @@ const DriverECRChart: React.FC<Props> = ({
     annotations: {
       yaxis: [
         {
-          y: 0,
+          y: currentEcrThreshold,
           borderColor: "#00E396",
           label: {
-            text: "ECR threshold: 0",
+            text: `ECR threshold: ${currentEcrThreshold}`,
             style: {
               color: "#fff",
               background: "#00E396",
@@ -138,7 +131,7 @@ const DriverECRChart: React.FC<Props> = ({
   })
 
   useEffect(() => {
-    if (ecrData && ecrData.timestamp && ecrData.ecr && ecrData.ecrThreshold) {
+    if (ecrData !=null && ecrData.timestamp !=null && ecrData.ecr !=null && ecrData.ecrThreshold !=null) {
       const { ecr, timestamp, ecrThreshold } = ecrData
       // Update current ECR value
       setCurrentEcr(ecr)
@@ -168,7 +161,16 @@ const DriverECRChart: React.FC<Props> = ({
       })
       // Update graph
       setSeries((series) => {
-        const data = series[0].data
+
+        const data : [string, number][] = series[0].data
+        const current = new Date(timestamp);
+        let lastDatetime = new Date(data.at(-1)![0]); 
+
+        while(current.getTime()<=lastDatetime.getTime() && data.length>0) {
+          data.pop();
+          lastDatetime = new Date(data.at(-1)![0]); 
+        }
+
         return [
           {
             name: chartName,

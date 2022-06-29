@@ -57,7 +57,7 @@ const DashboardDriverComponent:React.FC<{ driverId : string, setStatusFullSize :
           <DriverImage driverId={driverId} />
         </Col>
         <Col span={17}>
-          <DriverECRChart driverId={driverId} />
+          <DriverECRChart driverId={driverId} ecrThreshold = {driver.ecrThreshold}/>
         </Col>
         <Col span={24}>
           <DriverInformation driverId={driverId} />
