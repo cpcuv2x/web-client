@@ -5,15 +5,17 @@ import React from "react"
 import { useNavigate } from "react-router-dom"
 import busPin from "../../../../assets/bus_pin.svg"
 import useCar from "../../../../hooks/useCar"
-import { CarPosition } from "../../../../interfaces/Car"
+import { CarPosition, CarStatus } from "../../../../interfaces/Car"
 import { routes } from "../../../../routes/constant"
 
 interface Props {
   position: CarPosition
   carId: string
+  status: CarStatus
 }
 
-const CarPin: React.FC<Props> = ({ position, carId }) => {
+const CarPin: React.FC<Props> = ({ position, carId, status }) => {
+  console.log(position, status)
   const navigate = useNavigate()
   const { car } = useCar(carId)
   function onClick() {

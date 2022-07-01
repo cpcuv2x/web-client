@@ -23,8 +23,13 @@ const CarsLocationMap = () => {
   return (
     <LoadScript googleMapsApiKey={appConfig.googleMapAPIKey}>
       <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={15}>
-        {Object.entries(locations).map(([carId, position]) => (
-          <CarPin key={carId} position={position} carId={carId} />
+        {Object.entries(locations).map(([carId, { lat, lng, status }]) => (
+          <CarPin
+            key={carId}
+            position={{ lat, lng }}
+            carId={carId}
+            status={status}
+          />
         ))}
       </GoogleMap>
     </LoadScript>
