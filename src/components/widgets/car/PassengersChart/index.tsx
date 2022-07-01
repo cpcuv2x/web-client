@@ -124,8 +124,6 @@ const PassengersChart: React.FC<Props> = ({ carId, maxPoints = 10 }) => {
       // Update graph
       setSeries((series) => {
         let data: [string, number][] = series[0].data
-        const inComingDatetime = new Date(timestamp)
-        let lastDatetime = new Date(data.at(-1)![0])
 
         data = [
           ...(data.length >= maxPoints
