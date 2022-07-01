@@ -26,7 +26,7 @@ const CarsLocationMap = () => {
         {Object.entries(locations).map(([carId, { lat, lng, status }]) => (
           <CarPin
             key={carId}
-            position={{ lat, lng }}
+            position={{ lng: lat, lat: lng }}
             carId={carId}
             status={status}
           />

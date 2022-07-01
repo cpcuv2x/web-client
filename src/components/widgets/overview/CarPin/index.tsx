@@ -15,7 +15,6 @@ interface Props {
 }
 
 const CarPin: React.FC<Props> = ({ position, carId, status }) => {
-  console.log(position, status)
   const navigate = useNavigate()
   const { car } = useCar(carId)
   function onClick() {
@@ -25,6 +24,9 @@ const CarPin: React.FC<Props> = ({ position, carId, status }) => {
         <Space direction="vertical" style={{ width: "100%" }}>
           <Typography.Text>License Plate: {car?.licensePlate}</Typography.Text>
           <Typography.Text>Passengers: {car?.passengers}</Typography.Text>
+          <Typography.Text>
+            Status: {status != null ? status : CarStatus.INACTIVE}
+          </Typography.Text>
           <Row gutter={12}>
             <Col span={12}>
               <Button
