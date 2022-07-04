@@ -1,11 +1,13 @@
-import { Table } from "antd"
+import { Table, Typography } from "antd"
 import { ColumnsType } from "antd/lib/table"
 import useTotalPassengers from "../../../../hooks/socket/useTotalPassengers"
+import { CarStatus } from "../../../../interfaces/Car"
 import WidgetCard from "../../WidgetCard"
 
 interface DataType {
   id: string
   passengers: number
+  status: CarStatus
 }
 
 const TotalPassengers = () => {
@@ -17,7 +19,15 @@ const TotalPassengers = () => {
       dataIndex: "id",
       key: "id",
       align: "center",
-      render: (id) => id,
+      render: (_, record) => (
+        <Typography.Text
+          style={{
+            color: record.status === CarStatus.ACTIVE ? "#ed1170" : "#c0c0c0",
+          }}
+        >
+          {record.id}
+        </Typography.Text>
+      ),
     },
     {
       title: "Passenger(s)",

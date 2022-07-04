@@ -60,11 +60,12 @@ export interface CarPosition {
 }
 
 export interface TotalPassenger {
-  totalPassengers : number,
-  eachCarPassengers : EachCarPassengers[]
+  totalPassengers: number,
+  eachCarPassengers: EachCarPassengers[]
 }
 
-interface EachCarPassengers{
-  id : string, 
-  passengers : number
+interface EachCarPassengers {
+  id: string,
+  passengers: number,
+  status: CarStatus
 }

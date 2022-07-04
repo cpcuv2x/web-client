@@ -6,8 +6,8 @@ import CarPin from "../CarPin"
 
 // Chulalongkorn university location
 const center = {
-  lat: 13.738498349970362,
-  lng: 100.53259748277665,
+  lat: 13.740154,
+  lng: 100.529732,
 }
 
 const containerStyle = {
@@ -22,7 +22,7 @@ const CarsLocationMap = () => {
 
   return (
     <LoadScript googleMapsApiKey={appConfig.googleMapAPIKey}>
-      <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={15}>
+      <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={16}>
         {Object.entries(locations).map(([carId, { lat, lng, status }]) => (
           <CarPin
             key={carId}
