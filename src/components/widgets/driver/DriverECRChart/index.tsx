@@ -42,7 +42,6 @@ const DriverECRChart: React.FC<Props> = ({
   useEffect(() => {
     if (driverId != null) {
       setCurrentEcrThreshold(ecrThreshold)
-      console.log(ecrThreshold)
 
       const date = new Date()
       const startDate = new Date(date)
@@ -140,7 +139,6 @@ const DriverECRChart: React.FC<Props> = ({
   }
 
   useEffect(() => {
-    console.log(ecrData)
     if (
       ecrData != null &&
       ecrData.timestamp != null &&
@@ -194,10 +192,6 @@ const DriverECRChart: React.FC<Props> = ({
       })
     }
   }, [ecrData])
-
-  useEffect(() => {
-    console.log(currentEcrThreshold)
-  }, [currentEcrThreshold])
 
   return (
     <WidgetCard
