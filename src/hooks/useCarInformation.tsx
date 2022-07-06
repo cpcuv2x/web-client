@@ -1,10 +1,8 @@
 import useSWR from "swr"
 import { Car } from "../interfaces/Car"
 
-const useCar = (carId: string) => {
-  const { data, mutate, error } = useSWR<Car>(`/api/cars/${carId}`, {
-    refreshInterval: 60000,
-  })
+const useCarInformation = (carId: string) => {
+  const { data, mutate, error } = useSWR<Car>(`/api/cars/${carId}/information`)
   const loading = !data && !error
 
   return {
@@ -15,4 +13,4 @@ const useCar = (carId: string) => {
   }
 }
 
-export default useCar
+export default useCarInformation

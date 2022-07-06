@@ -1,6 +1,6 @@
 import { Table, Typography } from "antd"
 import { ColumnsType } from "antd/lib/table"
-import useTotalPassengers from "../../../../hooks/socket/useTotalPassengers"
+import useTotalPassengers from "../../../../hooks/useTotalPassengers"
 import { CarStatus } from "../../../../interfaces/Car"
 import WidgetCard from "../../WidgetCard"
 
@@ -11,7 +11,7 @@ interface DataType {
 }
 
 const TotalPassengers = () => {
-  const total = useTotalPassengers()
+  const { data } = useTotalPassengers()
 
   const columns: ColumnsType<DataType> = [
     {
@@ -40,12 +40,12 @@ const TotalPassengers = () => {
 
   return (
     <WidgetCard
-      title={`Total Passenger(s) : ${total.totalPassengers}`}
+      title={`Total Passenger(s) : ${data?.totalPassengers}`}
       helpText={"Total number of passengers in all cars."}
       content={
         <Table
           columns={columns}
-          dataSource={total.eachCarPassengers}
+          dataSource={data?.eachCarPassengers}
           size={"small"}
           pagination={{
             pageSize: 3,
