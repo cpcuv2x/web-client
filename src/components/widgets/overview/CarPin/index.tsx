@@ -17,7 +17,41 @@ interface Props {
 const CarPin: React.FC<Props> = ({ position, carId }) => {
   const navigate = useNavigate()
   const { car } = useCarInformation(carId)
+  /*
+  const [previousPostion, setPreviousPosition] = useState<CarPosition>(position)
+  const temp = new Array<CarPosition>(20)
+  for (let i = 0; i < 20; i++) {
+    temp[i] = position
+  }
+  const [showingPosition, setShowingPosition] = useState<CarPosition[]>(temp)
+  const [index, setIndex] = useState<number>(0)
 
+  useEffect(() => {
+    const stepLat = (position.lat - previousPostion.lat) / 20
+    const stepLng = (position.lng - previousPostion.lng) / 20
+    if (stepLat !== 0 && stepLng !== 0) {
+      const temp = showingPosition
+      temp[0] = previousPostion
+      for (let i = 1; i < 20; i++) {
+        temp[i] = {
+          lat: temp[i - 1].lat + stepLat,
+          lng: temp[i - 1].lng + stepLng,
+        }
+      }
+      setIndex(0)
+      setShowingPosition(temp)
+      setPreviousPosition(position)
+    }
+  }, [position])
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      if (index < 20) setIndex(index + 1)
+    }, 10)
+
+    return () => clearInterval(intervalId)
+  }, [])
+  */
   function onClick() {
     const current = new Date()
     const modal = Modal.info({
@@ -70,17 +104,7 @@ const CarPin: React.FC<Props> = ({ position, carId }) => {
   const color = "white"
 
   return (
-    <Marker
-      icon={icon}
-      position={position}
-      onClick={onClick}
-      label={{
-        fontSize: "10px",
-        text: carId,
-        fontWeight: "900",
-        color: color,
-      }}
-    />
+    <Marker icon={icon} position={position} onClick={onClick} animation={2} />
   )
 }
 

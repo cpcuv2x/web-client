@@ -22,7 +22,7 @@ const TotalPassengers = () => {
       render: (_, record) => (
         <Typography.Text
           style={{
-            color: record.status === CarStatus.ACTIVE ? "#ed1170" : "#c0c0c0",
+            color: record.status === CarStatus.ACTIVE ? "#ed1170" : "#666666",
           }}
         >
           {record.id}
