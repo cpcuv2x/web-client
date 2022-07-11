@@ -52,7 +52,7 @@ function App() {
                   </Route>
                   <Route path="driver">
                     <Route index element={<DashboardDriverOverviewPage />} />
-                    <Route path=":driverId" element={<DashboardDriverPage />} /> 
+                    <Route path=":driverId" element={<DashboardDriverPage />} />
                   </Route>
                   <Route path="heartbeat">
                     <Route index element={<DashboardHeartbeatOverviewPage />} />
@@ -62,7 +62,10 @@ function App() {
                   <Route path="vehicle">
                     <Route index element={<EntityCarOverviewPage />} />
                     <Route path="new" element={<EntityCarNewPage />} />
-                    <Route path="edit/:vehicleId" element={<EntityCarEditPage />} />
+                    <Route
+                      path="edit/:vehicleId"
+                      element={<EntityCarEditPage />}
+                    />
                   </Route>
                   <Route path="driver">
                     <Route index element={<EntityDriverOverviewPage />} />
