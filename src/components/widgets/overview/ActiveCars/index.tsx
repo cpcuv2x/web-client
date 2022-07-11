@@ -3,6 +3,7 @@ import BigNumber from "../../BigNumber"
 
 const ActiveCars = () => {
   const { active, total } = useActiveCars()
+
   return (
     <BigNumber
       title="Active Vehicle(s)"
