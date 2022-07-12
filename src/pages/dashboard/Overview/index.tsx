@@ -1,6 +1,6 @@
 import { AreaChartOutlined, PieChartOutlined } from "@ant-design/icons"
-import { Col, Row, Typography } from "antd"
-import React from "react"
+import { Button, Col, Row, Space, Typography } from "antd"
+import React, { useState } from "react"
 import { Helmet } from "react-helmet"
 import PageBreadcrumb from "../../../components/PageBreadcrumb"
 import AccidentCount from "../../../components/widgets/overview/AccidentCount"
@@ -11,6 +11,23 @@ import TotalPassengers from "../../../components/widgets/overview/TotalPassenger
 import { routes } from "../../../routes/constant"
 
 const DashboardOverviewPage: React.FC = () => {
+  const [showVehicleID, setShowVehicleID] = useState<boolean>(true)
+  const [hideVehicleID, setHideVehicleID] = useState<boolean>(false)
+
+  function showVehicleIDHandle() {
+    setShowVehicleID(true)
+    setTimeout(() => {
+      setShowVehicleID(false), 200
+    })
+  }
+
+  function hideVehicleIDHandle() {
+    setHideVehicleID(true)
+    setTimeout(() => {
+      setHideVehicleID(false), 200
+    })
+  }
+
   return (
     <>
       <Helmet>
@@ -31,12 +48,29 @@ const DashboardOverviewPage: React.FC = () => {
           },
         ]}
       />
-
-      <Typography.Title>Overview</Typography.Title>
+      <Row gutter={8}>
+        <Col span={19}>
+          <Typography.Title>Overview</Typography.Title>
+        </Col>
+        <Col span={5}>
+          <Space>
+            <Button type="primary" onClick={showVehicleIDHandle}>
+              Show
+            </Button>
+            <Button type="default" danger onClick={hideVehicleIDHandle}>
+              Hide
+            </Button>
+            vehicle id.
+          </Space>
+        </Col>
+      </Row>
 
       <Row gutter={8}>
         <Col span={19}>
-          <CarsLocationMap />
+          <CarsLocationMap
+            showVehicleID={showVehicleID}
+            hideVehicleID={hideVehicleID}
+          />
         </Col>
         <Col span={5}>
           <Row gutter={[8, 8]}>
@@ -46,7 +80,7 @@ const DashboardOverviewPage: React.FC = () => {
             <Col span={24}>
               <ActiveDrivers />
             </Col>
-            <Col span={24}>
+            <Col span={24} style={{ height: "285px" }}>
               <TotalPassengers />
             </Col>
             <Col span={24}>

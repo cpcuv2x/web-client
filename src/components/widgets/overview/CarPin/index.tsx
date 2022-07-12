@@ -1,7 +1,7 @@
 import { ControlOutlined, PieChartOutlined } from "@ant-design/icons"
 import { Marker, OverlayView } from "@react-google-maps/api"
 import { Button, Col, Modal, Row, Space, Tooltip, Typography } from "antd"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import activeBusPin from "../../../../assets/bus_pin_active.svg"
 import inactiveBusPin from "../../../../assets/bus_pin_inactive.svg"
@@ -12,13 +12,27 @@ import { routes } from "../../../../routes/constant"
 interface Props {
   position: CarPosition
   carId: string
+  showVehicleID: boolean
+  hideVehicleID: boolean
 }
 
-const CarPin: React.FC<Props> = ({ position, carId }) => {
+const CarPin: React.FC<Props> = ({
+  position,
+  carId,
+  showVehicleID,
+  hideVehicleID,
+}) => {
   const navigate = useNavigate()
   const { car } = useCarInformation(carId)
   const [overlayVisible, setOverlayVisible] = useState<boolean>(true)
   const [isDblClick, setIsDblClick] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (showVehicleID) setOverlayVisible(true)
+  }, [showVehicleID])
+  useEffect(() => {
+    if (hideVehicleID) setOverlayVisible(false)
+  }, [hideVehicleID])
 
   //Easing moving car pin
   /*

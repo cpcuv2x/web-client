@@ -15,7 +15,12 @@ const containerStyle = {
   height: "100%",
 }
 
-const CarsLocationMap = () => {
+interface props {
+  showVehicleID: boolean
+  hideVehicleID: boolean
+}
+
+const CarsLocationMap: React.FC<props> = ({ showVehicleID, hideVehicleID }) => {
   const { cars } = useCars()
   const carIds = cars.map((car) => car.id)
   const locations = useCarsLocations(carIds)
@@ -31,6 +36,8 @@ const CarsLocationMap = () => {
                 key={carId}
                 position={{ lng: lat, lat: lng }}
                 carId={carId}
+                showVehicleID={showVehicleID}
+                hideVehicleID={hideVehicleID}
               />
             )
         )}

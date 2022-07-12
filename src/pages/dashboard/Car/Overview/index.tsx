@@ -14,8 +14,7 @@ const DashboardOverviewPage: React.FC = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (cars)
-      navigate(`${routes.DASHBOARD_CAR}/` + (cars.length > 0 ? cars[0].id : ""))
+    navigate(`${routes.DASHBOARD_CAR}/` + (cars.length > 0 ? cars[0].id : ""))
   }, [cars])
 
   return (

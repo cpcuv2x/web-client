@@ -35,8 +35,6 @@ const AccidentsLogByCarTable: React.FC<Props> = ({ carId }) => {
     endTime
   )
 
-  console.log("Accident: ", accidents)
-
   function reload() {
     mutate()
   }

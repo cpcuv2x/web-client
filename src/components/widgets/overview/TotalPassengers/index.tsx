@@ -1,5 +1,6 @@
 import { Table, Typography } from "antd"
 import { ColumnsType } from "antd/lib/table"
+import { useState } from "react"
 import useTotalPassengers from "../../../../hooks/useTotalPassengers"
 import { CarStatus } from "../../../../interfaces/Car"
 import WidgetCard from "../../WidgetCard"
@@ -12,8 +13,23 @@ interface DataType {
 
 const TotalPassengers = () => {
   const { data } = useTotalPassengers()
+  const pagination = 3
+  const [page, setPage] = useState<number>(1)
 
   const columns: ColumnsType<DataType> = [
+    {
+      key: "no",
+      align: "center",
+      render: (value, record, index) => (
+        <Typography.Text
+          style={{
+            color: record.status === CarStatus.ACTIVE ? "#ed1170" : "#666666",
+          }}
+        >
+          {(page - 1) * pagination + index + 1}
+        </Typography.Text>
+      ),
+    },
     {
       title: "Car ID",
       dataIndex: "id",
@@ -48,11 +64,14 @@ const TotalPassengers = () => {
           dataSource={data?.eachCarPassengers}
           size={"small"}
           pagination={{
-            pageSize: 3,
+            pageSize: pagination,
             simple: true,
             size: "small",
             hideOnSinglePage: true,
             position: ["bottomCenter"],
+            onChange(current) {
+              setPage(current)
+            },
           }}
         ></Table>
       }
