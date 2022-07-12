@@ -7,8 +7,7 @@ interface ActiveDriversResponse {
 
 const useActiveDrivers = () => {
   const { data, mutate, error } = useSWR<ActiveDriversResponse>(
-    `/api/drivers/activeAndTotal`,
-    { refreshInterval: 1000 }
+    `/api/drivers/activeAndTotal`
   )
   const loading = !data && !error
 

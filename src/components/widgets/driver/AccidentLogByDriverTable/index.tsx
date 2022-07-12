@@ -50,7 +50,7 @@ const AccidentLogByDriverTable: React.FC<Props> = ({ driverId }) => {
       driverId: "D0001",
       lat: 13.739839,
       long: 100.531367,
-      timestamp: "1655699278"
+      timestamp: "1655699278",
     },
     {
       id: "A0002",
@@ -58,9 +58,9 @@ const AccidentLogByDriverTable: React.FC<Props> = ({ driverId }) => {
       driverId: "D0001",
       lat: 13.739839,
       long: 100.531367,
-      timestamp: "1655700278"
+      timestamp: "1655700278",
     },
-    ]
+  ]
 
   const columns: ColumnsType<AccidentLogByDriver> = [
     {
@@ -89,9 +89,9 @@ const AccidentLogByDriverTable: React.FC<Props> = ({ driverId }) => {
     },
     {
       title: "Detail",
-      dataIndex : ["lat", 'long'],
+      dataIndex: ["lat", "long"],
       key: "id",
-      render: (_, record) => <AccidentDetailMapComponent data={record}/>,
+      render: (_, record) => <AccidentDetailMapComponent data={record} />,
     },
   ]
 
@@ -114,7 +114,7 @@ const AccidentLogByDriverTable: React.FC<Props> = ({ driverId }) => {
         helpText="Accidents occurred with this driver."
         content={
           <Table
-            dataSource={mockUpDate}
+            dataSource={accidents}
             columns={columns}
             rowKey="id"
             loading={loading}

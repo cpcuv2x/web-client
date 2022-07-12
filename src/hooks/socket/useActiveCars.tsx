@@ -7,8 +7,7 @@ interface ActiveDriversResponse {
 
 const useActiveCars = () => {
   const { data, mutate, error } = useSWR<ActiveDriversResponse>(
-    `/api/cars/activeAndTotal`,
-    { refreshInterval: 1000 }
+    `/api/cars/activeAndTotal`
   )
   const loading = !data && !error
 

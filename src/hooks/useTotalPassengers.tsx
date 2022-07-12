@@ -3,8 +3,7 @@ import { TotalPassenger } from "../interfaces/Car"
 
 const useTotalPassengers = () => {
   const { data, mutate, error } = useSWR<TotalPassenger>(
-    `/api/cars/totalPassengers`,
-    { refreshInterval: 1000 }
+    `/api/cars/totalPassengers`
   )
   const loading = !data && !error
 

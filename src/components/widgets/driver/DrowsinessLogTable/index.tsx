@@ -50,7 +50,7 @@ const DrowsinessLogTable: React.FC<Props> = ({ driverId }) => {
       lat: 13.739839,
       long: 100.531367,
       timestamp: "1655699278",
-      responseTime: 1
+      responseTime: 1,
     },
     {
       id: "D0002",
@@ -59,9 +59,9 @@ const DrowsinessLogTable: React.FC<Props> = ({ driverId }) => {
       lat: 13.739839,
       long: 100.531367,
       timestamp: "1655700278",
-      responseTime: 1.5
+      responseTime: 1.5,
     },
-    ]
+  ]
 
   const columns: ColumnsType<DrowsinessLog> = [
     {
@@ -95,10 +95,10 @@ const DrowsinessLogTable: React.FC<Props> = ({ driverId }) => {
       // sorter: true,
     },
     {
-      title : "Detail",
-      key : "id",
-      render: (_, record) => <DrowsinessDetailMapComponent data = {record}/>
-    }
+      title: "Detail",
+      key: "id",
+      render: (_, record) => <DrowsinessDetailMapComponent data={record} />,
+    },
   ]
 
   return (
@@ -119,7 +119,7 @@ const DrowsinessLogTable: React.FC<Props> = ({ driverId }) => {
       helpText="Drowsiness history of this driver."
       content={
         <Table
-          dataSource={mockUpDate}
+          dataSource={drowsiness}
           columns={columns}
           rowKey="id"
           loading={loading}
