@@ -1,7 +1,7 @@
 import { ControlOutlined, PieChartOutlined } from "@ant-design/icons"
-import { Marker } from "@react-google-maps/api"
-import { Button, Col, Modal, Row, Space, Typography } from "antd"
-import React, { useEffect, useState } from "react"
+import { Marker, OverlayView } from "@react-google-maps/api"
+import { Button, Col, Modal, Row, Space, Tooltip, Typography } from "antd"
+import React, { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import activeBusPin from "../../../../assets/bus_pin_active.svg"
 import inactiveBusPin from "../../../../assets/bus_pin_inactive.svg"
@@ -17,6 +17,10 @@ interface Props {
 const CarPin: React.FC<Props> = ({ position, carId }) => {
   const navigate = useNavigate()
   const { car } = useCarInformation(carId)
+  const [overlayVisible, setOverlayVisible] = useState<boolean>(true)
+  const [isDblClick, setIsDblClick] = useState<boolean>(false)
+
+  //Easing moving car pin
   /*
   const [previousPostion, setPreviousPosition] = useState<CarPosition>(position)
   const temp = new Array<CarPosition>(20)
@@ -52,7 +56,17 @@ const CarPin: React.FC<Props> = ({ position, carId }) => {
     return () => clearInterval(intervalId)
   }, [])
   */
-  function onClick() {
+  function showIDOverlay() {
+    setTimeout(() => {
+      if (!isDblClick) setOverlayVisible(!overlayVisible)
+    }, 100)
+  }
+  function showModal() {
+    setIsDblClick(true)
+    setOverlayVisible(!overlayVisible)
+    setTimeout(() => {
+      setIsDblClick(false)
+    }, 150)
     const current = new Date()
     const modal = Modal.info({
       title: "Vehicle information",
@@ -101,10 +115,33 @@ const CarPin: React.FC<Props> = ({ position, carId }) => {
   }
   const isActive = car?.status === CarStatus.ACTIVE
   const icon = isActive ? activeBusPin : inactiveBusPin
-  const color = "white"
 
   return (
-    <Marker icon={icon} position={position} onClick={onClick} animation={2} />
+    <div>
+      <Marker
+        icon={icon}
+        position={position}
+        onClick={showIDOverlay}
+        onDblClick={showModal}
+      />
+      {overlayVisible && (
+        <OverlayView
+          mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
+          position={position}
+        >
+          <div
+            style={{
+              backgroundColor: "black",
+              color: "white",
+              padding: "3px",
+              transform: "translate(-50%, -275%)",
+            }}
+          >
+            {car?.id}
+          </div>
+        </OverlayView>
+      )}
+    </div>
   )
 }
 
