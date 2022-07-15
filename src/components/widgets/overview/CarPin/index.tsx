@@ -36,40 +36,39 @@ const CarPin: React.FC<Props> = ({
 
   //Easing moving car pin
   /*
-  const [previousPostion, setPreviousPosition] = useState<CarPosition>(position)
-  const temp = new Array<CarPosition>(20)
-  for (let i = 0; i < 20; i++) {
-    temp[i] = position
-  }
-  const [showingPosition, setShowingPosition] = useState<CarPosition[]>(temp)
-  const [index, setIndex] = useState<number>(0)
+  const [index, SetIndex] = useState<number>(-1)
+  const [positionTransition, setPositionTransition] = useState<CarPosition>()
+  const [currentPosition, setCurrentPosition] = useState<CarPosition>()
 
   useEffect(() => {
-    const stepLat = (position.lat - previousPostion.lat) / 20
-    const stepLng = (position.lng - previousPostion.lng) / 20
-    if (stepLat !== 0 && stepLng !== 0) {
-      const temp = showingPosition
-      temp[0] = previousPostion
-      for (let i = 1; i < 20; i++) {
-        temp[i] = {
-          lat: temp[i - 1].lat + stepLat,
-          lng: temp[i - 1].lng + stepLng,
-        }
+    SetIndex(0)
+    setCurrentPosition(position)
+    setPositionTransition(() => {
+      if (currentPosition == null) return { lat: 0, lng: 0 }
+      return {
+        lat: position.lat - currentPosition?.lat,
+        lng: position.lng - currentPosition?.lng,
       }
-      setIndex(0)
-      setShowingPosition(temp)
-      setPreviousPosition(position)
-    }
+    })
   }, [position])
 
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      if (index < 20) setIndex(index + 1)
-    }, 10)
-
-    return () => clearInterval(intervalId)
-  }, [])
+    const timer = setTimeout(() => {
+      if (index < 30 && positionTransition != null && currentPosition != null) {
+        SetIndex(index + 1)
+        setCurrentPosition((prevPosition) => {
+          console.log(prevPosition)
+          return {
+            lat: prevPosition?.lat! + positionTransition.lat,
+            lng: prevPosition?.lng! + positionTransition.lng,
+          }
+        })
+      }
+    }, 20)
+    return () => clearTimeout(timer)
+  }, [index])
   */
+
   function showIDOverlay() {
     setTimeout(() => {
       if (!isDblClick) setOverlayVisible(!overlayVisible)
@@ -129,6 +128,7 @@ const CarPin: React.FC<Props> = ({
   }
   const isActive = car?.status === CarStatus.ACTIVE
   const icon = isActive ? activeBusPin : inactiveBusPin
+  const zIndex = isActive ? 1 : 0
 
   return (
     <div>
@@ -137,6 +137,7 @@ const CarPin: React.FC<Props> = ({
         position={position}
         onClick={showIDOverlay}
         onDblClick={showModal}
+        zIndex={zIndex}
       />
       {overlayVisible && (
         <OverlayView
@@ -149,6 +150,7 @@ const CarPin: React.FC<Props> = ({
               color: "white",
               padding: "3px",
               transform: "translate(-50%, -275%)",
+              zIndex: zIndex,
             }}
           >
             {car?.id}

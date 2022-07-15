@@ -16,16 +16,18 @@ const DashboardOverviewPage: React.FC = () => {
 
   function showVehicleIDHandle() {
     setShowVehicleID(true)
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       setShowVehicleID(false), 200
     })
+    return () => clearTimeout(timer)
   }
 
   function hideVehicleIDHandle() {
     setHideVehicleID(true)
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       setHideVehicleID(false), 200
     })
+    return () => clearTimeout(timer)
   }
 
   return (
@@ -48,7 +50,7 @@ const DashboardOverviewPage: React.FC = () => {
           },
         ]}
       />
-      <Row gutter={8}>
+      <Row gutter={8} align="bottom" style={{ paddingBottom: "10px" }}>
         <Col span={19}>
           <Typography.Title>Overview</Typography.Title>
         </Col>
