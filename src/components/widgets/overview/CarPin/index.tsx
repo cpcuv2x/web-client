@@ -27,13 +27,6 @@ const CarPin: React.FC<Props> = ({
   const [overlayVisible, setOverlayVisible] = useState<boolean>(true)
   const [isDblClick, setIsDblClick] = useState<boolean>(false)
 
-  useEffect(() => {
-    if (showVehicleID) setOverlayVisible(true)
-  }, [showVehicleID])
-  useEffect(() => {
-    if (hideVehicleID) setOverlayVisible(false)
-  }, [hideVehicleID])
-
   //Easing moving car pin
   /*
   const [index, SetIndex] = useState<number>(-1)
@@ -68,6 +61,22 @@ const CarPin: React.FC<Props> = ({
     return () => clearTimeout(timer)
   }, [index])
   */
+
+  const isActive = car?.status === CarStatus.ACTIVE
+  const icon = isActive ? activeBusPin : inactiveBusPin
+  const zIndex = isActive ? 1 : 0
+
+  useEffect(() => {
+    if (showVehicleID) setOverlayVisible(true)
+  }, [showVehicleID])
+  useEffect(() => {
+    if (hideVehicleID) setOverlayVisible(false)
+  }, [hideVehicleID])
+
+  useEffect(() => {
+    if (isActive) setOverlayVisible(true)
+    else setOverlayVisible(false)
+  }, [car?.status])
 
   function showIDOverlay() {
     setTimeout(() => {
@@ -126,9 +135,6 @@ const CarPin: React.FC<Props> = ({
       icon: false,
     })
   }
-  const isActive = car?.status === CarStatus.ACTIVE
-  const icon = isActive ? activeBusPin : inactiveBusPin
-  const zIndex = isActive ? 1 : 0
 
   return (
     <div>
@@ -140,22 +146,23 @@ const CarPin: React.FC<Props> = ({
         zIndex={zIndex}
       />
       {overlayVisible && (
-        <OverlayView
-          mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
-          position={position}
-        >
-          <div
-            style={{
-              backgroundColor: "black",
-              color: "white",
-              padding: "3px",
-              transform: "translate(-50%, -275%)",
-              zIndex: zIndex,
-            }}
+        <div style={{ zIndex: zIndex }}>
+          <OverlayView
+            mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
+            position={position}
           >
-            {car?.id}
-          </div>
-        </OverlayView>
+            <div
+              style={{
+                backgroundColor: "black",
+                color: "white",
+                padding: "3px",
+                transform: "translate(-50%, -275%)",
+              }}
+            >
+              {car?.id}
+            </div>
+          </OverlayView>
+        </div>
       )}
     </div>
   )

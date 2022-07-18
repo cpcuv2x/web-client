@@ -35,7 +35,6 @@ function App() {
           value={{
             fetcher: axiosFetcher,
             revalidateOnMount: true,
-            refreshInterval: 1000,
           }}
         >
           <BrowserRouter>
