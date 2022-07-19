@@ -65,6 +65,7 @@ const CarPin: React.FC<Props> = ({
   const isActive = car?.status === CarStatus.ACTIVE
   const icon = isActive ? activeBusPin : inactiveBusPin
   const zIndex = isActive ? 1 : 0
+  const color = isActive ? "#ed1170" : "black"
 
   useEffect(() => {
     if (showVehicleID) setOverlayVisible(true)
@@ -153,7 +154,7 @@ const CarPin: React.FC<Props> = ({
           >
             <div
               style={{
-                backgroundColor: "black",
+                backgroundColor: color,
                 color: "white",
                 padding: "3px",
                 transform: "translate(-50%, -275%)",
