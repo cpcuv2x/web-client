@@ -8,11 +8,20 @@ import ActiveCars from "../../../components/widgets/overview/ActiveCars"
 import ActiveDrivers from "../../../components/widgets/overview/ActiveDrivers"
 import CarsLocationMap from "../../../components/widgets/overview/CarsLocationMap"
 import TotalPassengers from "../../../components/widgets/overview/TotalPassengers"
+import useRealTimeOverview from "../../../hooks/socket/useRealtimeOverview"
 import { routes } from "../../../routes/constant"
 
 const DashboardOverviewPage: React.FC = () => {
-  const [showVehicleID, setShowVehicleID] = useState<boolean>(true)
+  const [showVehicleID, setShowVehicleID] = useState<boolean>(false)
   const [hideVehicleID, setHideVehicleID] = useState<boolean>(false)
+
+  const {
+    activeTotalCars,
+    activeTotalDrivers,
+    cars,
+    accidentCount,
+    totalPassengers,
+  } = useRealTimeOverview()
 
   function showVehicleIDHandle() {
     setShowVehicleID(true)
@@ -72,21 +81,22 @@ const DashboardOverviewPage: React.FC = () => {
           <CarsLocationMap
             showVehicleID={showVehicleID}
             hideVehicleID={hideVehicleID}
+            cars={cars}
           />
         </Col>
         <Col span={5}>
           <Row gutter={[8, 8]}>
             <Col span={24}>
-              <ActiveCars />
+              <ActiveCars activeTotalCars={activeTotalCars} />
             </Col>
             <Col span={24}>
-              <ActiveDrivers />
+              <ActiveDrivers activeTotalDrivers={activeTotalDrivers} />
             </Col>
             <Col span={24} style={{ height: "285px" }}>
-              <TotalPassengers />
+              <TotalPassengers cars={cars} totalPassengers={totalPassengers} />
             </Col>
             <Col span={24}>
-              <AccidentCount />
+              <AccidentCount accidentCount={accidentCount} />
             </Col>
           </Row>
         </Col>

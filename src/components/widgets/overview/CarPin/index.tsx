@@ -7,23 +7,21 @@ import activeBusPin from "../../../../assets/bus_pin_active.svg"
 import inactiveBusPin from "../../../../assets/bus_pin_inactive.svg"
 import useCarInformation from "../../../../hooks/useCarInformation"
 import { CarPosition, CarStatus } from "../../../../interfaces/Car"
+import { CarOverviewInformation } from "../../../../interfaces/Overview"
 import { routes } from "../../../../routes/constant"
 
 interface Props {
-  position: CarPosition
-  carId: string
+  information: CarOverviewInformation
   showVehicleID: boolean
   hideVehicleID: boolean
 }
 
 const CarPin: React.FC<Props> = ({
-  position,
-  carId,
+  information,
   showVehicleID,
   hideVehicleID,
 }) => {
   const navigate = useNavigate()
-  const { car } = useCarInformation(carId)
   const [overlayVisible, setOverlayVisible] = useState<boolean>(true)
   const [isDblClick, setIsDblClick] = useState<boolean>(false)
 
@@ -62,7 +60,12 @@ const CarPin: React.FC<Props> = ({
   }, [index])
   */
 
-  const isActive = car?.status === CarStatus.ACTIVE
+  const { id, status, lat, lng, passengers, licensePlate } = information
+  const position = {
+    lng: lat != null ? lat : 0,
+    lat: lng != null ? lng : 0,
+  }
+  const isActive = status === CarStatus.ACTIVE
   const icon = isActive ? activeBusPin : inactiveBusPin
   const zIndex = isActive ? 1 : 0
   const color = isActive ? "#ed1170" : "black"
@@ -77,7 +80,7 @@ const CarPin: React.FC<Props> = ({
   useEffect(() => {
     if (isActive) setOverlayVisible(true)
     else setOverlayVisible(false)
-  }, [car?.status])
+  }, [status])
 
   function showIDOverlay() {
     setTimeout(() => {
@@ -95,11 +98,11 @@ const CarPin: React.FC<Props> = ({
       title: "Vehicle information",
       content: (
         <Space direction="vertical" style={{ width: "100%" }}>
-          <Typography.Text>Vehicle ID: {car?.id}</Typography.Text>
-          <Typography.Text>License Plate: {car?.licensePlate}</Typography.Text>
-          <Typography.Text>Passengers: {car?.passengers}</Typography.Text>
+          <Typography.Text>Vehicle ID: {id}</Typography.Text>
+          <Typography.Text>License Plate: {licensePlate}</Typography.Text>
+          <Typography.Text>Passengers: {passengers}</Typography.Text>
           <Typography.Text>
-            Status: {car?.status != null ? car?.status : CarStatus.INACTIVE}
+            Status: {status != null ? status : CarStatus.INACTIVE}
           </Typography.Text>
           <Typography.Text type="secondary">
             Last updated: {current.toLocaleTimeString()}
@@ -110,7 +113,7 @@ const CarPin: React.FC<Props> = ({
                 block
                 icon={<PieChartOutlined />}
                 onClick={() => {
-                  navigate(`${routes.DASHBOARD_CAR}/${carId}`)
+                  navigate(`${routes.DASHBOARD_CAR}/${id}`)
                   modal.destroy()
                 }}
               >
@@ -122,7 +125,7 @@ const CarPin: React.FC<Props> = ({
                 block
                 icon={<ControlOutlined />}
                 onClick={() => {
-                  navigate(`${routes.ENTITY_CAR}?id=${carId}`)
+                  navigate(`${routes.ENTITY_CAR}?id=${id}`)
                   modal.destroy()
                 }}
               >
@@ -160,7 +163,7 @@ const CarPin: React.FC<Props> = ({
                 transform: "translate(-50%, -275%)",
               }}
             >
-              {car?.id}
+              {id}
             </div>
           </OverlayView>
         </div>

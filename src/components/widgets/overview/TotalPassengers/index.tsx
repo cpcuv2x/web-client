@@ -3,20 +3,19 @@ import { ColumnsType } from "antd/lib/table"
 import { useState } from "react"
 import useTotalPassengers from "../../../../hooks/useTotalPassengers"
 import { CarStatus } from "../../../../interfaces/Car"
+import { CarOverviewInformation } from "../../../../interfaces/Overview"
 import WidgetCard from "../../WidgetCard"
 
-interface DataType {
-  id: string
-  passengers: number
-  status: CarStatus
+interface props {
+  cars: CarOverviewInformation[]
+  totalPassengers: number
 }
 
-const TotalPassengers = () => {
-  const { data } = useTotalPassengers()
+const TotalPassengers: React.FC<props> = ({ cars, totalPassengers }) => {
   const pagination = 3
   const [page, setPage] = useState<number>(1)
 
-  const columns: ColumnsType<DataType> = [
+  const columns: ColumnsType<CarOverviewInformation> = [
     {
       key: "no",
       align: "center",
@@ -56,12 +55,12 @@ const TotalPassengers = () => {
 
   return (
     <WidgetCard
-      title={`Total Passenger(s) : ${data?.totalPassengers}`}
+      title={`Total Passenger(s) : ${totalPassengers}`}
       helpText={"Total number of passengers in all cars."}
       content={
         <Table
           columns={columns}
-          dataSource={data?.eachCarPassengers}
+          dataSource={cars}
           size={"small"}
           pagination={{
             pageSize: pagination,

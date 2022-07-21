@@ -1,22 +1,18 @@
-import { useEffect, useState } from "react"
-import useActiveCars from "../../../../hooks/socket/useActiveCars"
 import BigNumber from "../../BigNumber"
 
-const ActiveCars = () => {
-  const { active, total } = useActiveCars()
-  const [activeNumber, setActiveNumber] = useState<number>(0)
-  const [totalNumber, setTotalNumber] = useState<number>(0)
+interface props {
+  activeTotalCars: {
+    active: number
+    total: number
+  }
+}
 
-  useEffect(() => {
-    setActiveNumber(active != null ? active : 0)
-    setTotalNumber(total != null ? total : 0)
-  }, [active, total])
-
+const ActiveCars: React.FC<props> = ({ activeTotalCars }) => {
   return (
     <BigNumber
       title="Active Vehicle(s)"
       helpText="Total number of vehicles that are operating."
-      value={`${activeNumber} / ${totalNumber}`}
+      value={`${activeTotalCars.active} / ${activeTotalCars.total}`}
     />
   )
 }

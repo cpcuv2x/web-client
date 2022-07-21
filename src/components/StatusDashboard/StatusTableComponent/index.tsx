@@ -67,7 +67,6 @@ const StatusTableComponent: React.FC<{
       pagination={false}
       sticky={true}
       tableLayout="fixed"
-      scroll={{ y: 240 }}
       size="small"
       onRow={(record, _) => {
         return {

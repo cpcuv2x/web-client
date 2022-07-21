@@ -2,6 +2,7 @@ import { GoogleMap, LoadScript } from "@react-google-maps/api"
 import appConfig from "../../../../configuration"
 import useCarsLocations from "../../../../hooks/socket/useCarsLocations"
 import useCars from "../../../../hooks/useCars"
+import { CarOverviewInformation } from "../../../../interfaces/Overview"
 import CarPin from "../CarPin"
 
 // Chulalongkorn university location
@@ -18,24 +19,24 @@ const containerStyle = {
 interface props {
   showVehicleID: boolean
   hideVehicleID: boolean
+  cars: CarOverviewInformation[]
 }
 
-const CarsLocationMap: React.FC<props> = ({ showVehicleID, hideVehicleID }) => {
-  const { cars } = useCars()
-  const carIds = cars.map((car) => car.id)
-  const locations = useCarsLocations(carIds)
-
+const CarsLocationMap: React.FC<props> = ({
+  showVehicleID,
+  hideVehicleID,
+  cars,
+}) => {
   return (
     <LoadScript googleMapsApiKey={appConfig.googleMapAPIKey}>
       <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={16}>
-        {Object.entries(locations).map(
-          ([carId, { lat, lng }]) =>
-            lat != null &&
-            lng != null && (
+        {cars.map(
+          (information) =>
+            information.lat != null &&
+            information.lng != null && (
               <CarPin
-                key={carId}
-                position={{ lng: lat, lat: lng }}
-                carId={carId}
+                key={information.id}
+                information={information}
                 showVehicleID={showVehicleID}
                 hideVehicleID={hideVehicleID}
               />
