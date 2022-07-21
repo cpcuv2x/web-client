@@ -1,13 +1,18 @@
-import useActiveCars from "../../../../hooks/socket/useActiveCars"
 import BigNumber from "../../BigNumber"
 
-const ActiveCars = () => {
-  const { active, total } = useActiveCars()
+interface props {
+  activeTotalCars: {
+    active: number
+    total: number
+  }
+}
+
+const ActiveCars: React.FC<props> = ({ activeTotalCars }) => {
   return (
     <BigNumber
       title="Active Vehicle(s)"
       helpText="Total number of vehicles that are operating."
-      value={`${active} / ${total}`}
+      value={`${activeTotalCars.active} / ${activeTotalCars.total}`}
     />
   )
 }

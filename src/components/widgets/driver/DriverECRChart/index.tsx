@@ -40,7 +40,9 @@ const DriverECRChart: React.FC<Props> = ({
   const [series, setSeries] = useState<ChartData[]>(emptySeries)
 
   useEffect(() => {
-    if (driverId) {
+    if (driverId != null) {
+      setCurrentEcrThreshold(ecrThreshold)
+
       const date = new Date()
       const startDate = new Date(date)
 
@@ -72,17 +74,20 @@ const DriverECRChart: React.FC<Props> = ({
     setSeries(emptySeries)
   }, [driverId])
 
-  const [options, setOptions] = useState<ApexOptions>({
+  const isDanger = currentEcr >= currentEcrThreshold && currentEcrThreshold != 0
+  const lineColor = isDanger ? "#FF4560" : "#2E93fA"
+  const annotationColor = isDanger ? "#FF4560" : "#00E396"
+  const options: ApexOptions = {
     annotations: {
       yaxis: [
         {
           y: currentEcrThreshold,
-          borderColor: "#00E396",
+          borderColor: annotationColor,
           label: {
             text: `ECR threshold: ${currentEcrThreshold}`,
             style: {
               color: "#fff",
-              background: "#00E396",
+              background: annotationColor,
             },
           },
         },
@@ -130,7 +135,8 @@ const DriverECRChart: React.FC<Props> = ({
         format: "dd MMM HH:mm:ss",
       },
     },
-  })
+    colors: [lineColor],
+  }
 
   useEffect(() => {
     if (
@@ -145,7 +151,7 @@ const DriverECRChart: React.FC<Props> = ({
       // Update current threshold value
       setCurrentEcrThreshold(ecrThreshold)
       // Update threshold line
-      setOptions((options) => {
+      /*setOptions((options) => {
         const newOptions = _.cloneDeep(options)
         if (newOptions.annotations?.yaxis?.[0]) {
           const isDanger = ecr >= ecrThreshold
@@ -165,7 +171,7 @@ const DriverECRChart: React.FC<Props> = ({
           }
         }
         return newOptions
-      })
+      })*/
       // Update graph
       setSeries((series) => {
         let data: [string, number][] = series[0].data

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import { Socket } from "socket.io-client"
+import useSWR from "swr"
 import {
   ClientToServerEvents,
   ServerToClientEvents,
@@ -7,28 +8,44 @@ import {
 } from "../../interfaces/socket"
 import useSocket from "./useSocket"
 
-interface ActiveCarsResponse {
+interface ActiveDriversResponse {
   active: number
   total: number
 }
+
+/*const useActiveCars = () => {
+  const { data, mutate, error } = useSWR<ActiveDriversResponse>(
+    `/api/cars/activeAndTotal`
+  )
+
+  const loading = !data && !error
+
+  return {
+    ...data,
+    mutate,
+    error,
+    loading,
+  }
+}*/
 
 const useActiveCars = () => {
   const socketRef = useRef<Socket<ServerToClientEvents, ClientToServerEvents>>(
     useSocket()
   )
   const socketIdRef = useRef("")
-  const [active, setActive] = useState(0)
-  const [total, setTotal] = useState(0)
+  const [activeAndTotal, setActiveTotal] = useState<ActiveDriversResponse>({
+    active: 0,
+    total: 0,
+  })
 
   useEffect(() => {
     const { current: socket } = socketRef
     socket.emit(SocketEventType.StartStreamActiveCars, (sId: string) => {
       socketIdRef.current = sId
-      socket.on(sId, (res: ActiveCarsResponse) => {
+      socket.on(sId, (res: ActiveDriversResponse) => {
         // FIXME: remove console
         console.log(SocketEventType.StartStreamActiveCars, res)
-        setActive(res.active)
-        setTotal(res.total)
+        setActiveTotal(res)
       })
     })
 
@@ -37,10 +54,7 @@ const useActiveCars = () => {
     }
   }, [])
 
-  return {
-    active,
-    total,
-  }
+  return activeAndTotal
 }
 
 export default useActiveCars

@@ -1,5 +1,5 @@
 import { ReloadOutlined } from "@ant-design/icons"
-import { Button, Col, Row, Space, Table, Tag, Tooltip, Typography } from "antd"
+import { Button, Col, Row, Space, Table, Tag, Typography } from "antd"
 import { ColumnsType, TablePaginationConfig } from "antd/lib/table"
 import {
   FilterValue,

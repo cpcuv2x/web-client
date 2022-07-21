@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import { Socket } from "socket.io-client"
+import { CarStatus } from "../../interfaces/Car"
 import {
   ClientToServerEvents,
   ServerToClientEvents,
@@ -10,6 +11,7 @@ import useSocket from "./useSocket"
 interface Location {
   lat: number
   lng: number
+  status: CarStatus
 }
 
 interface LocationEvent {
@@ -18,6 +20,7 @@ interface LocationEvent {
   carId: string
   lat: number
   lng: number
+  status: CarStatus
   timestamp: string
 }
 
@@ -35,13 +38,11 @@ const useCarsLocations = (carIds: string[]) => {
       const { current: socket } = socketRef
       socket.emit(SocketEventType.StartStreamMapCars, carIds, (sId: string) => {
         socketIdRef.current = sId
-        socket.on(sId, (location: LocationEvent) => {
+        socket.on(sId, ({ carId, ...other }: LocationEvent) => {
           //FIXME: swap lat and lng
-          const lat = location.lng
-          const lng = location.lat
           setLocations((prev) => ({
             ...prev,
-            [location.carId]: { lat, lng },
+            [carId]: other,
           }))
         })
       })

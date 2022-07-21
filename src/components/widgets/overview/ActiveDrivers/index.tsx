@@ -1,13 +1,18 @@
-import useActiveDrivers from "../../../../hooks/socket/useActiveDrivers"
 import BigNumber from "../../BigNumber"
 
-const ActiveDrivers = () => {
-  const { active, total } = useActiveDrivers()
+interface props {
+  activeTotalDrivers: {
+    active: number
+    total: number
+  }
+}
+
+const ActiveDrivers: React.FC<props> = ({ activeTotalDrivers }) => {
   return (
     <BigNumber
       title="Active Driver(s)"
       helpText="Total number of drivers that are driving."
-      value={`${active} / ${total}`}
+      value={`${activeTotalDrivers.active} / ${activeTotalDrivers.total}`}
     />
   )
 }

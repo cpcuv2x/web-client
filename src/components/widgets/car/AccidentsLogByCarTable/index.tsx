@@ -70,29 +70,29 @@ const AccidentsLogByCarTable: React.FC<Props> = ({ carId }) => {
     },
     {
       title: "Detail",
-      dataIndex : ["lat", 'long'],
+      dataIndex: ["lat", "long"],
       key: "id",
-      render: (_, record) => <AccidentDetailMapComponent data={record}/>,
+      render: (_, record) => <AccidentDetailMapComponent data={record} />,
     },
   ]
   //FIXME : Mock up data
   const mockUpDate = [
-  {
-    id: "A0001",
-    carId: "C0001",
-    driverId: "D0001",
-    lat: 13.739839,
-    long: 100.531367,
-    timestamp: "1655699278"
-  },
-  {
-    id: "A0002",
-    carId: "C0001",
-    driverId: "D0001",
-    lat: 13.739839,
-    long: 100.531367,
-    timestamp: "1655700278"
-  },
+    {
+      id: "A0001",
+      carId: "C0001",
+      driverId: "D0001",
+      lat: 13.739839,
+      long: 100.531367,
+      timestamp: "1655699278",
+    },
+    {
+      id: "A0002",
+      carId: "C0001",
+      driverId: "D0001",
+      lat: 13.739839,
+      long: 100.531367,
+      timestamp: "1655700278",
+    },
   ]
 
   return (
@@ -114,7 +114,7 @@ const AccidentsLogByCarTable: React.FC<Props> = ({ carId }) => {
         helpText="Accidents occurred with this car."
         content={
           <Table
-            dataSource={mockUpDate}
+            dataSource={accidents}
             columns={columns}
             rowKey="id"
             loading={loading}
