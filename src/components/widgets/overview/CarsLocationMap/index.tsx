@@ -1,7 +1,5 @@
 import { GoogleMap, LoadScript } from "@react-google-maps/api"
 import appConfig from "../../../../configuration"
-import useCarsLocations from "../../../../hooks/socket/useCarsLocations"
-import useCars from "../../../../hooks/useCars"
 import { CarOverviewInformation } from "../../../../interfaces/Overview"
 import CarPin from "../CarPin"
 
