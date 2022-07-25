@@ -1,29 +1,24 @@
-import {
-  AreaChartOutlined,
-  CarOutlined,
-  ControlOutlined,
-} from "@ant-design/icons"
-import { Button, Col, Row, Typography } from "antd"
-import React from "react"
+import { AreaChartOutlined, CarOutlined } from "@ant-design/icons"
+import { Card, Col, Row, Typography } from "antd"
+import React, { useState } from "react"
 import { Helmet } from "react-helmet"
-import { useNavigate, useParams } from "react-router-dom"
-import CopyToClipboardButton from "../../../../components/CopyToClipboardButton"
+import { useParams } from "react-router-dom"
 import PageBreadcrumb from "../../../../components/PageBreadcrumb"
-import CameraStreams from "../../../../components/widgets/CameraStreams"
-import AccidentsLogByCarTable from "../../../../components/widgets/car/AccidentsLogByCarTable"
-import CarImage from "../../../../components/widgets/car/CarImage"
-import CarInformation from "../../../../components/widgets/car/CarInformation"
-import PassengersChart from "../../../../components/widgets/car/PassengersChart"
+import DashboardCarComponent from "../../../../components/StatusDashboard/CarDashBoard"
+import StatusTableComponent from "../../../../components/StatusDashboard/StatusTableComponent"
 import useCar from "../../../../hooks/useCar"
+import useCarsStatus from "../../../../hooks/useCarsStatus"
 import { routes } from "../../../../routes/constant"
 
 const DashboardCarPage: React.FC = () => {
-  const { carId } = useParams()
-  const navigate = useNavigate()
+  const { vehicleId } = useParams()
+  const { cars } = useCarsStatus()
 
-  if (!carId) return <div>Loading...</div>
+  const [statusFullSize, setStatusFullSize] = useState<boolean>(true)
 
-  const { car, loading, error } = useCar(carId)
+  if (!vehicleId) return <div>Loading...</div>
+
+  const { car, loading, error } = useCar(vehicleId)
 
   if (loading) return <div>Loading...</div>
 
@@ -32,7 +27,7 @@ const DashboardCarPage: React.FC = () => {
   return (
     <>
       <Helmet>
-        <title>Car: {car.licensePlate} - Dashboard | 5G-V2X</title>
+        <title>Vehicles - Dashboard | 5G-V2X1234</title>
       </Helmet>
 
       <PageBreadcrumb
@@ -43,52 +38,33 @@ const DashboardCarPage: React.FC = () => {
             href: routes.DASHBOARD_OVERVIEW,
           },
           {
-            label: "Car",
+            label: "Vehicle",
             icon: <CarOutlined />,
             href: routes.DASHBOARD_CAR,
           },
           {
-            label: (
-              <>
-                {carId} <CopyToClipboardButton text={carId} />
-              </>
-            ),
+            label: vehicleId,
           },
         ]}
       />
 
-      <Typography.Title>
-        <Row justify="space-between">
-          <Col>Car: {car.licensePlate}</Col>
-          <Col>
-            <Button
-              type="primary"
-              icon={<ControlOutlined />}
-              onClick={() => {
-                navigate(`${routes.ENTITY_CAR}?id=${carId}`)
-              }}
-            >
-              Manage car
-            </Button>
-          </Col>
-        </Row>
-      </Typography.Title>
-
-      <Row gutter={[16, 16]}>
-        <Col span={6}>
-          <CarImage carId={carId} />
+      <Typography.Title>Vehicle Dashboard</Typography.Title>
+      <Row>
+        <Col span={statusFullSize ? 5 : 0}>
+          <StatusTableComponent
+            data={cars}
+            statusFullSize={statusFullSize}
+            route={routes.DASHBOARD_CAR}
+          />
         </Col>
-        <Col span={18}>
-          <PassengersChart carId={carId} />
-        </Col>
-        <Col span={24}>
-          <CarInformation carId={carId} />
-        </Col>
-        <Col span={24}>
-          <CameraStreams carId={carId} />
-        </Col>
-        <Col span={24}>
-          <AccidentsLogByCarTable carId={carId} />
+        <Col span={statusFullSize ? 19 : 24}>
+          <Card size="small">
+            <DashboardCarComponent
+              carId={vehicleId}
+              setStatusFullsize={setStatusFullSize}
+              statusFullSize={statusFullSize}
+            />
+          </Card>
         </Col>
       </Row>
     </>

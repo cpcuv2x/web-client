@@ -101,7 +101,7 @@ const EditCameraForm: React.FC<Props> = ({ initialValues, mutate }: Props) => {
             }))}
           />
         </Form.Item>
-        <Form.Item name="carId" label="Attached to car">
+        <Form.Item name="carId" label="Attached to vehicle">
           <Select
             options={[
               { label: "Not Selected", value: null },

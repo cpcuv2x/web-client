@@ -4,6 +4,7 @@ import _ from "lodash"
 import React, { useEffect, useState } from "react"
 import Chart from "react-apexcharts"
 import useCarPassengers from "../../../../hooks/socket/useCarPassengers"
+import axiosClient from "../../../../utils/axiosClient"
 import WidgetCard from "../../WidgetCard"
 
 interface Props {
@@ -16,18 +17,56 @@ interface ChartData {
   data: [string, number][]
 }
 
+const chartName = "No. of passenger(s)"
+
+const emptySeries = [
+  {
+    name: chartName,
+    data: [],
+  },
+]
+
 const PassengersChart: React.FC<Props> = ({ carId, maxPoints = 10 }) => {
-  const chartName = "No. of passenger(s)"
   const passengersData = useCarPassengers(carId)
 
   const [currentPassengers, setCurrentPassengers] = useState(0)
 
-  const [series, setSeries] = useState<ChartData[]>([
-    {
-      name: chartName,
-      data: [],
-    },
-  ])
+  const [series, setSeries] = useState<ChartData[]>(emptySeries)
+
+  useEffect(() => {
+    if (carId) {
+      const date = new Date()
+
+      const startDate = new Date(date)
+      startDate.setMinutes(startDate.getMinutes() - 11)
+
+      const endDate = new Date(date)
+      endDate.setMinutes(endDate.getMinutes() - 1)
+      endDate.setSeconds(59)
+      endDate.setMilliseconds(999)
+
+      const url = `/api/cars/${carId}/passengers?startTime=${startDate.toISOString()}&endTime=${endDate.toISOString()}&maxPoints=${maxPoints.toString()}`
+
+      axiosClient.get(url).then((res) => {
+        const data = res.data
+
+        if (data.length > 0) setCurrentPassengers(data.at(-1)[1])
+        setSeries([
+          {
+            name: chartName,
+            data: [
+              ...(data.length >= maxPoints
+                ? data.slice(data.length - maxPoints)
+                : data),
+            ],
+          },
+        ])
+      })
+
+      setSeries(emptySeries)
+    }
+  }, [carId])
+
   const [options, setOptions] = useState<ApexOptions>({
     xaxis: {
       type: "datetime",
@@ -75,28 +114,33 @@ const PassengersChart: React.FC<Props> = ({ carId, maxPoints = 10 }) => {
 
   useEffect(() => {
     if (
-      passengersData &&
-      passengersData.passengers &&
-      passengersData.timestamp
+      passengersData != null &&
+      passengersData.passengers != null &&
+      passengersData.timestamp != null
     ) {
       const { passengers, timestamp } = passengersData
       // Update current passengers value
       setCurrentPassengers(passengers)
       // Update graph
       setSeries((series) => {
-        const data = series[0].data
+        let data: [string, number][] = series[0].data
+
+        data = [
+          ...(data.length >= maxPoints
+            ? data.slice(data.length - maxPoints + 1)
+            : data),
+          [timestamp, passengers],
+        ]
+
         return [
           {
             name: chartName,
-            data: [
-              ...(data.length >= maxPoints ? data.slice(1) : data),
-              [timestamp, passengers],
-            ],
+            data: data,
           },
         ]
       })
     }
-  }, [passengersData?.timestamp])
+  }, [passengersData])
 
   return (
     <WidgetCard

@@ -1,30 +1,26 @@
-import {
-  AreaChartOutlined,
-  DownOutlined,
-  UserOutlined,
-} from "@ant-design/icons"
-import { Button, Dropdown, Menu, Typography } from "antd"
-import React from "react"
+import { AreaChartOutlined, UserOutlined } from "@ant-design/icons"
+import { Card, Col, Empty, Row, Typography } from "antd"
+import React, { useEffect, useState } from "react"
 import { Helmet } from "react-helmet"
-import { Link } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import PageBreadcrumb from "../../../../components/PageBreadcrumb"
-import useDrivers from "../../../../hooks/useDrivers"
+import StatusTableComponent from "../../../../components/StatusDashboard/StatusTableComponent"
+import useDriversStatus from "../../../../hooks/useDriversStatus"
 import { routes } from "../../../../routes/constant"
 
 const DashboardDriverOverviewPage: React.FC = () => {
-  const { drivers } = useDrivers()
+  const { drivers } = useDriversStatus()
+  const [statusFullSize] = useState<boolean>(true)
+  const navigate = useNavigate()
 
-  const menu = (
-    <Menu>
-      {drivers.map(({ id, firstNameTH }) => (
-        <Menu.Item key={id}>
-          <Link to={id}>
-            {firstNameTH} ({id})
-          </Link>
-        </Menu.Item>
-      ))}
-    </Menu>
-  )
+  useEffect(() => {
+    if (drivers)
+      navigate(
+        `${routes.DASHBOARD_DRIVER}/` +
+          (drivers.length > 0 ? drivers[0].id : "")
+      )
+  }, [drivers])
+
   return (
     <>
       <Helmet>
@@ -48,11 +44,20 @@ const DashboardDriverOverviewPage: React.FC = () => {
 
       <Typography.Title>Drivers Dashboard</Typography.Title>
 
-      <Dropdown overlay={menu} trigger={["click"]}>
-        <Button>
-          Select a driver <DownOutlined />
-        </Button>
-      </Dropdown>
+      <Row>
+        <Col span={statusFullSize ? 5 : 0}>
+          <StatusTableComponent
+            data={drivers}
+            statusFullSize={statusFullSize}
+            route={routes.DASHBOARD_DRIVER}
+          />
+        </Col>
+        <Col span={statusFullSize ? 19 : 24}>
+          <Card>
+            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+          </Card>
+        </Col>
+      </Row>
     </>
   )
 }

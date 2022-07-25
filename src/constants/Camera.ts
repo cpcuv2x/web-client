@@ -7,7 +7,7 @@ export const fieldLabel = {
   // streamUrl: "Stream URL",
   role: "Position",
   status: "Status",
-  carId: "Attached to car",
+  carId: "Attached to vehicle",
   Car: "Car",
 }
 

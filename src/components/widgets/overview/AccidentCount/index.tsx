@@ -1,13 +1,15 @@
-import useAccidentCount from "../../../../hooks/socket/useAccidentCount"
 import BigNumber from "../../BigNumber"
 
-const AccidentCount = () => {
-  const total = useAccidentCount()
+interface props {
+  accidentCount: number
+}
+
+const AccidentCount: React.FC<props> = ({ accidentCount }) => {
   return (
     <BigNumber
       title="Accident Count"
       helpText="Total number of accident occurred."
-      value={total}
+      value={accidentCount}
     />
   )
 }

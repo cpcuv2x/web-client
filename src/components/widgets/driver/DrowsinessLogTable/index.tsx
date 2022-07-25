@@ -6,6 +6,7 @@ import React, { useState } from "react"
 import useDrowsinessLog from "../../../../hooks/useDrowsinessLog"
 import { DrowsinessLog } from "../../../../interfaces/Driver"
 import IDColumn from "../../../IDColumn"
+import DrowsinessDetailMapComponent from "../../DrowsinessDetailMapComponent"
 import WidgetCard from "../../WidgetCard"
 
 interface Props {
@@ -40,6 +41,28 @@ const DrowsinessLogTable: React.FC<Props> = ({ driverId }) => {
     setDateRange(dates)
   }
 
+  //FIXME: Mock up data
+  const mockUpDate = [
+    {
+      id: "D0001",
+      carId: "C0001",
+      driverId: "D0001",
+      lat: 13.739839,
+      long: 100.531367,
+      timestamp: "1655699278",
+      responseTime: 1,
+    },
+    {
+      id: "D0002",
+      carId: "C0001",
+      driverId: "D0001",
+      lat: 13.739839,
+      long: 100.531367,
+      timestamp: "1655700278",
+      responseTime: 1.5,
+    },
+  ]
+
   const columns: ColumnsType<DrowsinessLog> = [
     {
       title: "ID",
@@ -50,7 +73,7 @@ const DrowsinessLogTable: React.FC<Props> = ({ driverId }) => {
       render: (id) => <IDColumn id={id} />,
     },
     {
-      title: "Car",
+      title: "Vehicle",
       dataIndex: "carId",
       key: "carId",
       // sorter: true,
@@ -66,22 +89,15 @@ const DrowsinessLogTable: React.FC<Props> = ({ driverId }) => {
         moment(timestamp).format("DD/MM/YYYY HH:mm:ss"),
     },
     {
-      title: "Latitude",
-      dataIndex: "lat",
-      key: "lat",
-      // sorter: true,
-    },
-    {
-      title: "Longitude",
-      dataIndex: "long",
-      key: "long",
-      // sorter: true,
-    },
-    {
       title: "Response Time (s)",
       dataIndex: "responseTime",
       key: "responseTime",
       // sorter: true,
+    },
+    {
+      title: "Detail",
+      key: "id",
+      render: (_, record) => <DrowsinessDetailMapComponent data={record} />,
     },
   ]
 

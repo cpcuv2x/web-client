@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import { Socket } from "socket.io-client"
+import { Overview } from "../../interfaces/Overview"
 import {
   ClientToServerEvents,
   ServerToClientEvents,
@@ -7,40 +8,42 @@ import {
 } from "../../interfaces/socket"
 import useSocket from "./useSocket"
 
-interface ActiveCarsResponse {
-  active: number
-  total: number
+const emptyOverview: Overview = {
+  activeTotalCars: {
+    active: 0,
+    total: 0,
+  },
+  activeTotalDrivers: {
+    active: 0,
+    total: 0,
+  },
+  cars: [],
+  accidentCount: 0,
+  totalPassengers: 0,
 }
 
-const useActiveCars = () => {
+const useRealTimeOverview = () => {
   const socketRef = useRef<Socket<ServerToClientEvents, ClientToServerEvents>>(
     useSocket()
   )
   const socketIdRef = useRef("")
-  const [active, setActive] = useState(0)
-  const [total, setTotal] = useState(0)
+  const [overview, setOverview] = useState<Overview>(emptyOverview)
 
   useEffect(() => {
     const { current: socket } = socketRef
-    socket.emit(SocketEventType.StartStreamActiveCars, (sId: string) => {
+    socket.emit(SocketEventType.StartStreamOverview, (sId: string) => {
       socketIdRef.current = sId
-      socket.on(sId, (res: ActiveCarsResponse) => {
-        // FIXME: remove console
-        console.log(SocketEventType.StartStreamActiveCars, res)
-        setActive(res.active)
-        setTotal(res.total)
+      socket.on(sId, (res: Overview) => {
+        setOverview(res)
       })
     })
 
     return () => {
       socketRef.current?.emit(SocketEventType.StopStream, socketIdRef.current)
     }
-  }, [])
+  }, [overview])
 
-  return {
-    active,
-    total,
-  }
+  return overview
 }
 
-export default useActiveCars
+export default useRealTimeOverview

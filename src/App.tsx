@@ -8,6 +8,7 @@ import DashboardCarPage from "./pages/dashboard/Car/Dashboard"
 import DashboardCarOverviewPage from "./pages/dashboard/Car/Overview"
 import DashboardDriverPage from "./pages/dashboard/Driver/Dashboard"
 import DashboardDriverOverviewPage from "./pages/dashboard/Driver/Overview"
+import DashboardHeartbeatOverviewPage from "./pages/dashboard/Heartbeat/Overview"
 import DashboardOverviewPage from "./pages/dashboard/Overview"
 import EntityCameraEditPage from "./pages/entity/Camera/Edit"
 import EntityCameraNewPage from "./pages/entity/Camera/New"
@@ -30,7 +31,12 @@ function App() {
   return (
     <SocketContext.Provider value={socket}>
       <ConfigProvider form={{ validateMessages }}>
-        <SWRConfig value={{ fetcher: axiosFetcher, revalidateOnMount: true }}>
+        <SWRConfig
+          value={{
+            fetcher: axiosFetcher,
+            revalidateOnMount: true,
+          }}
+        >
           <BrowserRouter>
             <Routes>
               <Route index element={<LoginPage />} />
@@ -45,20 +51,26 @@ function App() {
               >
                 <Route path="dashboard">
                   <Route path="overview" element={<DashboardOverviewPage />} />
-                  <Route path="car">
+                  <Route path="vehicle">
                     <Route index element={<DashboardCarOverviewPage />} />
-                    <Route path=":carId" element={<DashboardCarPage />} />
+                    <Route path=":vehicleId" element={<DashboardCarPage />} />
                   </Route>
                   <Route path="driver">
                     <Route index element={<DashboardDriverOverviewPage />} />
                     <Route path=":driverId" element={<DashboardDriverPage />} />
                   </Route>
+                  <Route path="heartbeat">
+                    <Route index element={<DashboardHeartbeatOverviewPage />} />
+                  </Route>
                 </Route>
                 <Route path="entity">
-                  <Route path="car">
+                  <Route path="vehicle">
                     <Route index element={<EntityCarOverviewPage />} />
                     <Route path="new" element={<EntityCarNewPage />} />
-                    <Route path="edit/:carId" element={<EntityCarEditPage />} />
+                    <Route
+                      path="edit/:vehicleId"
+                      element={<EntityCarEditPage />}
+                    />
                   </Route>
                   <Route path="driver">
                     <Route index element={<EntityDriverOverviewPage />} />

@@ -16,6 +16,7 @@ export interface Driver {
   imageFilename: string
   User: User
   Car: Car | null
+  ecrThreshold : number
 }
 
 export enum DriverGender {
