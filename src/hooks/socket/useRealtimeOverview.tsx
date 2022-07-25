@@ -34,8 +34,6 @@ const useRealTimeOverview = () => {
     socket.emit(SocketEventType.StartStreamOverview, (sId: string) => {
       socketIdRef.current = sId
       socket.on(sId, (res: Overview) => {
-        // FIXME: remove console
-        console.log(SocketEventType.StartStreamOverview, res)
         setOverview(res)
       })
     })
@@ -43,7 +41,7 @@ const useRealTimeOverview = () => {
     return () => {
       socketRef.current?.emit(SocketEventType.StopStream, socketIdRef.current)
     }
-  }, [])
+  }, [overview])
 
   return overview
 }

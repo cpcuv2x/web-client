@@ -50,7 +50,7 @@ const DashboardDriverComponent: React.FC<{
             type="primary"
             icon={<ControlOutlined />}
             onClick={() => {
-              navigate(`${routes.ENTITY_CAR}?id=${driverId}`)
+              navigate(`${routes.ENTITY_DRIVER}?id=${driverId}`)
             }}
           >
             Manage driver
