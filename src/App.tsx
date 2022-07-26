@@ -20,6 +20,7 @@ import EntityDriverEditPage from "./pages/entity/Driver/Edit"
 import EntityDriverNewPage from "./pages/entity/Driver/New"
 import EntityDriverOverviewPage from "./pages/entity/Driver/Overview"
 import LoginPage from "./pages/Login"
+import MapPage from "./pages/Map"
 import NotFoundPage from "./pages/NotFound"
 import axiosFetcher from "./utils/axiosFetcher"
 
@@ -41,6 +42,14 @@ function App() {
             <Routes>
               <Route index element={<LoginPage />} />
               <Route path="*" element={<NotFoundPage />} />
+              <Route
+                path="map"
+                element={
+                  <RequireAuth>
+                    <MapPage />
+                  </RequireAuth>
+                }
+              />
               <Route
                 path="/"
                 element={

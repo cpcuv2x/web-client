@@ -18,16 +18,32 @@ interface props {
   showVehicleID: boolean
   hideVehicleID: boolean
   cars: CarOverviewInformation[]
+  currentID?: string
+  showActionInModal?: boolean
+  showPassengersInCarPin?: boolean
 }
 
 const CarsLocationMap: React.FC<props> = ({
   showVehicleID,
   hideVehicleID,
   cars,
+  currentID,
+  showActionInModal = true,
+  showPassengersInCarPin = false,
 }) => {
   return (
     <LoadScript googleMapsApiKey={appConfig.googleMapAPIKey}>
-      <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={16}>
+      <GoogleMap
+        mapContainerStyle={containerStyle}
+        center={center}
+        zoom={16}
+        options={{
+          zoomControl: false,
+          streetViewControl: false,
+          mapTypeControl: false,
+          fullscreenControl: false,
+        }}
+      >
         {cars.map(
           (information) =>
             information.lat != null &&
@@ -37,6 +53,9 @@ const CarsLocationMap: React.FC<props> = ({
                 information={information}
                 showVehicleID={showVehicleID}
                 hideVehicleID={hideVehicleID}
+                currentID={currentID}
+                showActionInModal={showActionInModal}
+                showPassengersInCarPin={showPassengersInCarPin}
               />
             )
         )}
