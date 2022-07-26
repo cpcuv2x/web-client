@@ -1,6 +1,6 @@
 import { ControlOutlined, PieChartOutlined } from "@ant-design/icons"
 import { Marker, OverlayView } from "@react-google-maps/api"
-import { Button, Col, Modal, Row, Space, Tooltip, Typography } from "antd"
+import { Button, Col, Modal, Row, Space, Typography } from "antd"
 import React, { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import activeBusPin from "../../../../assets/bus_pin_active.svg"
@@ -140,24 +140,13 @@ const CarPin: React.FC<Props> = ({
               style={{
                 backgroundColor: color,
                 color: "white",
-                padding: "3px",
+                paddingInline: "3px",
                 transform: "translate(-50%, -275%)",
               }}
             >
               {id}
+              {showPassengersInCarPin ? ", " + passengers : ""}
             </div>
-            {showPassengersInCarPin && (
-              <div
-                style={{
-                  backgroundColor: "white",
-                  color: color,
-                  padding: "3px",
-                  transform: "translate(-50%, -275%)",
-                }}
-              >
-                {passengers}
-              </div>
-            )}
           </OverlayView>
         </div>
       )}
