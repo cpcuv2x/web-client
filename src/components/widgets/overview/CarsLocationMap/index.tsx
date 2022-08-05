@@ -42,6 +42,9 @@ const CarsLocationMap: React.FC<props> = ({
           streetViewControl: false,
           mapTypeControl: false,
           fullscreenControl: false,
+          maxZoom: 16,
+          minZoom: 16,
+          gestureHandling: "none",
         }}
       >
         {cars.map(
