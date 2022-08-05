@@ -15,8 +15,8 @@ const useNotifications = () => {
 
   const loading = !data && !error
 
-  const allUnread = data ? data.filter((item) => !item.read) : []
-  const allRead = data ? data.filter((item) => item.read) : []
+  const allUnread = Array.isArray(data) ? data.filter((item) => !item.read) : []
+  const allRead = Array.isArray(data) ? data.filter((item) => item.read) : []
 
   return {
     notifications: data ?? [],
