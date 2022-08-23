@@ -45,9 +45,9 @@ function App() {
               <Route
                 path="map"
                 element={
-                  <RequireAuth>
-                    <MapPage />
-                  </RequireAuth>
+                  // <RequireAuth>
+                  <MapPage />
+                  // </RequireAuth>
                 }
               />
               <Route

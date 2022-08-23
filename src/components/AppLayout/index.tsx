@@ -56,7 +56,7 @@ const AppLayout = () => {
                 <Link to={routes.DASHBOARD_DRIVER}>Driver</Link>
               </Menu.Item>
               <Menu.Item key="dashboard-heartbeat" icon={<HeartOutlined />}>
-                <Link to={routes.DASHBOARD_HEARTBEAT}>Heatbeat</Link>
+                <Link to={routes.DASHBOARD_HEARTBEAT}>Heartbeat</Link>
               </Menu.Item>
             </SubMenu>
             <SubMenu

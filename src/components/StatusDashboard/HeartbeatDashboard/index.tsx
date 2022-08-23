@@ -178,12 +178,12 @@ const HeartbeatTableComponent: React.FC<{
           <StatusCircle status={Status.INACTIVE} />
           <Typography.Text strong> - {Status.INACTIVE} </Typography.Text>|
           <StatusCircle status={undefined} />
-          <Typography.Text strong> - INVALID</Typography.Text>
+          <Typography.Text strong> - NOT AVAILABLE</Typography.Text>
         </Space>
         <div style={{ float: "right" }}>
           <Tooltip
             title={
-              "The table shows the heatbeat status of cars and their devices which are sent in every 60 seconds.\n If the last heartbeat message of a car was send longer than 80 seconds ago, the car will be treated as an INACTIVE car."
+              "The table shows the heartbeat status of cars and their devices which are sent in every 60 seconds.\n If the last heartbeat message of a car was send longer than 80 seconds ago, the car will be treated as an INACTIVE car."
             }
             placement="topRight"
             overlayStyle={{ whiteSpace: "pre-line" }}
@@ -217,7 +217,7 @@ const HeartbeatTableComponent: React.FC<{
       />
       {getStatusColumn("Vehicle status", "status")}
       <ColumnGroup title="Device status" align="center">
-        {getCameraStatusColumn("Font Camera", 2)}
+        {getCameraStatusColumn("Front Camera", 2)}
         {getCameraStatusColumn("Back Camera", 3)}
         {getCameraStatusColumn("Door Camera", 1)}
         {getCameraStatusColumn("Driver Camera", 0)}

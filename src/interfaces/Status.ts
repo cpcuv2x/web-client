@@ -1,18 +1,18 @@
 export interface StatusTableElement {
     id: string,
-    status: string 
+    status: string
 }
 
 export enum Status {
     ACTIVE = "ACTIVE",
     INACTIVE = "INACTIVE",
-    INVALID = "INVALID"
+    INVALID = "NOT AVAILABLE"
 }
- 
+
 export interface HeartbeatTableElement {
-    id? : string,
-    carStatus? : Status,
-    carTimestamp? : string,
+    id?: string,
+    carStatus?: Status,
+    carTimestamp?: string,
 
     cameraDriver?: Status,
     cameraDoor?: Status,
