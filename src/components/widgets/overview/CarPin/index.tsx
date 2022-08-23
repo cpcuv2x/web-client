@@ -47,7 +47,7 @@ const CarPin: React.FC<Props> = ({
   zIndex = isCurrent ? 2 : zIndex
 
   let color = isActive ? "#ed1170" : "black"
-  color = isCurrent ? "#5677fc" : color
+  color = isCurrent ? "#fc320e" : color
 
   useEffect(() => {
     if (showVehicleID) setOverlayVisible(true)
@@ -141,9 +141,14 @@ const CarPin: React.FC<Props> = ({
                 backgroundColor: color,
                 color: "white",
                 paddingInline: "3px",
-                transform: "translate(-50%, -275%)",
+                transform: isCurrent
+                  ? "translate(-50%, -200%)"
+                  : "translate(-50%, -275%)",
+                wordWrap: "break-word",
+                textAlign: "center",
               }}
             >
+              {isCurrent && <div>YOU'RE HERE</div>}
               {id}
               {showPassengersInCarPin ? ", " + passengers : ""}
             </div>
