@@ -150,7 +150,7 @@ const CarPin: React.FC<Props> = ({
             >
               {isCurrent && <div>YOU'RE HERE</div>}
               {id}
-              {showPassengersInCarPin ? ", " + passengers : ""}
+              {showPassengersInCarPin ? " (" + passengers + ")" : ""}
             </div>
           </OverlayView>
         </div>
