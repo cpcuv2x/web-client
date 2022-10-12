@@ -50,11 +50,15 @@ const CameraStreams: React.FC<Props> = ({ carId }) => {
               }
               const url = `/api/live/${cameraId}.m3u8`
               stream.url = url
-              try {
-                await axiosClient.get(url)
-                stream.isAvailable = true
-              } catch (error) {
-                stream.isAvailable = false
+              if(!stream.isAvailable) {
+                try {
+                  setInterval(() =>{
+                    axiosClient.get(url)
+                  }, 3000)
+                  stream.isAvailable = true
+                } catch (error) {
+                  stream.isAvailable = false
+                }
               }
               return stream
             })
