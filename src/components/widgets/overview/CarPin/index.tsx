@@ -33,8 +33,8 @@ const CarPin: React.FC<Props> = ({
 
   const { id, status, lat, lng, passengers, licensePlate } = information
   const position = {
-    lng: lat != null ? lat : 0,
-    lat: lng != null ? lng : 0,
+    lng: lng != null ? lng : 0,
+    lat: lat != null ? lat : 0,
   }
 
   const isActive = status === CarStatus.ACTIVE
