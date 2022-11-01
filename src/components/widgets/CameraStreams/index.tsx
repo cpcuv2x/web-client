@@ -6,6 +6,8 @@ import useCar from "../../../hooks/useCar"
 import { CameraRole } from "../../../interfaces/Camera"
 import axiosClient from "../../../utils/axiosClient"
 import WidgetCard from "../WidgetCard"
+// import retry from "retry"
+// import rax from "retry-axios"
 
 interface Props {
   carId: string
@@ -21,7 +23,7 @@ interface Stream {
 const CameraStreams: React.FC<Props> = ({ carId }) => {
   const { car } = useCar(carId)
   const [streams, setStreams] = useState<Stream[]>([])
-
+  const [cameraKeys, setCameraKeys] = useState(0)
   useEffect(() => {
     const init = async () => {
       if (car) {
@@ -50,16 +52,14 @@ const CameraStreams: React.FC<Props> = ({ carId }) => {
               }
               const url = `/api/live/${cameraId}.m3u8`
               stream.url = url
-              if(!stream.isAvailable) {
-                try {
-                  setInterval(() =>{
-                    axiosClient.get(url)
-                  }, 3000)
-                  stream.isAvailable = true
-                } catch (error) {
-                  stream.isAvailable = false
-                }
+
+              try {
+                await axiosClient.get(url)
+                stream.isAvailable = true
+              } catch (error) {
+                stream.isAvailable = false
               }
+
               return stream
             })
           )
@@ -70,17 +70,78 @@ const CameraStreams: React.FC<Props> = ({ carId }) => {
     init()
   }, [carId])
 
+  useEffect(() => {
+    //set stream.isAvailable to true if stream is available
+    // const operation = retry.operation()
+    const checkHLSActive = async (url) => {
+      let res = await axiosClient
+        .head(url)
+        .then((response) => {
+          console.log("works: ", url, /2\d\d/.test("" + response.status))
+          setCameraKeys(1)
+        })
+        .catch((err) => {
+          console.log("err", url, err)
+          setCameraKeys(0)
+        })
+    }
+    const checkCameraConnection = async () => {
+      if (car) {
+        const cameraRoleIdMap = new Map<CameraRole, string>()
+        car?.Camera.forEach((camera) => {
+          cameraRoleIdMap.set(camera.role, camera.id)
+        })
+        console.log(streams)
+
+        //set isAvailable in each stream to true
+        streams.map((stream: Stream) => {
+          setInterval(() => {
+            if (stream.isAvailable) {
+              checkHLSActive(stream.url).catch((err) => {
+                console.log("err", err)
+                stream.isAvailable = false
+              })
+            } else {
+              try {
+                axiosClient.get(stream.url)
+                console.log(`${stream.url} is connected`)
+                stream.isAvailable = true
+              } catch (err) {
+                console.log(`${stream.url} is not available`, err)
+                stream.isAvailable = false
+              }
+            }
+          }, 20000)
+        })
+      }
+    }
+
+    checkCameraConnection()
+  }, [streams])
+
   return (
     <WidgetCard
       title={"Camera Stream(s)"}
       helpText={"Video stream from each camera inside the car."}
       content={
         <Row gutter={[16, 24]}>
+          <ReactPlayer
+            url={"/api/live/C0002.m3u8"}
+            muted
+            width={"100%"}
+            playing={true}
+          />
           {streams.map(({ id, label, url, isAvailable }: Stream) =>
             isAvailable ? (
               <Col key={id} span={12}>
                 <Typography.Title level={5}>{label}</Typography.Title>
-                <ReactPlayer url={url} muted width={"100%"} playing={true} />
+                <ReactPlayer
+                  key={cameraKeys}
+                  url={url}
+                  muted
+                  width={"100%"}
+                  playing={true}
+                />
               </Col>
             ) : (
               <Col key={id} span={12}>
