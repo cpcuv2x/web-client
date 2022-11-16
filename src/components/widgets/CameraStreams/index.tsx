@@ -125,12 +125,6 @@ const CameraStreams: React.FC<Props> = ({ carId }) => {
       helpText={"Video stream from each camera inside the car."}
       content={
         <Row gutter={[16, 24]}>
-          <ReactPlayer
-            url={"/api/live/C0002.m3u8"}
-            muted
-            width={"100%"}
-            playing={true}
-          />
           {streams.map(({ id, label, url, isAvailable }: Stream) =>
             isAvailable ? (
               <Col key={id} span={12}>
