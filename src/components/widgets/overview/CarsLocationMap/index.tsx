@@ -4,6 +4,11 @@ import { CarOverviewInformation } from "../../../../interfaces/Overview"
 import CarPin from "../CarPin"
 import { Button } from "antd"
 import { useEffect, useState } from "react"
+import useAccidentsLogByCar from "../../../../hooks/useAccidentsLogByCar"
+import moment, { Moment } from "moment"
+import AccidentPin from "../AccidentPin"
+import useAccidentsLogByAllCar from "../../../../hooks/useAccidentsLogByAllCar"
+import { AccidentLogByCar } from "../../../../interfaces/Car"
 
 // Chulalongkorn university location
 const center = {
@@ -43,6 +48,40 @@ const CarsLocationMap: React.FC<props> = ({
     lng: 100.529732,
   })
   const [zoom, setZoom] = useState(16)
+
+  type EventValue<DateType> = DateType | null
+  type RangeValue<DateType> =
+    | [EventValue<DateType>, EventValue<DateType>]
+    | null
+  const [dateRange, setDateRange] = useState<RangeValue<Moment>>([
+    moment().subtract(1, "hours"),
+    moment(),
+  ])
+
+  const carIds = cars.map((car) => car.id)
+  const [allAccidents, setAllAccidents] = useState<AccidentLogByCar[]>()
+  const startTime =
+    dateRange?.length && dateRange[0] ? dateRange[0].toISOString() : ""
+  const endTime =
+    dateRange?.length && dateRange[1] ? dateRange[1].toISOString() : ""
+  // const { accidents, loading, mutate } = useAccidentsLogByCar(
+  //   carIds[0],
+  //   startTime,
+  //   endTime
+  // )
+
+  const { data: accidents, loading } = useAccidentsLogByAllCar(
+    startTime,
+    endTime
+  )
+
+  useEffect(() => {
+    if (accidents) {
+      setAllAccidents(accidents)
+      console.log(allAccidents)
+    }
+  }, [accidents])
+  //use useAccidentsLohByCar hook to get accidents for all carIds
 
   //FIXME : Mock up data
   const mockUpAccident = [
@@ -124,35 +163,35 @@ const CarsLocationMap: React.FC<props> = ({
           position: "relative",
         }}
       >
-      <GoogleMap
-        mapContainerStyle={containerStyle}
-        center={center}
+        <GoogleMap
+          mapContainerStyle={containerStyle}
+          center={center}
           zoom={location === "chula" ? 17 : 18}
-        options={{
-          zoomControl: false,
-          streetViewControl: false,
-          mapTypeControl: false,
-          fullscreenControl: false,
+          options={{
+            zoomControl: false,
+            streetViewControl: false,
+            mapTypeControl: false,
+            fullscreenControl: false,
             maxZoom: 20,
-          minZoom: 16,
-          gestureHandling: "none",
-        }}
-      >
-        {cars.map(
-          (information) =>
-            information.lat != null &&
-            information.lng != null && (
-              <CarPin
-                key={information.id}
-                information={information}
-                showVehicleID={showVehicleID}
-                hideVehicleID={hideVehicleID}
-                currentID={currentID}
-                showActionInModal={showActionInModal}
-                showPassengersInCarPin={showPassengersInCarPin}
-              />
-            )
-        )}
+            minZoom: 16,
+            gestureHandling: "none",
+          }}
+        >
+          {cars.map(
+            (information) =>
+              information.lat != null &&
+              information.lng != null && (
+                <CarPin
+                  key={information.id}
+                  information={information}
+                  showVehicleID={showVehicleID}
+                  hideVehicleID={hideVehicleID}
+                  currentID={currentID}
+                  showActionInModal={showActionInModal}
+                  showPassengersInCarPin={showPassengersInCarPin}
+                />
+              )
+          )}
           {mockUpAccident.map(
             (accident) =>
               accident.lat != null &&
@@ -161,8 +200,16 @@ const CarsLocationMap: React.FC<props> = ({
               )
           )}
 
-      </GoogleMap>
-    </LoadScript>
+          {allAccidents?.map(
+            (accident) =>
+              accident.lat != null &&
+              accident.long != null && (
+                <AccidentPin key={accident.id} information={accident} />
+              )
+          )}
+        </GoogleMap>
+      </LoadScript>
+    </>
   )
 }
 
