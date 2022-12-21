@@ -2,7 +2,7 @@ import { AreaChartOutlined, CarOutlined } from "@ant-design/icons"
 import { Card, Col, Row, Typography } from "antd"
 import React, { useState } from "react"
 import { Helmet } from "react-helmet"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import PageBreadcrumb from "../../../../components/PageBreadcrumb"
 import DashboardCarComponent from "../../../../components/StatusDashboard/CarDashBoard"
 import StatusTableComponent from "../../../../components/StatusDashboard/StatusTableComponent"
@@ -15,6 +15,8 @@ const DashboardCarPage: React.FC = () => {
   const { cars } = useCarsStatus()
 
   const [statusFullSize, setStatusFullSize] = useState<boolean>(true)
+
+  const navigate = useNavigate()
 
   if (!vehicleId) return <div>Loading...</div>
 
@@ -49,6 +51,14 @@ const DashboardCarPage: React.FC = () => {
       />
 
       <Typography.Title>Vehicle Dashboard</Typography.Title>
+      <Typography.Link
+        onClick={() => {
+          navigate(`${routes.DASHBOARD_CAR_ALL}`)
+        }}
+        ellipsis
+      >
+        View all...
+      </Typography.Link>
       <Row>
         <Col span={statusFullSize ? 5 : 0}>
           <StatusTableComponent
