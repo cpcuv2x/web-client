@@ -11,6 +11,7 @@ import WidgetCard from "../WidgetCard"
 
 interface Props {
   carId: string
+  fullSize?: boolean
 }
 
 interface Stream {
@@ -20,7 +21,7 @@ interface Stream {
   isAvailable: boolean
 }
 
-const CameraStreams: React.FC<Props> = ({ carId }) => {
+const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
   const { car } = useCar(carId)
   const [streams, setStreams] = useState<Stream[]>([])
   const [cameraKeys, setCameraKeys] = useState(0)
@@ -121,13 +122,13 @@ const CameraStreams: React.FC<Props> = ({ carId }) => {
 
   return (
     <WidgetCard
-      title={"Camera Stream(s)"}
+      title={carId}
       helpText={"Video stream from each camera inside the car."}
       content={
         <Row gutter={[16, 24]}>
           {streams.map(({ id, label, url, isAvailable }: Stream) =>
             isAvailable ? (
-              <Col key={id} span={12}>
+              <Col key={id} span={fullSize ? 24 : 12}>
                 <Typography.Title level={5}>{label}</Typography.Title>
                 <ReactPlayer
                   key={cameraKeys}
@@ -138,12 +139,12 @@ const CameraStreams: React.FC<Props> = ({ carId }) => {
                 />
               </Col>
             ) : (
-              <Col key={id} span={12}>
+              <Col key={id} span={fullSize ? 24 : 12}>
                 <Typography.Title level={5}>{label}</Typography.Title>
                 <Empty
                   image={Empty.PRESENTED_IMAGE_SIMPLE}
                   style={{
-                    height: 360,
+                    height: fullSize ? "10vh" : 250,
                     display: "flex",
                     flexDirection: "column",
                     justifyContent: "center",
