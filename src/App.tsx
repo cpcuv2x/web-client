@@ -4,6 +4,7 @@ import { SWRConfig } from "swr"
 import AppLayout from "./components/AppLayout"
 import RequireAuth from "./components/RequireAuth"
 import SocketContext, { socket } from "./contexts/socket/SocketContext"
+import DashboardAllCarPage from "./pages/dashboard/Car/All"
 import DashboardCarPage from "./pages/dashboard/Car/Dashboard"
 import DashboardCarOverviewPage from "./pages/dashboard/Car/Overview"
 import DashboardDriverPage from "./pages/dashboard/Driver/Dashboard"
@@ -62,6 +63,7 @@ function App() {
                   <Route path="overview" element={<DashboardOverviewPage />} />
                   <Route path="vehicle">
                     <Route index element={<DashboardCarOverviewPage />} />
+                    <Route path="all" element={<DashboardAllCarPage />} />
                     <Route path=":vehicleId" element={<DashboardCarPage />} />
                   </Route>
                   <Route path="driver">
