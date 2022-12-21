@@ -2,6 +2,8 @@ import { GoogleMap, LoadScript } from "@react-google-maps/api"
 import appConfig from "../../../../configuration"
 import { CarOverviewInformation } from "../../../../interfaces/Overview"
 import CarPin from "../CarPin"
+import { Button } from "antd"
+import { useEffect, useState } from "react"
 
 // Chulalongkorn university location
 const center = {
@@ -21,6 +23,7 @@ interface props {
   currentID?: string
   showActionInModal?: boolean
   showPassengersInCarPin?: boolean
+  locationString?: string
 }
 
 const CarsLocationMap: React.FC<props> = ({
@@ -30,19 +33,63 @@ const CarsLocationMap: React.FC<props> = ({
   currentID,
   showActionInModal = true,
   showPassengersInCarPin = false,
+  locationString,
 }) => {
+  const [location, setLocation] = useState(
+    locationString ? locationString : "chula"
+  )
+  const [center, setCenter] = useState({
+    lat: 13.740154,
+    lng: 100.529732,
+  })
+  const [zoom, setZoom] = useState(16)
+
   return (
-    <LoadScript googleMapsApiKey={appConfig.googleMapAPIKey}>
+    <>
+      <div
+        style={{
+          //set position on right hand side
+          position: "absolute",
+          top: "10px",
+          right: "10px",
+          zIndex: 1000,
+        }}
+      >
+        <Button
+          type={location === "chula" ? "primary" : "default"}
+          onClick={() => {
+            setLocation("chula")
+            setCenter({ lat: 13.740154, lng: 100.529732 })
+          }}
+        >
+          Chula
+        </Button>
+        <Button
+          type={location === "sailom" ? "primary" : "default"}
+          onClick={() => {
+            setLocation("sailom")
+            setCenter({ lat: 13.7830495, lng: 100.5484907 })
+          }}
+        >
+          Sailom
+        </Button>
+      </div>
+      <LoadScript
+        googleMapsApiKey={appConfig.googleMapAPIKey}
+        style={{
+          position: "relative",
+        }}
+      >
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={center}
-        zoom={16}
+          zoom={location === "chula" ? 17 : 18}
         options={{
           zoomControl: false,
           streetViewControl: false,
           mapTypeControl: false,
           fullscreenControl: false,
-          maxZoom: 16,
+            maxZoom: 20,
           minZoom: 16,
           gestureHandling: "none",
         }}
