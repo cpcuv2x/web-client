@@ -44,6 +44,50 @@ const CarsLocationMap: React.FC<props> = ({
   })
   const [zoom, setZoom] = useState(16)
 
+  //FIXME : Mock up data
+  const mockUpAccident = [
+    {
+      id: "A0001",
+      carId: "V0001",
+      driverId: "D0001",
+      lat: 13.739839,
+      long: 100.531367,
+      timestamp: "1671630224835",
+    },
+    {
+      id: "A0002",
+      carId: "V0001",
+      driverId: "D0001",
+      lat: 13.739839,
+      long: 100.531367,
+      timestamp: "1671630224835",
+    },
+    {
+      id: "A0003",
+      carId: "V0001",
+      driverId: "D0001",
+      lat: 13.737157,
+      long: 100.529303,
+      timestamp: "1671630224835",
+    },
+    {
+      id: "A0004",
+      carId: "V0001",
+      driverId: "D0001",
+      lat: 13.782747,
+      long: 100.548444,
+      timestamp: "1671630224835",
+    },
+    {
+      id: "A0005",
+      carId: "V0001",
+      driverId: "D0001",
+      lat: 13.783998,
+      long: 100.547993,
+      timestamp: "1671630224835",
+    },
+  ]
+
   return (
     <>
       <div
@@ -109,6 +153,14 @@ const CarsLocationMap: React.FC<props> = ({
               />
             )
         )}
+          {mockUpAccident.map(
+            (accident) =>
+              accident.lat != null &&
+              accident.long != null && (
+                <AccidentPin key={accident.id} information={accident} />
+              )
+          )}
+
       </GoogleMap>
     </LoadScript>
   )
