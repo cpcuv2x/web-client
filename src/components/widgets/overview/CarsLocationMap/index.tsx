@@ -157,12 +157,7 @@ const CarsLocationMap: React.FC<props> = ({
           Sailom
         </Button>
       </div>
-      <LoadScript
-        googleMapsApiKey={appConfig.googleMapAPIKey}
-        style={{
-          position: "relative",
-        }}
-      >
+      <LoadScript googleMapsApiKey={appConfig.googleMapAPIKey}>
         <GoogleMap
           mapContainerStyle={containerStyle}
           center={center}
