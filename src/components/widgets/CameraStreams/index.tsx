@@ -124,27 +124,49 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
     <WidgetCard
       title={carId}
       helpText={"Video stream from each camera inside the car."}
+      padding={0}
       content={
-        <Row gutter={[16, 24]}>
+        <Row gutter={[16, 12]}>
           {streams.map(({ id, label, url, isAvailable }: Stream) =>
             isAvailable ? (
-              <Col key={id} span={fullSize ? 24 : 12}>
-                <Typography.Title level={5}>{label}</Typography.Title>
+              <Col
+                key={id}
+                span={fullSize ? 24 : 12}
+                style={{ width: "100%", height: "100%" }}
+              >
+                <Typography.Title
+                  level={5}
+                  type="secondary"
+                  style={{ marginLeft: "1rem" }}
+                >
+                  {label}
+                </Typography.Title>
                 <ReactPlayer
                   key={cameraKeys}
                   url={url}
                   muted
                   width={"100%"}
+                  height={"100%"}
                   playing={true}
                 />
               </Col>
             ) : (
               <Col key={id} span={fullSize ? 24 : 12}>
-                <Typography.Title level={5}>{label}</Typography.Title>
+                <Typography.Title
+                  type="secondary"
+                  level={5}
+                  style={{ marginLeft: "1rem" }}
+                >
+                  {label}
+                </Typography.Title>
                 <Empty
+                  className=""
                   image={Empty.PRESENTED_IMAGE_SIMPLE}
+                  description="Sit tight, and we'll be right back!"
                   style={{
-                    height: fullSize ? "10vh" : 250,
+                    width: "100%",
+                    // aspectRatio: "4/3",
+                    height: fullSize ? "15vh" : 250,
                     display: "flex",
                     flexDirection: "column",
                     justifyContent: "center",
