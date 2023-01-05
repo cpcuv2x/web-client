@@ -44,8 +44,8 @@ const CarsLocationMap: React.FC<props> = ({
     locationString ? locationString : "chula"
   )
   const [center, setCenter] = useState({
-    lat: 13.740154,
-    lng: 100.529732,
+    lat: 13.7388237,
+    lng: 100.5313096,
   })
   const [zoom, setZoom] = useState(16)
 
@@ -142,7 +142,7 @@ const CarsLocationMap: React.FC<props> = ({
           type={location === "chula" ? "primary" : "default"}
           onClick={() => {
             setLocation("chula")
-            setCenter({ lat: 13.740154, lng: 100.529732 })
+            setCenter({ lat: 13.7388237, lng: 100.5313096 })
           }}
         >
           Chula
