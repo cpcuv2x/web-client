@@ -131,7 +131,7 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
             isAvailable ? (
               <Col
                 key={id}
-                span={fullSize ? 24 : 12}
+                span={fullSize ? 6 : 12}
                 style={{ width: "100%", height: "100%" }}
               >
                 <Typography.Title
@@ -151,7 +151,7 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
                 />
               </Col>
             ) : (
-              <Col key={id} span={fullSize ? 24 : 12}>
+              <Col key={id} span={fullSize ? 6 : 12}>
                 <Typography.Title
                   type="secondary"
                   level={5}

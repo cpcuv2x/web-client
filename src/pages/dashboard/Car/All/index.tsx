@@ -129,6 +129,7 @@ const DashboardAllCarPage: React.FC = () => {
           </Card>
         </Col>
       </Row> */}
+
       {selectedCar?.length === 1 && (
         <Row gutter={[16, 16]}>
           {selectedCar.map((carId) => (
@@ -138,15 +139,14 @@ const DashboardAllCarPage: React.FC = () => {
           ))}
         </Row>
       )}
-      {selectedCar?.length === 3 && (
-        <Row gutter={[6, 16]}>
-          {selectedCar.map((carId) => (
-            <Col span={8} key={carId}>
+      <Row gutter={[1, 5]}>
+        {selectedCar?.length === 3 &&
+          selectedCar.map((carId) => (
+            <Col span={24} key={carId}>
               <CameraStreams carId={carId} fullSize />
             </Col>
           ))}
-        </Row>
-      )}
+      </Row>
 
       {selectedCar?.length === 2 && (
         <Row gutter={[1, 16]}>

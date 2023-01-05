@@ -35,6 +35,7 @@ const WidgetCard: React.FC<Props> = ({
     <Card
       className={styles["card"]}
       bodyStyle={style}
+      size="small"
       title={<Typography.Text type="secondary">{title}</Typography.Text>}
       extra={
         <Tooltip title={helpText} placement="topRight">
