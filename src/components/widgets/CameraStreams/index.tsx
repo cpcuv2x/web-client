@@ -114,10 +114,10 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
           }
           stream.isAvailable = true
         } else {
-          stream.isAvailable = false
+          setStreamUnavailable(stream)
         }
       } catch (error) {
-        stream.isAvailable = false
+        setStreamUnavailable(stream)
         // if (!stream.isAvailable && stream.playerRef.current) {
         //   // stream.playerRef.current.load()
         //   stream.playerRef.current?.seekTo(0)
@@ -136,10 +136,16 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
           const player = players[id]
           checkHLSActive(player, stream).catch((err) => {
             console.log("err", err)
-            stream.isAvailable = false
+            setStreamUnavailable(stream)
           })
         })
       }
+    }
+
+    const setStreamUnavailable = (stream: Stream) => {
+      setTimeout(() => {
+        stream.isAvailable = false
+      }, 10000)
     }
 
     // Use a single setInterval timer to check the availability of all streams
@@ -178,7 +184,7 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
                   {label}
                 </Typography.Title>
                 <ReactPlayer
-                  key={isAvailable ? undefined : id}
+                  // key={isAvailable ? undefined : id}
                   ref={playerRef}
                   url={url}
                   muted
