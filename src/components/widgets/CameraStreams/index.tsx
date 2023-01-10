@@ -99,11 +99,6 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
       player: ReactPlayer | null,
       stream: Stream
     ) => {
-      // Check if the player is playing the stream
-      if (player && player.props.playing) {
-        stream.isAvailable = true
-        return
-      }
       // Fetch the stream and check the status code
       try {
         const response = await axiosClient.get(stream.url)
