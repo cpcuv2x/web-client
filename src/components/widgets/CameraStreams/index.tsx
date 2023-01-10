@@ -111,6 +111,7 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
           //set stream.isAvailable to true
           if (!stream.isAvailable && stream.playerRef.current) {
             stream.playerRef.current?.seekTo(0)
+            stream.isAvailable = true
           }
           stream.isAvailable = true
         } else {
