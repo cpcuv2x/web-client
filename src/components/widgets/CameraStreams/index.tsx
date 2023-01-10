@@ -19,12 +19,15 @@ interface Stream {
   label: string
   url: string
   isAvailable: boolean
+  playerRef: React.RefObject<ReactPlayer>
 }
 
 const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
   const { car } = useCar(carId)
+  const [players, setPlayers] = useState<(ReactPlayer | null)[]>([])
   const [streams, setStreams] = useState<Stream[]>([])
-  const [cameraKeys, setCameraKeys] = useState(0)
+  const [intervalIds, setIntervalIds] = useState<(number | NodeJS.Timer)[]>([])
+  // const [reconnectKey, setCameraKeys] = useState(0)
   useEffect(() => {
     const init = async () => {
       if (car) {
@@ -47,6 +50,8 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
                 label: cameraPositionLabel[role],
                 url: "",
                 isAvailable: false,
+                player: null,
+                playerRef: React.createRef<ReactPlayer>(),
               }
               if (!cameraId) {
                 return stream
@@ -69,56 +74,87 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
     }
 
     init()
-  }, [carId])
+  }, [])
+
+  useEffect(() => {
+    console.log(streams)
+  }, [streams])
 
   useEffect(() => {
     //set stream.isAvailable to true if stream is available
     // const operation = retry.operation()
-    const checkHLSActive = async (url: string) => {
-      let res = await axiosClient
-        .head(url)
-        .then((response) => {
-          console.log("works: ", url, /2\d\d/.test("" + response.status))
-          setCameraKeys(1)
-        })
-        .catch((err) => {
-          console.log("err", url, err)
-          setCameraKeys(0)
-        })
+    // const checkHLSActive = async (url: string) => {
+    //   let res = await axiosClient
+    //     .head(url)
+    //     .then((response) => {
+    //       console.log("works: ", url, /2\d\d/.test("" + response.status))
+    //       setCameraKeys(1)
+    //     })
+    //     .catch((err) => {
+    //       console.log("err", url, err)
+    //       setCameraKeys(0)
+    //     })
+    // }
+    const checkHLSActive = async (
+      player: ReactPlayer | null,
+      stream: Stream
+    ) => {
+      // Check if the player is playing the stream
+      if (player && player.props.playing) {
+        stream.isAvailable = true
+        return
+      }
+      // Fetch the stream and check the status code
+      try {
+        const response = await axiosClient.get(stream.url)
+        if (response.status >= 200 && response.status < 300) {
+          //set stream.isAvailable to true
+          if (!stream.isAvailable && stream.playerRef.current) {
+            stream.playerRef.current?.seekTo(0)
+          }
+          stream.isAvailable = true
+        } else {
+          stream.isAvailable = false
+        }
+      } catch (error) {
+        stream.isAvailable = false
+        // if (!stream.isAvailable && stream.playerRef.current) {
+        //   // stream.playerRef.current.load()
+        //   stream.playerRef.current?.seekTo(0)
+        // }
+      }
     }
+
     const checkCameraConnection = async () => {
       if (car) {
         const cameraRoleIdMap = new Map<CameraRole, string>()
-        car?.Camera.forEach((camera) => {
+        car.Camera.forEach((camera) => {
           cameraRoleIdMap.set(camera.role, camera.id)
         })
-        console.log(streams)
-
-        //set isAvailable in each stream to true
-        streams.map((stream: Stream) => {
-          setInterval(() => {
-            if (stream.isAvailable) {
-              checkHLSActive(stream.url).catch((err) => {
-                console.log("err", err)
-                stream.isAvailable = false
-              })
-            } else {
-              try {
-                axiosClient.get(stream.url)
-                console.log(`${stream.url} is connected`)
-                stream.isAvailable = true
-              } catch (err) {
-                console.log(`${stream.url} is not available`, err)
-                stream.isAvailable = false
-              }
-            }
-          }, 20000)
+        // Check the availability of each stream
+        streams.forEach((stream: Stream, id: number) => {
+          const player = players[id]
+          checkHLSActive(player, stream).catch((err) => {
+            console.log("err", err)
+            stream.isAvailable = false
+          })
         })
       }
     }
 
-    checkCameraConnection()
-  }, [streams])
+    // Use a single setInterval timer to check the availability of all streams
+    const intervalId = setInterval(() => {
+      checkCameraConnection()
+    }, 20000)
+
+    setIntervalIds([...intervalIds, intervalId])
+  }, [players, streams])
+
+  useEffect(() => {
+    return () => {
+      intervalIds.forEach((id) => clearInterval(id))
+    }
+  }, [intervalIds])
 
   return (
     <WidgetCard
@@ -127,7 +163,7 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
       padding={0}
       content={
         <Row gutter={[16, 12]}>
-          {streams.map(({ id, label, url, isAvailable }: Stream) =>
+          {streams.map(({ id, label, url, isAvailable, playerRef }: Stream) =>
             isAvailable ? (
               <Col
                 key={id}
@@ -142,7 +178,8 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
                   {label}
                 </Typography.Title>
                 <ReactPlayer
-                  key={cameraKeys}
+                  key={isAvailable ? undefined : id}
+                  ref={playerRef}
                   url={url}
                   muted
                   width={"100%"}
