@@ -20,6 +20,7 @@ interface Stream {
   url: string
   isAvailable: boolean
   playerRef: React.RefObject<ReactPlayer>
+  lastSuccessfulConnect: number
 }
 
 const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
@@ -52,6 +53,7 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
                 isAvailable: false,
                 player: null,
                 playerRef: React.createRef<ReactPlayer>(),
+                lastSuccessfulConnect: 0,
               }
               if (!cameraId) {
                 return stream
@@ -62,6 +64,7 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
               try {
                 await axiosClient.get(url)
                 stream.isAvailable = true
+                stream.lastSuccessfulConnect = Date.now()
               } catch (error) {
                 stream.isAvailable = false
               }
@@ -81,20 +84,6 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
   }, [streams])
 
   useEffect(() => {
-    //set stream.isAvailable to true if stream is available
-    // const operation = retry.operation()
-    // const checkHLSActive = async (url: string) => {
-    //   let res = await axiosClient
-    //     .head(url)
-    //     .then((response) => {
-    //       console.log("works: ", url, /2\d\d/.test("" + response.status))
-    //       setCameraKeys(1)
-    //     })
-    //     .catch((err) => {
-    //       console.log("err", url, err)
-    //       setCameraKeys(0)
-    //     })
-    // }
     const checkHLSActive = async (
       player: ReactPlayer | null,
       stream: Stream
@@ -108,16 +97,15 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
             // stream.playerRef.current?.seekTo(0)
             stream.isAvailable = true
           }
+          stream.lastSuccessfulConnect = Date.now()
           stream.isAvailable = true
-        } else {
+        } else if (Date.now() - stream.lastSuccessfulConnect > 10000) {
           setStreamUnavailable(stream)
         }
       } catch (error) {
-        setStreamUnavailable(stream)
-        // if (!stream.isAvailable && stream.playerRef.current) {
-        //   // stream.playerRef.current.load()
-        //   stream.playerRef.current?.seekTo(0)
-        // }
+        if (Date.now() - stream.lastSuccessfulConnect > 10000) {
+          setStreamUnavailable(stream)
+        }
       }
     }
 
