@@ -26,7 +26,7 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
   const { car } = useCar(carId)
   const [players, setPlayers] = useState<(ReactPlayer | null)[]>([])
   const [streams, setStreams] = useState<Stream[]>([])
-  const [intervalIds, setIntervalIds] = useState<(number | NodeJS.Timer)[]>([])
+  const [intervalIds, setIntervalIds] = useState<NodeJS.Timer[]>([])
   // const [reconnectKey, setCameraKeys] = useState(0)
   useEffect(() => {
     const init = async () => {
