@@ -95,7 +95,7 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
         if (response.status >= 200 && response.status < 300) {
           if (!stream.isAvailable && stream.playerRef.current) {
             stream.playerRef.current?.seekTo(1)
-            // stream.isAvailable = true
+            stream.isAvailable = true
           }
           console.log("connected: " + stream.isAvailable + " ID: " + stream.id)
           stream.lastSuccessfulConnect = Date.now()
