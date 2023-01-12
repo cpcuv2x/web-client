@@ -77,15 +77,15 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
     }
 
     init()
-  }, [])
+  }, [carId])
 
   useEffect(() => {
-    console.log(streams)
+    streams.map((stream) => console.log(stream.id, stream.playerRef))
   }, [streams])
 
   useEffect(() => {
     const checkHLSActive = async (
-      player: ReactPlayer | null,
+      // player: ReactPlayer | null,
       stream: Stream
     ) => {
       // Fetch the stream and check the status code
@@ -118,9 +118,9 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
         //   cameraRoleIdMap.set(camera.role, camera.id)
         // })
         // Check the availability of each stream
-        streams.forEach((stream: Stream, id: number) => {
-          const player = players[id]
-          checkHLSActive(player, stream)
+        streams.forEach((stream: Stream) => {
+          // const player = players[id]
+          checkHLSActive(stream)
         })
       }
     }
@@ -137,7 +137,7 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
     }, 5000)
 
     setIntervalIds([...intervalIds, intervalId])
-  }, [players, streams])
+  }, [streams])
 
   useEffect(() => {
     return () => {
