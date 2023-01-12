@@ -91,16 +91,14 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
       // Fetch the stream and check the status code
       try {
         const response = await axiosClient.get(stream.url)
-        stream.isAvailable = true
+        // stream.isAvailable = true
         if (response.status >= 200 && response.status < 300) {
           if (!stream.isAvailable && stream.playerRef.current) {
             stream.playerRef.current?.seekTo(1)
-            // restart player
             // stream.isAvailable = true
           }
           console.log("connected: " + stream.isAvailable + " ID: " + stream.id)
           stream.lastSuccessfulConnect = Date.now()
-          stream.isAvailable = true
         } else if (Date.now() - stream.lastSuccessfulConnect > 10000) {
           // setStreamUnavailable(stream)
           stream.isAvailable = false
