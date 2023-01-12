@@ -94,7 +94,7 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
         // stream.isAvailable = true
         if (response.status >= 200 && response.status < 300) {
           if (!stream.isAvailable && stream.playerRef.current) {
-            stream.playerRef.current?.seekTo(0.99, "fraction")
+            // stream.playerRef.current?.seekTo(0.99, "fraction")
             stream.isAvailable = true
           }
           console.log("connected: " + stream.isAvailable + " ID: " + stream.id)
@@ -167,7 +167,7 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
                   {label}
                 </Typography.Title>
                 <ReactPlayer
-                  // key={isAvailable ? undefined : id}
+                  key={isAvailable ? undefined : id}
                   ref={playerRef}
                   url={url}
                   muted
