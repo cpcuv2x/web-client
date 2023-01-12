@@ -84,60 +84,62 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
   }, [streams])
 
   useEffect(() => {
-    const checkHLSActive = async (
-      // player: ReactPlayer | null,
-      stream: Stream
-    ) => {
-      // Fetch the stream and check the status code
-      try {
-        const response = await axiosClient.get(stream.url)
-        // stream.isAvailable = true
-        if (response.status >= 200 && response.status < 300) {
-          if (!stream.isAvailable && stream.playerRef.current) {
-            // stream.playerRef.current?.seekTo(0.99, "fraction")
-            stream.isAvailable = true
-          }
-          console.log("connected: " + stream.isAvailable + " ID: " + stream.id)
-          stream.lastSuccessfulConnect = Date.now()
-        } else if (Date.now() - stream.lastSuccessfulConnect > 10000) {
-          // setStreamUnavailable(stream)
-          stream.isAvailable = false
-        }
-      } catch (error) {
-        if (Date.now() - stream.lastSuccessfulConnect > 10000) {
-          // setStreamUnavailable(stream)
-          stream.isAvailable = false
-        }
-      }
-    }
-
-    const checkCameraConnection = async () => {
-      if (car) {
-        // const cameraRoleIdMap = new Map<CameraRole, string>()
-        // car.Camera.forEach((camera) => {
-        //   cameraRoleIdMap.set(camera.role, camera.id)
-        // })
-        // Check the availability of each stream
-        streams.forEach((stream: Stream) => {
-          // const player = players[id]
-          checkHLSActive(stream)
-        })
-      }
-    }
-
-    const setStreamUnavailable = (stream: Stream) => {
-      setTimeout(() => {
-        stream.isAvailable = false
-      }, 10000)
-    }
-
-    // Use a single setInterval timer to check the availability of all streams
-    const intervalId = setInterval(() => {
-      checkCameraConnection()
-    }, 5000)
-
-    setIntervalIds([...intervalIds, intervalId])
+    console.log(ReactPlayer.canPlay(`/api/live/C0005.m3u8`))
   }, [streams])
+
+  const checkHLSActive = async (
+    // player: ReactPlayer | null,
+    stream: Stream
+  ) => {
+    // Fetch the stream and check the status code
+    try {
+      const response = await axiosClient.get(stream.url)
+      // stream.isAvailable = true
+      if (response.status >= 200 && response.status < 300) {
+        if (!stream.isAvailable && stream.playerRef.current) {
+          // stream.playerRef.current?.seekTo(0.99, "fraction")
+          stream.isAvailable = true
+        }
+        console.log("connected: " + stream.isAvailable + " ID: " + stream.id)
+        stream.lastSuccessfulConnect = Date.now()
+      } else if (Date.now() - stream.lastSuccessfulConnect > 10000) {
+        // setStreamUnavailable(stream)
+        stream.isAvailable = false
+      }
+    } catch (error) {
+      if (Date.now() - stream.lastSuccessfulConnect > 10000) {
+        // setStreamUnavailable(stream)
+        stream.isAvailable = false
+      }
+    }
+  }
+
+  const checkCameraConnection = async () => {
+    if (car) {
+      // const cameraRoleIdMap = new Map<CameraRole, string>()
+      // car.Camera.forEach((camera) => {
+      //   cameraRoleIdMap.set(camera.role, camera.id)
+      // })
+      // Check the availability of each stream
+      streams.forEach((stream: Stream) => {
+        // const player = players[id]
+        checkHLSActive(stream)
+      })
+    }
+  }
+
+  const setStreamUnavailable = (stream: Stream) => {
+    setTimeout(() => {
+      stream.isAvailable = false
+    }, 10000)
+  }
+
+  // Use a single setInterval timer to check the availability of all streams
+  const intervalId = setInterval(() => {
+    checkCameraConnection()
+  }, 5000)
+
+  setIntervalIds([...intervalIds, intervalId])
 
   useEffect(() => {
     return () => {
