@@ -98,17 +98,19 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
       if (response.status >= 200 && response.status < 300) {
         if (!stream.isAvailable && stream.playerRef.current) {
           // stream.playerRef.current?.seekTo(0.99, "fraction")
-          stream.isAvailable = true
+          //set isAvailable to false
         }
         console.log("connected: " + stream.isAvailable + " ID: " + stream.id)
         stream.lastSuccessfulConnect = Date.now()
       } else if (Date.now() - stream.lastSuccessfulConnect > 10000) {
         // setStreamUnavailable(stream)
         stream.isAvailable = false
+        console.log(stream)
       }
     } catch (error) {
       if (Date.now() - stream.lastSuccessfulConnect > 10000) {
         // setStreamUnavailable(stream)
+        console.log(error)
         stream.isAvailable = false
       }
     }
