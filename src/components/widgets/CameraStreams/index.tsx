@@ -102,11 +102,13 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
           stream.lastSuccessfulConnect = Date.now()
           stream.isAvailable = true
         } else if (Date.now() - stream.lastSuccessfulConnect > 10000) {
-          setStreamUnavailable(stream)
+          // setStreamUnavailable(stream)
+          stream.isAvailable = false
         }
       } catch (error) {
         if (Date.now() - stream.lastSuccessfulConnect > 10000) {
-          setStreamUnavailable(stream)
+          // setStreamUnavailable(stream)
+          stream.isAvailable = false
         }
       }
     }
