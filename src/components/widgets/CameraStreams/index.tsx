@@ -94,7 +94,9 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
         if (response.status >= 200 && response.status < 300) {
           //set stream.isAvailable to true
           if (!stream.isAvailable && stream.playerRef.current) {
-            stream.playerRef.current?.seekTo(0)
+            // stream.playerRef.current?.seekTo(0)
+            // restart player
+
             stream.isAvailable = true
           }
           console.log("connected: " + stream.isAvailable + " ID: " + stream.id)
@@ -133,7 +135,7 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
     // Use a single setInterval timer to check the availability of all streams
     const intervalId = setInterval(() => {
       checkCameraConnection()
-    }, 20000)
+    }, 5000)
 
     setIntervalIds([...intervalIds, intervalId])
   }, [players, streams])
@@ -167,7 +169,7 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
                 </Typography.Title>
                 <ReactPlayer
                   // key={isAvailable ? undefined : id}
-                  ref={playerRef}
+                  // ref={playerRef}
                   url={url}
                   muted
                   width={"100%"}
