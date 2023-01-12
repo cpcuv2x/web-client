@@ -152,54 +152,62 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
       padding={0}
       content={
         <Row gutter={[16, 12]}>
-          {streams.map(({ id, label, url, isAvailable, playerRef }: Stream) =>
-            isAvailable ? (
-              <Col
-                // key={id}
-                span={fullSize ? 6 : 12}
-                style={{ width: "100%", height: "100%" }}
-              >
-                <Typography.Title
-                  level={5}
-                  type="secondary"
-                  style={{ marginLeft: "1rem" }}
+          {streams.map(
+            ({
+              id,
+              label,
+              url,
+              isAvailable,
+              playerRef,
+              lastSuccessfulConnect,
+            }: Stream) =>
+              isAvailable ? (
+                <Col
+                  // key={id}
+                  span={fullSize ? 6 : 12}
+                  style={{ width: "100%", height: "100%" }}
                 >
-                  {label}
-                </Typography.Title>
-                <ReactPlayer
-                  key={isAvailable ? undefined : id}
-                  ref={playerRef}
-                  url={url}
-                  muted
-                  width={"100%"}
-                  height={"100%"}
-                  playing={true}
-                />
-              </Col>
-            ) : (
-              <Col key={id} span={fullSize ? 6 : 12}>
-                <Typography.Title
-                  type="secondary"
-                  level={5}
-                  style={{ marginLeft: "1rem" }}
-                >
-                  {label}
-                </Typography.Title>
-                <Empty
-                  className=""
-                  image={Empty.PRESENTED_IMAGE_SIMPLE}
-                  description="Sit tight, and we'll be right back!"
-                  style={{
-                    width: "100%",
-                    // aspectRatio: "4/3",
-                    height: fullSize ? "15vh" : 250,
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                  }}
-                />
-              </Col>
-            )
+                  <Typography.Title
+                    level={5}
+                    type="secondary"
+                    style={{ marginLeft: "1rem" }}
+                  >
+                    {label}
+                  </Typography.Title>
+                  <ReactPlayer
+                    key={lastSuccessfulConnect}
+                    ref={playerRef}
+                    url={url}
+                    muted
+                    width={"100%"}
+                    height={"100%"}
+                    playing={true}
+                  />
+                </Col>
+              ) : (
+                <Col key={id} span={fullSize ? 6 : 12}>
+                  <Typography.Title
+                    type="secondary"
+                    level={5}
+                    style={{ marginLeft: "1rem" }}
+                  >
+                    {label}
+                  </Typography.Title>
+                  <Empty
+                    className=""
+                    image={Empty.PRESENTED_IMAGE_SIMPLE}
+                    description="Sit tight, and we'll be right back!"
+                    style={{
+                      width: "100%",
+                      // aspectRatio: "4/3",
+                      height: fullSize ? "15vh" : 250,
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                    }}
+                  />
+                </Col>
+              )
           )}
         </Row>
       }
