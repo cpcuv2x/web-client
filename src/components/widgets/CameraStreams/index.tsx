@@ -117,17 +117,15 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
   }
 
   const checkCameraConnection = async () => {
-    if (car) {
-      // const cameraRoleIdMap = new Map<CameraRole, string>()
-      // car.Camera.forEach((camera) => {
-      //   cameraRoleIdMap.set(camera.role, camera.id)
-      // })
-      // Check the availability of each stream
-      streams.forEach((stream: Stream) => {
-        // const player = players[id]
-        checkHLSActive(stream)
-      })
-    }
+    // const cameraRoleIdMap = new Map<CameraRole, string>()
+    // car.Camera.forEach((camera) => {
+    //   cameraRoleIdMap.set(camera.role, camera.id)
+    // })
+    // Check the availability of each stream
+    streams.forEach((stream: Stream) => {
+      // const player = players[id]
+      checkHLSActive(stream)
+    })
   }
 
   const setStreamUnavailable = (stream: Stream) => {
