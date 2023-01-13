@@ -202,7 +202,7 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
                     muted
                     width={"100%"}
                     height={"100%"}
-                    playing={true}
+                    playing={isAvailable}
                   />
                 </Col>
               ) : (
