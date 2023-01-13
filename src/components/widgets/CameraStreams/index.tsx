@@ -73,7 +73,7 @@ const CameraStreams: React.FC<Props> = ({ carId }) => {
   useEffect(() => {
     //set stream.isAvailable to true if stream is available
     // const operation = retry.operation()
-    const checkHLSActive = async (url) => {
+    const checkHLSActive = async (url: string) => {
       let res = await axiosClient
         .head(url)
         .then((response) => {
