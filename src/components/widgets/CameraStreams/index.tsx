@@ -78,37 +78,7 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
     }
 
     init()
-  }, [])
 
-  // useEffect(() => {
-  //   streams.map((stream) => console.log(stream.id, stream.playerRef))
-  // }, [streams])
-
-  // useEffect(() => {
-  //   console.log(ReactPlayer.canPlay(`/api/live/C0005.m3u8`))
-  // }, [streams])
-
-  // check lastSuccessfulConnect in each stream on useEffect
-  // useEffect(() => {
-  //   streams.forEach((stream) => {
-  //     console.log(
-  //       "stream last connected: ",
-  //       stream.label,
-  //       stream.lastSuccessfulConnect,
-  //       stream.isAvailable
-  //     )
-  //   })
-  // }, [streams])
-
-  const setStreamUnavailable = (stream: Stream) => {
-    setTimeout(() => {
-      stream.isAvailable = false
-    }, 10000)
-  }
-
-  // Use a single setInterval timer to check the availability of all streams
-
-  useEffect(() => {
     const checkCameraConnection = async () => {
       const checkHLSActive = async (
         // player: ReactPlayer | null,
@@ -148,6 +118,75 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
       clearInterval(intervalId)
     }
   }, [])
+
+  // useEffect(() => {
+  //   streams.map((stream) => console.log(stream.id, stream.playerRef))
+  // }, [streams])
+
+  // useEffect(() => {
+  //   console.log(ReactPlayer.canPlay(`/api/live/C0005.m3u8`))
+  // }, [streams])
+
+  // check lastSuccessfulConnect in each stream on useEffect
+  // useEffect(() => {
+  //   streams.forEach((stream) => {
+  //     console.log(
+  //       "stream last connected: ",
+  //       stream.label,
+  //       stream.lastSuccessfulConnect,
+  //       stream.isAvailable
+  //     )
+  //   })
+  // }, [streams])
+
+  const setStreamUnavailable = (stream: Stream) => {
+    setTimeout(() => {
+      stream.isAvailable = false
+    }, 10000)
+  }
+
+  // Use a single setInterval timer to check the availability of all streams
+
+  // useEffect(() => {
+  //   const checkCameraConnection = async () => {
+  //     const checkHLSActive = async (
+  //       // player: ReactPlayer | null,
+  //       stream: Stream
+  //     ) => {
+  //       // Fetch the stream and check the status code
+  //       try {
+  //         const response = await axiosClient.get(stream.url)
+
+  //         if (response.status >= 200 && response.status < 300) {
+  //           stream.isAvailable = true
+  //           console.log(
+  //             "connected: " + stream.isAvailable + " ID: " + stream.id
+  //           )
+  //           stream.lastSuccessfulConnect = Date.now()
+  //         } else {
+  //           setStreamUnavailable(stream)
+  //         }
+  //       } catch (error) {
+  //         setStreamUnavailable(stream)
+
+  //         console.log(error)
+  //       }
+  //     }
+
+  //     streams.forEach((stream: Stream) => {
+  //       // const player = players[id]
+  //       checkHLSActive(stream)
+  //     })
+  //   }
+
+  //   const intervalId = setInterval(() => {
+  //     checkCameraConnection()
+  //   }, 3000)
+
+  //   return () => {
+  //     clearInterval(intervalId)
+  //   }
+  // }, [])
 
   // useEffect(() => {
   //   return () => {
