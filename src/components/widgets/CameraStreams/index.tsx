@@ -100,43 +100,6 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
   //   })
   // }, [streams])
 
-  const checkHLSActive = async (
-    // player: ReactPlayer | null,
-    stream: Stream
-  ) => {
-    // Fetch the stream and check the status code
-    try {
-      const response = await axiosClient.get(stream.url)
-      // stream.isAvailable = true
-      if (response.status >= 200 && response.status < 300) {
-        stream.isAvailable = true
-        console.log("connected: " + stream.isAvailable + " ID: " + stream.id)
-        stream.lastSuccessfulConnect = Date.now()
-        // if (!stream.isAvailable && stream.playerRef.current) {
-        //   // stream.playerRef.current?.seekTo(0.99, "fraction")
-        //   //set isAvailable to false
-        // }
-      } else {
-        setStreamUnavailable(stream)
-        // stream.isAvailable = false
-        // console.log(stream)
-      }
-    } catch (error) {
-      setStreamUnavailable(stream)
-      // if (Date.now() - stream.lastSuccessfulConnect > 10000) {
-      // stream.isAvailable = false
-      // console.log(error)
-      // }
-    }
-  }
-
-  const checkCameraConnection = async () => {
-    streams.forEach((stream: Stream) => {
-      // const player = players[id]
-      checkHLSActive(stream)
-    })
-  }
-
   const setStreamUnavailable = (stream: Stream) => {
     setTimeout(() => {
       stream.isAvailable = false
@@ -146,14 +109,40 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
   // Use a single setInterval timer to check the availability of all streams
 
   useEffect(() => {
-    // const intervalId = setInterval(() => {
-    //   checkCameraConnection()
-    // }, 5000)
-    // setIntervalIds([...intervalIds, intervalId])
+    const checkCameraConnection = async () => {
+      const checkHLSActive = async (
+        // player: ReactPlayer | null,
+        stream: Stream
+      ) => {
+        // Fetch the stream and check the status code
+        try {
+          const response = await axiosClient.get(stream.url)
+
+          if (response.status >= 200 && response.status < 300) {
+            stream.isAvailable = true
+            console.log(
+              "connected: " + stream.isAvailable + " ID: " + stream.id
+            )
+            stream.lastSuccessfulConnect = Date.now()
+          } else {
+            setStreamUnavailable(stream)
+          }
+        } catch (error) {
+          setStreamUnavailable(stream)
+
+          console.log(error)
+        }
+      }
+
+      streams.forEach((stream: Stream) => {
+        // const player = players[id]
+        checkHLSActive(stream)
+      })
+    }
 
     const intervalId = setInterval(() => {
       checkCameraConnection()
-    }, 5000)
+    }, 3000)
 
     return () => {
       clearInterval(intervalId)
