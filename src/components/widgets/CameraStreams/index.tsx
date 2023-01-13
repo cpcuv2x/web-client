@@ -62,6 +62,7 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
               stream.url = url
 
               try {
+                console.log("init")
                 await axiosClient.get(url)
                 stream.isAvailable = true
                 stream.lastSuccessfulConnect = Date.now()
@@ -77,14 +78,26 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
     }
 
     init()
-  }, [carId])
+  }, [])
 
-  useEffect(() => {
-    streams.map((stream) => console.log(stream.id, stream.playerRef))
-  }, [streams])
+  // useEffect(() => {
+  //   streams.map((stream) => console.log(stream.id, stream.playerRef))
+  // }, [streams])
 
+  // useEffect(() => {
+  //   console.log(ReactPlayer.canPlay(`/api/live/C0005.m3u8`))
+  // }, [streams])
+
+  // check lastSuccessfulConnect in each stream on useEffect
   useEffect(() => {
-    console.log(ReactPlayer.canPlay(`/api/live/C0005.m3u8`))
+    streams.forEach((stream) => {
+      console.log(
+        "stream last connected: ",
+        stream.label,
+        stream.lastSuccessfulConnect,
+        stream.isAvailable
+      )
+    })
   }, [streams])
 
   const checkHLSActive = async (
@@ -96,12 +109,13 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
       const response = await axiosClient.get(stream.url)
       // stream.isAvailable = true
       if (response.status >= 200 && response.status < 300) {
-        if (!stream.isAvailable && stream.playerRef.current) {
-          // stream.playerRef.current?.seekTo(0.99, "fraction")
-          //set isAvailable to false
-        }
+        stream.isAvailable = true
         console.log("connected: " + stream.isAvailable + " ID: " + stream.id)
         stream.lastSuccessfulConnect = Date.now()
+        // if (!stream.isAvailable && stream.playerRef.current) {
+        //   // stream.playerRef.current?.seekTo(0.99, "fraction")
+        //   //set isAvailable to false
+        // }
       } else if (Date.now() - stream.lastSuccessfulConnect > 10000) {
         // setStreamUnavailable(stream)
         stream.isAvailable = false
@@ -110,18 +124,13 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
     } catch (error) {
       if (Date.now() - stream.lastSuccessfulConnect > 10000) {
         // setStreamUnavailable(stream)
-        console.log(error)
+        // console.log(error)
         stream.isAvailable = false
       }
     }
   }
 
   const checkCameraConnection = async () => {
-    // const cameraRoleIdMap = new Map<CameraRole, string>()
-    // car.Camera.forEach((camera) => {
-    //   cameraRoleIdMap.set(camera.role, camera.id)
-    // })
-    // Check the availability of each stream
     streams.forEach((stream: Stream) => {
       // const player = players[id]
       checkHLSActive(stream)
@@ -135,17 +144,27 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
   }
 
   // Use a single setInterval timer to check the availability of all streams
-  const intervalId = setInterval(() => {
-    checkCameraConnection()
-  }, 5000)
-
-  setIntervalIds([...intervalIds, intervalId])
 
   useEffect(() => {
+    // const intervalId = setInterval(() => {
+    //   checkCameraConnection()
+    // }, 5000)
+    // setIntervalIds([...intervalIds, intervalId])
+
+    const intervalId = setInterval(() => {
+      checkCameraConnection()
+    }, 5000)
+
     return () => {
-      intervalIds.forEach((id) => clearInterval(id))
+      clearInterval(intervalId)
     }
-  }, [intervalIds])
+  }, [])
+
+  // useEffect(() => {
+  //   return () => {
+  //     intervalIds.forEach((id) => clearInterval(id))
+  //   }
+  // }, [intervalIds])
 
   return (
     <WidgetCard
@@ -178,7 +197,7 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
                   </Typography.Title>
                   <ReactPlayer
                     key={lastSuccessfulConnect}
-                    ref={playerRef}
+                    // ref={playerRef}
                     url={url}
                     muted
                     width={"100%"}
