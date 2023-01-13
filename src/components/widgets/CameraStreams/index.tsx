@@ -89,16 +89,16 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
   // }, [streams])
 
   // check lastSuccessfulConnect in each stream on useEffect
-  useEffect(() => {
-    streams.forEach((stream) => {
-      console.log(
-        "stream last connected: ",
-        stream.label,
-        stream.lastSuccessfulConnect,
-        stream.isAvailable
-      )
-    })
-  }, [streams])
+  // useEffect(() => {
+  //   streams.forEach((stream) => {
+  //     console.log(
+  //       "stream last connected: ",
+  //       stream.label,
+  //       stream.lastSuccessfulConnect,
+  //       stream.isAvailable
+  //     )
+  //   })
+  // }, [streams])
 
   const checkHLSActive = async (
     // player: ReactPlayer | null,
