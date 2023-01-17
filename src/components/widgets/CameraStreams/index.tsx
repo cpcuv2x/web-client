@@ -80,11 +80,34 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
     init()
 
     const checkCameraConnection = async () => {
-      const checkHLSActive = async (
-        // player: ReactPlayer | null,
-        stream: Stream
-      ) => {
-        // Fetch the stream and check the status code
+      // const checkHLSActive = async (
+      //   // player: ReactPlayer | null,
+      //   stream: Stream
+      // ) => {
+      //   // Fetch the stream and check the status code
+      //   try {
+      //     const response = await axiosClient.get(stream.url)
+
+      //     if (response.status >= 200 && response.status < 300) {
+      //       stream.isAvailable = true
+      //       console.log(
+      //         "connected: " + stream.isAvailable + " ID: " + stream.id
+      //       )
+      //       stream.lastSuccessfulConnect = Date.now()
+      //     } else {
+      //       setStreamUnavailable(stream)
+      //     }
+      //   } catch (error) {
+      //     setStreamUnavailable(stream)
+
+      //     console.log(error)
+      //   }
+      // }
+
+      streams.forEach(async (stream: Stream) => {
+        // const player = players[id]
+        // await checkHLSActive(stream)
+
         try {
           const response = await axiosClient.get(stream.url)
 
@@ -102,16 +125,12 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
 
           console.log(error)
         }
-      }
-
-      streams.forEach((stream: Stream) => {
-        // const player = players[id]
-        checkHLSActive(stream)
       })
     }
 
-    const intervalId = setInterval(() => {
-      checkCameraConnection()
+    const intervalId = setInterval(async () => {
+      await checkCameraConnection()
+      console.log("interval called")
     }, 3000)
 
     return () => {
