@@ -6,11 +6,6 @@ import useCar from "../../../hooks/useCar"
 import { CameraRole } from "../../../interfaces/Camera"
 import axiosClient from "../../../utils/axiosClient"
 import WidgetCard from "../WidgetCard"
-// import retry from "retry"
-// import rax from "retry-axios"
-import axiosRetry from "axios-retry"
-import axios from "axios"
-import useSWR from "swr"
 
 interface Props {
   carId: string
@@ -35,8 +30,8 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
     {
       id: CameraRole.DRIVER,
       label: cameraPositionLabel[CameraRole.DRIVER],
-      url: `/api/live/C0005.m3u8`,
-      isAvailable: true,
+      url: "",
+      isAvailable: false,
       playerRef: React.createRef<ReactPlayer>(),
       lastSuccessfulConnect: Date.now(),
     },
@@ -77,9 +72,9 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
   }
 
   useEffect(() => {
-    console.log("camera set")
+    // console.log("camera set")
     setStreams((streams) => {
-      console.log("streams", streams)
+      // console.log("streams", streams)
       return streams.map((stream) => {
         return {
           ...stream,
@@ -88,9 +83,9 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
       })
     })
 
-    streams.forEach(async (stream) => {
+    streams.forEach(async (stream: Stream) => {
       try {
-        console.log("init")
+        // console.log("init")
         await axiosClient.get(stream.url)
         stream.isAvailable = true
         stream.lastSuccessfulConnect = Date.now()
@@ -101,74 +96,11 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
   }, [car])
 
   useEffect(() => {
-    console.log("car from console: ", car)
-  }, [car])
-
-  useEffect(() => {
-    console.log("streams from console: ", streams)
-  }, [streams])
-
-  useEffect(() => {
-    //console for isavailable in each stream
-    streams.forEach((stream) => {
-      if (stream.isAvailable)
-        console.log("stream status: ", stream.id, stream.isAvailable)
-    })
-  }, [streams])
-
-  useEffect(() => {
-    // const init = async () => {
-    //   const cameraRoleIdMap = new Map<CameraRole, string>()
-    //   car?.Camera.forEach((camera) => {
-    //     cameraRoleIdMap.set(camera.role, camera.id)
-    //   })
-
-    // setStreams(
-    //   await Promise.all(
-    //     [
-    //       CameraRole.DRIVER,
-    //       CameraRole.DOOR,
-    //       CameraRole.SEATS_FRONT,
-    //       CameraRole.SEATS_BACK,
-    //     ].map((role) => {
-    //       const cameraId = cameraRoleIdMap.get(role)
-    //       const stream = {
-    //         id: role,
-    //         label: cameraPositionLabel[role],
-    //         url: "",
-    //         isAvailable: false,
-    //         player: null,
-    //         playerRef: React.createRef<ReactPlayer>(),
-    //         lastSuccessfulConnect: Date.now(),
-    //       }
-    //       if (!cameraId) {
-    //         return stream
-    //       }
-    //       const url = `/api/live/${cameraId}.m3u8`
-    //       stream.url = url
-
-    //       // try {
-    //       //   console.log("init")
-    //       //   await axiosClient.get(url)
-    //       //   stream.isAvailable = true
-    //       //   stream.lastSuccessfulConnect = Date.now()
-    //       // } catch (error) {
-    //       //   stream.isAvailable = false
-    //       // }
-
-    //       return stream
-    //     })
-    //   )
-    // )
-
-    // init()
-
     const intervalId = setInterval(() => {
-      if (!streams) {
-        // init()
-      }
+      streams.forEach((stream) => {
+        console.log("stream status: ", stream.id, stream.isAvailable)
+      })
       checkCameraConnection()
-      console.log("interval called")
     }, 3000)
 
     return () => {
@@ -176,111 +108,55 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
     }
   }, [streams])
 
-  // useEffect(() => {
-  //   const intervalId = setInterval(() => {
-  //     checkCameraConnection()
-  //     console.log("interval called")
-  //   }, 2000)
-
-  //   return () => {
-  //     clearInterval(intervalId)
-  //   }
-  // }, [])
-
   const checkCameraConnection = async () => {
-    console.log("camera checked")
-    console.log(streams)
-    streams.forEach(async (stream: Stream) => {
-      try {
-        console.log("camera checked2", stream.url)
-        const response = await axiosClient.get(stream.url)
-        console.log("camera checked3")
+    const availableStreams: string[]  = []
 
-        //set isAvailable to true on that camera id
-        setStreams(
-          streams.map((stream) => {
-            return {
-              ...stream,
-              isAvailable: true,
-            }
-          })
-        )
-
-        if (response.status >= 200 && response.status < 300) {
-          // stream.isAvailable = true
-          console.log("connected: " + stream.isAvailable + " ID: " + stream.id)
-          stream.lastSuccessfulConnect = Date.now()
-        } else {
-          setStreamUnavailable(stream)
+    const promises = streams.map(async (stream: Stream) => {
+        try {
+          const response = await axiosClient.get(stream.url)
+            
+          if (response.status >= 200 && response.status < 300) {
+            availableStreams.push(stream.url)
+          }
+        } catch (error) {
+          
         }
-      } catch (error) {
-        setStreamUnavailable(stream)
-        console.log(error)
-      }
     })
+  
+    await Promise.all(promises)
+
+    setStreams(
+      streams.map((checkStream: Stream) => {
+        // console.log(availableStreams, checkStream.url, availableStreams.includes(checkStream.url));
+        if (availableStreams.includes(checkStream.url)){
+          return {
+            ...checkStream,
+            isAvailable: true,
+            // lastSuccessfulConnect: Date.now()
+          }
+        }
+        return {
+          ...checkStream,
+          isAvailable: false,
+        }
+      })
+      )
+      // console.log("complete");
   }
 
-  const setStreamUnavailable = (stream: Stream) => {
-    setTimeout(() => {
-      stream.isAvailable = false
-    }, 10000)
-  }
-
-  const setStreamAvailable = (stream: Stream) => {
-    setTimeout(() => {
-      stream.isAvailable = true
-      console.log("set!")
-    }, 5000)
-  }
-
-  // Use a single setInterval timer to check the availability of all streams
-
-  // useEffect(() => {
-  //   const checkCameraConnection = async () => {
-  //     const checkHLSActive = async (
-  //       // player: ReactPlayer | null,
-  //       stream: Stream
-  //     ) => {
-  //       // Fetch the stream and check the status code
-  //       try {
-  //         const response = await axiosClient.get(stream.url)
-
-  //         if (response.status >= 200 && response.status < 300) {
-  //           stream.isAvailable = true
-  //           console.log(
-  //             "connected: " + stream.isAvailable + " ID: " + stream.id
-  //           )
-  //           stream.lastSuccessfulConnect = Date.now()
-  //         } else {
-  //           setStreamUnavailable(stream)
+  // const setStreamUnavailable = (stream: Stream) => {
+  //   setStreams(
+  //     streams.map((checkStream: Stream) => {
+  //       if (checkStream.url == stream.url){
+  //         return {
+  //           ...checkStream,
+  //           isAvailable: false,
   //         }
-  //       } catch (error) {
-  //         setStreamUnavailable(stream)
-
-  //         console.log(error)
   //       }
-  //     }
-
-  //     streams.forEach((stream: Stream) => {
-  //       // const player = players[id]
-  //       checkHLSActive(stream)
+  //       return checkStream
   //     })
-  //   }
-
-  //   const intervalId = setInterval(() => {
-  //     checkCameraConnection()
-  //   }, 3000)
-
-  //   return () => {
-  //     clearInterval(intervalId)
-  //   }
-  // }, [])
-
-  // useEffect(() => {
-  //   return () => {
-  //     intervalIds.forEach((id) => clearInterval(id))
-  //   }
-  // }, [intervalIds])
+  //   )
+  // }
 
   return (
     <>
@@ -309,23 +185,6 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
                       span={fullSize ? 6 : 12}
                       style={{ width: "100%", height: "100%" }}
                     >
-                      <button
-                        onClick={() => {
-                          setStreams(
-                            streams
-                              .filter((stream) => stream.id)
-                              .map((stream) => {
-                                return {
-                                  ...stream,
-                                  isAvailable: !isAvailable,
-                                }
-                              })
-                          )
-                          console.log("Available: ", isAvailable)
-                        }}
-                      >
-                        Aasdasd
-                      </button>
                       <Typography.Title
                         level={5}
                         type="secondary"
@@ -334,7 +193,7 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
                         {label}
                       </Typography.Title>
                       <ReactPlayer
-                        key={lastSuccessfulConnect}
+                        // key={lastSuccessfulConnect}
                         // ref={playerRef}
                         url={url}
                         muted
@@ -353,26 +212,6 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
                     >
                       {label}
                     </Typography.Title>
-                    <button
-                      onClick={() => {
-                        const stream: Stream | undefined = streams.find(
-                          (stream) => stream.id === id
-                        )
-                        if (stream) {
-                          const updatedStream = {
-                            ...stream,
-                            isAvailable: !isAvailable,
-                          }
-
-                          const updatedStreams = streams.map((stream) =>
-                            stream.id === id ? updatedStream : stream
-                          )
-                          setStreams(updatedStreams)
-                        }
-                      }}
-                    >
-                      Aasdasd
-                    </button>
                     <Empty
                       className=""
                       image={Empty.PRESENTED_IMAGE_SIMPLE}
