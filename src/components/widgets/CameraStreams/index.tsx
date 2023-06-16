@@ -109,26 +109,26 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
   }, [streams])
 
   const checkCameraConnection = async () => {
-    const availableStreams: string[]  = []
+    const availableStreams: string[] = []
 
     const promises = streams.map(async (stream: Stream) => {
-        try {
-          const response = await axiosClient.get(stream.url)
-            
-          if (response.status >= 200 && response.status < 300) {
-            availableStreams.push(stream.url)
-          }
-        } catch (error) {
-          
+      try {
+        const response = await axiosClient.get(stream.url)
+
+        if (response.status >= 200 && response.status < 300) {
+          availableStreams.push(stream.url)
         }
+      } catch (error) {
+        // console.log("error", error);
+      }
     })
-  
+
     await Promise.all(promises)
 
     setStreams(
       streams.map((checkStream: Stream) => {
         // console.log(availableStreams, checkStream.url, availableStreams.includes(checkStream.url));
-        if (availableStreams.includes(checkStream.url)){
+        if (availableStreams.includes(checkStream.url)) {
           return {
             ...checkStream,
             isAvailable: true,
@@ -140,8 +140,8 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
           isAvailable: false,
         }
       })
-      )
-      // console.log("complete");
+    )
+    // console.log("complete");
   }
 
   // const setStreamUnavailable = (stream: Stream) => {
@@ -160,10 +160,6 @@ const CameraStreams: React.FC<Props> = ({ carId, fullSize }) => {
 
   return (
     <>
-      {streams.map((stream: Stream) => {
-        return stream.id + " " + stream.isAvailable + " | "
-      })}
-      <button onClick={() => setKey(!key)}>Delete</button>
       <WidgetCard
         title={carId}
         helpText={"Video stream from each camera inside the car."}
